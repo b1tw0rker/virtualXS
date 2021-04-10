@@ -1,6 +1,14 @@
 # virtualXS
 Utility Script to create a Virtual Server out of the box. The script performs to optimize a RHEL8 or Centos8 Minimal Server for hosting purpose.
 
+WARNING: THIS SCRIPT COMES WITH ABSOLUTE NO WARRANTY, 
+WARNING: THIS SCRIPT IS ABSOLUE BETA. DO NOT USE IT ON PRODUCTION SYSTEMS
+
+#    (C) 2021 by Dipl. Wirt.-Ing. Nick Herrmann
+#
+#    This program is WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
 virtualXS will be distributed by dnf. To get install the programm on your fresh RHEL8 or CentOS 8 instalaltion do the following Steps:
 
 - Import the RPM-GPG Key to your system by typing:
