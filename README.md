@@ -1,5 +1,5 @@
 # virtualXS
-Utility Script to create a Virtual Server out of the box. The script performs to optimize a RHEL8 or Centos8 Minimal Server for hosting purpose.
+Utility Script to create a Virtual Hosting Server out of the box. The script performs to optimize a RHEL8 Minmal or Centos8 Minimal Server for hosting purpose.
 
 # WARNING:
 THIS SCRIPT COMES WITH ABSOLUTE NO WARRANTY, 
