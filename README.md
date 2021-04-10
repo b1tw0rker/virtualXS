@@ -9,23 +9,23 @@ THIS SCRIPT IS ABSOLUTE BETA STUFF. DO NOT USE IT ON PRODUCTION SYSTEMS
 This program is WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-virtualXS will be distributed by dnf. To get install the programm on your fresh RHEL8 or CentOS 8 instalaltion do the following Steps:
+virtualXS will be distributed by dnf. To install the programm on your RHEL8 or CentOS 8 installation, follow the following three steps:
 
-- Import the RPM-GPG Key to your system by typing:
+-1- Import the RPM-GPG Key to your system by typing:
 
 rpm --import https://srv.bit-worker.com/repository/RPM-GPG-KEY-BitWorker
 
-- Install the BitWorker Reposirity by adding the Repo to your server
+-2- Install the BitWorker Reposirity by adding the Repo to your server
 
 dnf config-manager --add-repo https://srv.bit-worker.com/repository/bitworker.repo
 
-- Now you can install "virtualXS" on your system.
+-3- Now you can install "virtualXS" on your system.
 
 dnf install virtualXS
 
-After a successfull installtion the script will take his place in /opt/virtualXS
+Thats it. After a successfull installtion the script will take his place here: /opt/virtualXS.
 
-by running the command "vxs" the script start to opptimize your machine for virtual hosting purpose.
+By running the new command "vxs" (placed in: /usr/local/bin/vxs) the script start's to opptimize your machine for virtual hosting purpose.
 
 Thats it folks.
 
