@@ -25,7 +25,7 @@ dnf install virtualXS
 
 Thats it. After a successfull installation the script will take his place here: /opt/virtualXS.
 
-By running the new command "vxs" (placed in: /usr/local/bin/vxs) the script start's to opptimize your machine for virtual hosting purpose.
+By running the new command "vxs" (placed in: /usr/local/bin/vxs) on the shell, the script start's to optimize your machine for virtual hosting purpose.
 
 Thats it folks.
 
