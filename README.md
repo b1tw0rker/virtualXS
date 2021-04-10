@@ -15,11 +15,11 @@ virtualXS will be distributed by dnf. To install the programm on your RHEL8 or C
 
 rpm --import https://srv.bit-worker.com/repository/RPM-GPG-KEY-BitWorker
 
--2- Install the BitWorker Reposirity by adding the Repo to your server
+-2- Install the BitWorker Repository by adding the Repo to your server:
 
 dnf config-manager --add-repo https://srv.bit-worker.com/repository/bitworker.repo
 
--3- Now you can install "virtualXS" on your system.
+-3- Now you can install "virtualXS" on your system:
 
 dnf install virtualXS
 
