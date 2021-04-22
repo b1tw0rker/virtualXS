@@ -27,4 +27,4 @@ Thats it! After a successfull installation the script will take his place here: 
 
 By running the new command "vxs" (placed in: /usr/local/bin/vxs) on the shell, the script start's to optimize your machine for virtual hosting purpose.
 
-Thats it folks.
+Thats it folks!

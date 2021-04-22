@@ -10,16 +10,11 @@
 clear
 
 
-
-
-
-
 ### some vars
 ###
 ###
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
-#u_hostname=srv002.bit-worker.com
 u_root_pwd=XXX
 ### get the ip of the client ssh
 ### https://unix.stackexchange.com/questions/322227/how-to-get-ssh-client-ip-address-using-shell-script
