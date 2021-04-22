@@ -1,0 +1,6 @@
+driver = mysql
+connect = host=localhost dbname=virtualx user=root password=XXX
+default_pass_scheme = MD5-CRYPT
+user_query = SELECT home, 8 AS uid, 12 AS gid FROM dovecot WHERE userid = '%u'
+password_query = SELECT password FROM dovecot WHERE userid = '%u'
+

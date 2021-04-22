@@ -1,0 +1,16 @@
+/home
+/root
+/var/spool/mail
+/var/spool/cron
+/etc/passwd
+/etc/shadow
+/etc/vsftpd
+/etc/postfix
+/etc/dovecot
+/etc/fail2ban
+/etc/motd
+/etc/crontab
+/etc/httpd/conf
+/etc/cron.daily/webalizer*
+/etc/pam.d/vsftpd
+

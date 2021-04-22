@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ -f "/etc/bitworker/mysql-backup.sh" ]; then
+    /etc/bitworker/mysql-backup.sh >> /dev/null 2>&1
+fi
+
+if [ -f "/etc/bitworker/backup.sh" ]; then
+    /etc/bitworker/backup.sh >> /dev/null 2>&1
+fi
+
+exit 0
