@@ -23,7 +23,7 @@ dnf config-manager --add-repo https://srv.bit-worker.com/repository/bitworker.re
 
 dnf install virtualXS
 
-Thats it. After a successfull installation the script will take his place here: /opt/virtualXS.
+Thats it! After a successfull installation the script will take his place here: /opt/virtualXS.
 
 By running the new command "vxs" (placed in: /usr/local/bin/vxs) on the shell, the script start's to optimize your machine for virtual hosting purpose.
 
