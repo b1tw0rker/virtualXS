@@ -1,0 +1,32 @@
+
+
+### by BitWorker
+###
+###
+PubkeyAuthentication no
+PermitRootLogin no
+PasswordAuthentication no
+
+Match address 178.0.0.0/12
+    PasswordAuthentication yes
+    PermitRootLogin yes
+    PubkeyAuthentication yes
+
+Match address 188.96.0.0/12
+    PasswordAuthentication yes
+    PermitRootLogin yes
+    PubkeyAuthentication yes
+
+Match address 88.64.0.0/13
+    PasswordAuthentication yes
+    PermitRootLogin yes
+    PubkeyAuthentication yes
+
+Match Host 195.90.209.193
+    PermitRootLogin without-password
+    PubkeyAuthentication yes
+
+Match Host XXX
+    PasswordAuthentication yes
+    PermitRootLogin yes
+    PubkeyAuthentication yes    

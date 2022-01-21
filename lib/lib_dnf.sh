@@ -1,0 +1,58 @@
+#!/bin/bash
+
+### q run upate
+###
+###
+printf "\n\n***********************************************\n\nRun dnf update [y/n]: "
+    if [ "$u_dnf_update" = "" ]; then
+        read u_dnf_update
+fi
+
+
+
+if [ "$u_dnf_update" = "y" ]; then
+    printf "\n";
+    date +%s > /tmp/time.log
+    dnf clean all
+    dnf -y update
+    date +%s >> /tmp/time.log
+fi
+
+
+
+
+### install
+###
+###
+printf "\n\n***********************************************\n\nInstall apps via dnf [y/n]: "
+    if [ "$u_dnf" = "" ]; then
+        read u_dnf
+fi
+
+
+
+
+if [ "$u_dnf" = "y" ]; then
+
+     dnf -y install epel-release yum-utils
+     dnf -y install chrony httpd mysql mysql-server webalizer php php-mysqlnd php-intl php-json php-ldap php-pecl-zip php-process net-tools which certbot createrepo bind-utils whois postfix postfix-mysql figlet mod_fcgid mod_security mod_security_crs vsftpd php-mbstring dovecot dovecot-mysql rsyslog iptraf-ng dnf-automatic perl-DBI perl-DBD-MySQL perl-Encode-Detect perl-JSON gd gd-devel php-gd perl-Net-SSLeay python3-certbot-apache spamassassin tcp_wrappers php-soap php-xml mod_http2 at conntrack-tools rsync tar wget ncftp unzip git nodejs quota jq perltidy
+
+     ### Solange wir die Signatur nicht ändern können, müssen wir lokal installieren
+     ###
+     ###
+     rpm -Uvh --nosignature $u_path/files/rpm/pam_mysql-0.8.1-0.6.el8.x86_64.rpm
+
+
+    ### setze automatic dnf
+    ### https://www.tecmint.com/setup-automatic-updates-for-centos-8/
+    sed -i 's/^upgrade_type = default/upgrade_type = security/' /etc/dnf/automatic.conf
+    sed -i 's/^apply_updates = no/apply_updates = yes/' /etc/dnf/automatic.conf
+    sed -i 's/^emit_via = stdio/emit_via = motd/' /etc/dnf/automatic.conf
+
+
+    systemctl enable --now dnf-automatic.timer
+
+
+fi 
+
+

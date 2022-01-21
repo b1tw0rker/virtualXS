@@ -1,0 +1,361 @@
+#!/bin/bash
+
+### Version: 1.0.104
+### Build date: 02.07.2021
+### (C) 2021 by Dipl. Wirt.-Ing. Nick Herrmann
+### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
+### MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+###
+###
+
+clear
+
+
+### some vars
+###
+###
+u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
+u_hostname=$(hostname)
+### get the ip of the client ssh
+### https://unix.stackexchange.com/questions/322227/how-to-get-ssh-client-ip-address-using-shell-script
+u_client_ip=$(echo "$SSH_CLIENT" | cut -d' ' -f 1)
+u_path=/opt/virtualXS # no ending slash
+u_server=w
+u_eth=eth0
+
+
+### correct time rules first
+###
+###
+timedatectl set-timezone Europe/Berlin
+
+
+### print centered some lines and write some infos
+### https://superuser.com/questions/823883/how-to-justify-and-center-text-in-bash/829870
+###
+print_center(){
+    local x
+    local y
+    text="$*"
+    x=$(( ($(tput cols) - ${#text}) / 2))
+    echo -ne "\E[6n";read -sdR y; y=$(echo -ne "${y#*[}" | cut -d';' -f1)
+    echo -ne "\033[${y};${x}f$*"
+}
+
+echo -ne "\\033[2J\033[30;1f\e[94m"
+
+print_center "********************************************************************\n"
+print_center "*                                                                  *\n"
+print_center "*             Welcome to Quick and Dirty Install                   *\n"
+print_center "*                                                                  *\n"
+print_center "********************************************************************\n"
+printf "\n"
+
+
+### q prework - ask for ip and servername
+###
+###
+read -p "Server IP adress: " -ei $u_ip4 u_ip
+read -p "Servername (FQDN): " -ei $u_hostname u_srv
+u_domain=$( echo "$u_srv" | cut -d'.' -f 2,3)
+read -p "Domain (eg. domain.tld): " -ei $u_domain u_domain
+read -p "Your IP (Client IP): " -ei $u_client_ip u_client_ip
+read -p "NetzwerkSchnittstelle: " -ei $u_eth u_eth
+read -p "MySQL root password: " u_mysql_pwd
+read -p "Create Web or DNS Server [w/d]: " -ei $u_server u_server
+
+if [ "$u_server" = "d" ]; then
+    u_bitworker_repo=y
+    u_epel_repo=y
+    u_dnf_update=y
+    u_dnf=n
+    u_php74=n
+    u_disable_apps=y
+    u_enable_apps=n
+    u_start_apps=n
+    u_folders_create=y
+    u_postfix=n
+    u_ssh=y
+    u_fail2ban=y
+    u_httpd=n
+    u_dovecot=n
+    u_certbot=n
+    u_vsftpd=n
+    u_mysql=y
+    u_ssl=n
+    u_backup=n
+    u_quota=n
+    u_webmin=n
+    u_magento_dnf=n
+    u_firewall=
+    u_start_firewall=
+fi
+
+
+### q RUN ALL
+###
+###
+if [ "$u_server" = "w" ]; then
+ printf "\n\n***********************************************\n\nRun all the stuff without annoying me (All except DNS Server Settings) [y/n]: "
+ read u_all
+
+ if [ "$u_all" = "y" ]; then
+    u_bitworker_repo=y
+    u_epel_repo=y
+    u_dnf_update=y
+    u_dnf=y
+    u_php74=y
+    u_disable_apps=y
+    u_enable_apps=y
+    u_start_apps=y
+    u_folders_create=y
+    u_postfix=y
+    u_ssh=y
+    u_fail2ban=y
+    u_httpd=y
+    u_dovecot=y
+    u_certbot=y
+    u_vsftpd=y
+    u_mysql=y
+    u_ssl=y
+    u_backup=y
+    u_quota=y
+    u_webmin=y
+    u_firewall=y
+    u_start_firewall=y
+ fi
+fi
+
+
+
+
+
+### set hostname
+###
+###
+hostnamectl set-hostname $u_srv
+
+
+
+### q run bitworker.repo
+###
+###
+if [ ! -f "/etc/yum.repos.d/bitworker.repo" ]; then
+
+    printf "\n\n***********************************************\n\nAdd BitWorker Repo? [y/n]: "
+    if [ "$u_bitworker_repo" = "" ]; then
+        read u_bitworker_repo
+    fi
+
+
+ if [ "$u_bitworker_repo" = "y" ]; then
+
+    dnf config-manager --add-repo https://srv002.bit-worker.com/repository/bitworker.repo
+ 
+ fi
+ 
+fi
+
+
+
+### q run epel.repo
+###
+###
+if [ ! -f "/etc/yum.repos.d/epel.repo" ]; then
+
+    printf "\n\n***********************************************\n\nAdd Epel Repo? [y/n]: "
+    if [ "$u_epel_repo" = "" ]; then
+        read u_epel_repo
+    fi
+
+
+ if [ "$u_epel_repo" = "y" ]; then
+
+        dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+
+ else
+
+  printf "Leaving vxs - Without epel, you can not use this app.\n"
+  exit
+
+ fi
+
+fi
+
+
+
+
+### q install dnf
+###
+###
+source $u_path/lib/lib_dnf.sh
+
+
+### q install php 7.4
+###
+###
+source $u_path/lib/lib_php74.sh
+
+
+
+### q apps
+###
+###
+source $u_path/lib/lib_apps_disable.sh
+source $u_path/lib/lib_apps.sh
+
+
+
+
+### q create standard folders
+###
+###
+source $u_path/lib/lib_folders.sh
+
+
+
+### q config Posftix
+###
+###
+source $u_path/lib/lib_postfix.sh
+
+
+
+### q config SSH
+###
+###
+source $u_path/lib/lib_ssh.sh
+
+
+
+
+### q config fail2ban
+###
+###
+source $u_path/lib/lib_fail2ban.sh
+
+
+
+### q config httpd
+###
+###
+source $u_path/lib/lib_httpd.sh
+
+
+### q config dovecot
+###
+###
+source $u_path/lib/lib_dovecot.sh
+
+
+
+### q config certbot
+###
+###
+source $u_path/lib/lib_certbot.sh
+
+
+
+### q config vsftpd
+###
+###
+source $u_path/lib/lib_vsftpd.sh
+
+
+
+### q config mysql
+###
+###
+source $u_path/lib/lib_mysql.sh
+
+
+### q config ssl
+###
+###
+source $u_path/lib/lib_ssl.sh
+
+
+
+### q config backup
+###
+###
+source $u_path/lib/lib_backup.sh
+
+
+
+### q config backup
+###
+###
+source $u_path/lib/lib_quota.sh
+
+
+### q dns server
+###
+###
+if [ "$u_server" = "d" ]; then
+ source $u_path/lib/lib_powerdns.sh
+fi
+
+### q Webmin
+###
+###
+source $u_path/lib/lib_webmin.sh
+
+
+### q install magento
+###
+###
+source $u_path/lib/lib_magento.sh
+
+
+
+### /etc/firewall
+###
+###
+source $u_path/lib/lib_firewall.sh
+
+
+
+### /etc/logrotate.conf
+###
+###
+source $u_path/lib/lib_logrotate.sh
+
+
+
+### q Reboot
+###
+###
+printf "\n\n***********************************************\n\nReboot your machine now [y/n]: "
+if [ "$u_reboot" = "" ]; then
+     read u_reboot
+fi
+
+
+
+
+
+printf "\n\n"
+print_center "********************************************************************\n"
+print_center "*                                                                  *\n"
+print_center "*   Thanks for working with VXS, I guess a reboot would be nice    *\n"
+print_center "*                                                                  *\n"
+print_center "*                      Have a nice day ;-)                         *\n"
+print_center "*                                                                  *\n"
+print_center "********************************************************************\n"
+printf "\n"
+
+if [ -e "/tmp/time.log" ]; then
+    unlink /tmp/time.log
+fi
+
+if [ "$u_reboot" = "y" ]; then
+ reboot
+fi
+
+
+### bye bye
+###
+###
+exit 0
+

@@ -1,0 +1,20 @@
+### by BitWorker
+### Launch gmysql backend
+###
+###
+launch=gmysql
+
+### gmysql parameters
+###
+###
+gmysql-host=127.0.0.1
+gmysql-port=3306
+gmysql-dbname=powerdns
+gmysql-user=pdnsadmin
+gmysql-password=password
+gmysql-dnssec=yes
+
+api=yes
+api-key=YourVerySecretKey007
+webserver-address=127.0.0.1
+webserver-allow-from=127.0.0.1,::1

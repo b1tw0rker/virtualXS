@@ -1,0 +1,51 @@
+
+
+
+
+
+### by BitWorker
+###
+###
+smtpd_sasl_auth_enable = yes
+#smtpd_sasl_type = cyrus
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+smtpd_tls_auth_only = yes
+broken_sasl_auth_clients = yes
+smtpd_sasl_security_options = noanonymous
+
+virtual_mailbox_base = /virtualmail/
+virtual_mailbox_domains = mysql:/etc/postfix/mysql-domains.cf
+virtual_maps = mysql:/etc/postfix/mysql-virtual.cf
+
+
+smtpd_relay_restrictions =
+       permit_sasl_authenticated,
+       permit_mynetworks,
+       reject_unauth_destination
+
+
+smtpd_recipient_restrictions =
+        check_recipient_access hash:/etc/postfix/access,
+        check_sender_access hash:/etc/postfix/access,
+        permit_sasl_authenticated,
+        permit_mynetworks,
+        reject_non_fqdn_recipient,
+        reject_unknown_recipient_domain,
+        reject_unknown_sender_domain,
+        reject_unauth_destination,
+        reject_unauth_pipelining,
+        reject_invalid_hostname,
+        reject_rbl_client relays.ordb.org,
+        reject_rbl_client bl.spamcop.net,
+        reject_rbl_client sbl.spamhaus.org,
+        reject_rbl_client dsn.rfc-ignorant.org,
+        reject_rbl_client cbl.abuseat.org
+
+
+
+
+
+bounce_template_file = /etc/postfix/bounce.de.default
+
+

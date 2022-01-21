@@ -1,0 +1,7 @@
+user = root
+password = XXX
+dbname = virtualx
+table = virtualmails
+select_field = domainname
+where_field = domainname
+hosts = localhost

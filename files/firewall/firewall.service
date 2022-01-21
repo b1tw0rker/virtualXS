@@ -1,0 +1,11 @@
+[Unit]
+Description=BitWorker Firewall
+After=network.service
+
+[Service]
+ExecStart=/etc/firewall/rules.fw
+#ExecStop=/etc/firewall/reset.sh
+#PIDFile=/etc/firewall/firewall.pid
+
+[Install]
+WantedBy=multi-user.target
