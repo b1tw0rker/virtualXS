@@ -7,7 +7,7 @@ launch=gmysql
 ### gmysql parameters
 ###
 ###
-gmysql-host=127.0.0.1
+gmysql-host=localhost
 gmysql-port=3306
 gmysql-dbname=powerdns
 gmysql-user=pdnsadmin
