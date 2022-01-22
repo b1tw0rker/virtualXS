@@ -322,6 +322,11 @@ source $u_path/lib/lib_firewall.sh
 source $u_path/lib/lib_logrotate.sh
 
 
+### /etc/selinux/config
+###
+###
+source $u_path/lib/lib_selinux.sh
+ 
 
 ### q Reboot
 ###

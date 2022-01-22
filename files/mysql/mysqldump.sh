@@ -17,3 +17,7 @@ for db in $databases; do
   $MYSQLDUMP --force --opt --user=$MYSQL_USER -p$MYSQL_PASSWORD --databases $db | gzip > "$BACKUP_DIR/$db.sql.gz"
 done
 
+### Optimize Tables
+###
+###
+mysqlcheck -p$MYSQL_PASSWORD --auto-repair --optimize --all-databases
