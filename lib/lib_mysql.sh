@@ -23,8 +23,8 @@ if [ "$u_mysql" = "y" ]; then
     fi
 
 
-    cp $u_path/files/mysql/mysqldump.sh $file_mysql001
-    chmod 700 $file_mysql001/mysqldump.sh
+    cp $u_path/files/mysql/mysql-dump.sh $file_mysql001
+    chmod 700 $file_mysql001/mysql-dump.sh
 
     ### Set root Pass ( https://www.dogado.de/faq/artikel/mysql-root-passwort-neu-setzen/ )
     ###
