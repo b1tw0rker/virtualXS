@@ -17,9 +17,9 @@ LOCAL_DIR='/tmp/storage'
 ### prework
 ###
 ###
-if [ ! -d $local_dir ]; then
+if [ ! -d $LOCAL_DIR ]; then
 
-  mkdir $local_dir
+  mkdir $LOCAL_DIR
 
 fi
 
@@ -33,7 +33,7 @@ if [ -f /etc/firewall/reset.sh ]; then
  /etc/firewall/reset.sh
 fi
 
-if [ -d "$local_dir" ]; then
+if [ -d "$LOCAL_DIR" ]; then
  
 lftp -u "$USER","$PASSWORD" $HOST <<EOF
 # the next 3 lines put you in ftpes mode. Uncomment if you are having trouble connecting.

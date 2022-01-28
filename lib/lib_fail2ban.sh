@@ -63,6 +63,7 @@ if [ "$u_fail2ban" = "y" ]; then
       chmod 700 $file004/bw-unban-jails.sh
       chmod 700 $file004/bw-import-mysql.sh
       chmod 700 $file004/bw-list-zones.sh
+      chmod 700 $file004/bw-ftp.sh
 
       ln -s $file004/bw-show-jails.sh /bin/bw-show-jails.sh
       ln -s $file004/bw-unban-jails.sh /bin/bw-unban-jails.sh
