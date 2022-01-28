@@ -16,9 +16,9 @@ fi
 
 if [ "$u_php74" = "y" ]; then
 
-    dnf upgrade
-    dnf module reset php
-    dnf module install php:7.4
+    dnf -y upgrade
+    dnf -y module reset php
+    dnf -y module install php:7.4
 
 fi 
 
