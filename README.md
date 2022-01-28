@@ -7,7 +7,7 @@ virtualXS is a smart little utility Script to create a Virtual-Hosting-Server ou
 THIS SCRIPT COMES WITH ABSOLUTE NO WARRANTY,
 THIS SCRIPT IS ABSOLUTE BETA STUFF. DO NOT USE IT ON PRODUCTION SYSTEMS
 
-(C) 2021 by Dipl. Wirt.-Ing. Nick Herrmann
+(C) 2021-2022 by Dipl. Wirt.-Ing. Nick Herrmann
 This program is WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -27,7 +27,7 @@ rpm --import https://srv002.bit-worker.com/repository/RPM-GPG-KEY-BitWorker
 dnf config-manager --add-repo https://srv002.bit-worker.com/repository/bitworker.repo
 ```
 
-If the shell aborts with an error: No such command: config-manager. Install the core plugins
+If the shell aborts with an error: No such command: config-manager. Install the core plugins:
 
 ```bash
 dnf install dnf-plugins-core
@@ -41,7 +41,7 @@ dnf -y install virtualXS
 
 That's it! After a successfull installation the script will take his place here: /opt/virtualXS.
 
-By running the new command 
+By running the new command
 
 ```bash
 vxs
