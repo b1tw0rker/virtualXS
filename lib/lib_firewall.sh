@@ -66,20 +66,35 @@ fi
 ###
 
 
-printf "\n\n***********************************************\n\nStart firewall at startup [y/n]: "
-if [ "$u_start_firewall" = "" ]; then
-        read u_start_firewall
+#printf "\n\n***********************************************\n\nStart firewall at startup [y/n]: "
+#if [ "$u_start_firewall" = "" ]; then
+#        read u_start_firewall
+#fi
+#
+#
+#if [ "$u_start_firewall" = "y" ]; then
+#
+#    if [ ! -f "/usr/lib/systemd/system/firewall.service" ]; then
+#        cp $u_path/files/firewall/firewall.service /usr/lib/systemd/system/
+#    fi
+#
+#    if [ ! -f "/etc/systemd/system/multi-user.target.wants/firewall.service" ]; then
+#        systemctl enable firewall
+#    fi
+#
+#fi
+
+
+
+printf "\n\n***********************************************\n\nActivate firewall now [y/n]: "
+if [ "$u_activate_firewall" = "" ]; then
+        read u_activate_firewall
 fi
 
-
-if [ "$u_start_firewall" = "y" ]; then
+if [ "$u_activate_firewall" = "y" ]; then
 
     if [ ! -f "/usr/lib/systemd/system/firewall.service" ]; then
         cp $u_path/files/firewall/firewall.service /usr/lib/systemd/system/
-    fi
-
-    if [ ! -f "/etc/systemd/system/multi-user.target.wants/firewall.service" ]; then
-        systemctl enable firewall
     fi
 
     if [ -f "/usr/lib/systemd/system/firewall.service" ]; then
@@ -114,11 +129,6 @@ if [ "$u_start_firewall" = "y" ]; then
     fi
 
 
-
 fi
-
-
-
-
 
 

@@ -30,7 +30,7 @@ if [ "$u_mysql" = "y" ]; then
     ###
     ###
     mysqladmin -u root password $u_mysql_pwd >> /dev/null 2>&1
-    sed -i 's/^MYSQL_PASSWORD=XXX/MYSQL_PASSWORD='"$u_mysql_pwd"'/' $file_mysql001/mysqldump.sh
+    sed -i 's/^MYSQL_PASSWORD=XXX/MYSQL_PASSWORD='"$u_mysql_pwd"'/' $file_mysql001/mysql-dump.sh
 
 
 

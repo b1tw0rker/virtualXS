@@ -29,6 +29,10 @@ u_aws=n
 ###
 timedatectl set-timezone Europe/Berlin
 
+### set new hostname
+###
+###
+hostnamectl set-hostname $u_hostname
 
 ### print centered some lines and write some infos
 ### https://superuser.com/questions/823883/how-to-justify-and-center-text-in-bash/829870
