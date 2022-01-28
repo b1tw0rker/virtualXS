@@ -196,6 +196,17 @@ fi
 ###
 source $u_path/lib/lib_dnf.sh 
 
+### q Reboot
+###
+###
+printf "\n\n***********************************************\n\nReboot your machine now - Strongly recommended if this is the initial run [y/n]: "
+if [ "$u_reboot1" = "" ]; then
+   read u_reboot1
+fi
+if [ "$u_reboot1" = "y" ]; then
+    reboot
+fi
+
 
 ### q install php 7.4
 ###
@@ -338,6 +349,13 @@ source $u_path/lib/lib_logrotate.sh
 ###
 source $u_path/lib/lib_selinux.sh
  
+
+ ### do this ahain, for security reason
+ ### we to be absolutly surem that this shit is turned off
+ if [ -f "/etc/systemd/system/multi-user.target.wants/firewalld.service" ]; then
+    systemctl disable firewalld
+ fi
+
 
 ### q Reboot
 ###

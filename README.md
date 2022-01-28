@@ -54,6 +54,7 @@ That's it folks!
 ## Changelog
 
 28/01/22 - Added support for AWS machines.
+28/01/22 - Added support for Rocky 8 Linux
 
 ## License
 

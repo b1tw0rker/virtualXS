@@ -51,12 +51,16 @@ if [ "$u_firewall" = "y" ]; then
         ###
         if [ "$u_server" = "d" ]; then
             sed -i 's/$IPTABLES -A INPUT -p tcp -m tcp  --dport 10000:11000  -m state --state NEW  -j ACCEPT/$IPTABLES -A INPUT -p udp -m udp  --dport 53  -m state --state NEW  -j ACCEPT #by BitWorker/' $file004/rules.fw
-            sed -i 's/$IPTABLES -A INPUT -p tcp -m tcp  -m multiport  --dports 88,21,80,443,993,995,587  -m state --state NEW  -j ACCEPT/$IPTABLES -A INPUT -p tcp -m tcp  --dport 53  -m state --state NEW  -j ACCEPT #by BitWorker/' $file004/rules.fw
+            sed -i 's/$IPTABLES -A INPUT -p tcp -m tcp  -m multiport  --dports 88,21,25,80,443,993,995,587  -m state --state NEW  -j ACCEPT/$IPTABLES -A INPUT -p tcp -m tcp  --dport 53  -m state --state NEW  -j ACCEPT #by BitWorker/' $file004/rules.fw
         fi
 
 
 
 
+    fi
+
+    if [ ! -f "/usr/lib/systemd/system/firewall.service" ]; then
+        cp $u_path/files/firewall/firewall.service /usr/lib/systemd/system/
     fi
 
 fi
@@ -93,9 +97,6 @@ fi
 
 if [ "$u_activate_firewall" = "y" ]; then
 
-    if [ ! -f "/usr/lib/systemd/system/firewall.service" ]; then
-        cp $u_path/files/firewall/firewall.service /usr/lib/systemd/system/
-    fi
 
     if [ -f "/usr/lib/systemd/system/firewall.service" ]; then
        systemctl start firewall

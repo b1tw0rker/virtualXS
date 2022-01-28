@@ -16,16 +16,16 @@ fi
 if [ "$u_webmin" = "y" ]; then
 
 
-    if [ ! -f "webmin-1.973-1.noarch.rpm" ]; then
+    if [ ! -f "webmin-1.984-1.noarch.rpm" ]; then
    
-        wget http://prdownloads.sourceforge.net/webadmin/webmin-1.973-1.noarch.rpm
+        wget https://prdownloads.sourceforge.net/webadmin/webmin-1.984-1.noarch.rpm
         rpm -ivh webmin-1.973-1.noarch.rpm
     
     fi
 
-    if [ ! -f "webmin-1.973-minimal.tar.gz" ]; then
+    if [ ! -f "webmin-1.984-minimal.tar.gz" ]; then
 
-        wget https://prdownloads.sourceforge.net/webadmin/webmin-1.973-minimal.tar.gz
+        wget https://prdownloads.sourceforge.net/webadmin/webmin-1.984-minimal.tar.gz
 
     fi
 
