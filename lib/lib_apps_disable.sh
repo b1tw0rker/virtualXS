@@ -32,6 +32,9 @@ if [ "$u_disable_apps" = "y" ]; then
         systemctl disable saslauthd
     fi
 
+    if [ -f "/etc/systemd/system/multi-user.target.wants/sssd.service" ]; then
+        systemctl disable sssd
+    fi
 
 
     if [ -f "/etc/systemd/system/atd.service" ]; then

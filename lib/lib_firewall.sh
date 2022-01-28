@@ -114,10 +114,6 @@ if [ "$u_start_firewall" = "y" ]; then
     fi
 
 
-     ### deaktiviere selinux
-     ###
-     ###
-     sed -i 's/^SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
 
 fi
 

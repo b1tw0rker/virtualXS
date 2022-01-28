@@ -1,6 +1,6 @@
 #!/bin/bash
 
-### Version: 1.0.106
+### Version: 1.0.107
 ### Build date: 02.07.2021
 ### (C) 2021 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -121,8 +121,8 @@ if [ "$u_server" = "w" ]; then
     u_backup=y
     u_quota=y
     u_webmin=y
-    u_firewall=y
-    u_start_firewall=y
+    u_firewall=
+    u_start_firewall=
  fi
 fi
 
@@ -313,6 +313,7 @@ source $u_path/lib/lib_magento.sh
 ###
 ###
 source $u_path/lib/lib_firewall.sh
+
 
 
 
