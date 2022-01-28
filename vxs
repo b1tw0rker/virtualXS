@@ -22,7 +22,7 @@ u_client_ip=$(echo "$SSH_CLIENT" | cut -d' ' -f 1)
 u_path=/opt/virtualXS # no ending slash
 u_server=w
 u_eth=eth0
-
+u_aws=n
 
 ### correct time rules first
 ###
@@ -63,6 +63,7 @@ read -p "Your IP (Client IP): " -ei $u_client_ip u_client_ip
 read -p "NetzwerkSchnittstelle: " -ei $u_eth u_eth
 read -p "MySQL root password: " u_mysql_pwd
 read -p "Create Web or DNS Server [w/d]: " -ei $u_server u_server
+read -p "Create on AWS [y/n]: " -ei $u_aws u_aws
 
 if [ "$u_server" = "d" ]; then
     u_bitworker_repo=y
@@ -312,8 +313,9 @@ source $u_path/lib/lib_magento.sh
 ### /etc/firewall
 ###
 ###
-source $u_path/lib/lib_firewall.sh
-
+if [ "$u_aws" = "n" ]; then
+ source $u_path/lib/lib_firewall.sh
+fi
 
 
 
@@ -332,11 +334,12 @@ source $u_path/lib/lib_selinux.sh
 ### q Reboot
 ###
 ###
-printf "\n\n***********************************************\n\nReboot your machine now [y/n]: "
-if [ "$u_reboot" = "" ]; then
+if [ "$u_aws" = "n" ]; then
+ printf "\n\n***********************************************\n\nReboot your machine now [y/n]: "
+ if [ "$u_reboot" = "" ]; then
      read u_reboot
+ fi
 fi
-
 
 printf "\n\n"
 print_center "********************************************************************\n"
@@ -356,8 +359,10 @@ if [ -e "/tmp/time.log" ]; then
     unlink /tmp/time.log
 fi
 
-if [ "$u_reboot" = "y" ]; then
- reboot
+if [ "$u_aws" = "n" ]; then
+ if [ "$u_reboot" = "y" ]; then
+  reboot
+ fi
 fi
 
 
