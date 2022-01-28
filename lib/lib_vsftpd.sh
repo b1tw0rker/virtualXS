@@ -27,7 +27,7 @@ if [ "$u_vsftpd" = "y" ]; then
     file_vsftpd004=/etc/letsencrypt/live/$u_hostname/fullchain.pem
 
 
-    sed -i 's/^#ftpd_banner=Welcome to blah FTP service./ftpd_banner=Welcome to BitWorker FTP service./' $file_vsftpd002
+    sed -i 's/^#ftpd_banner=Welcome to blah FTP service./ftpd_banner=Welcome to HOST-X FTP service./' $file_vsftpd002
     sed -i 's/^#chroot_local_user=YES/chroot_local_user=YES/' $file_vsftpd002
 
 

@@ -65,6 +65,7 @@ read -p "Upcoming MySQL root password: " u_mysql_pwd
 read -p "Create Web or DNS Server [w/d]: " -ei $u_server u_server
 read -p "Create on AWS [y/n]: " -ei $u_aws u_aws
 
+
 if [ "$u_server" = "d" ]; then
     u_bitworker_repo=y
     u_epel_repo=y
