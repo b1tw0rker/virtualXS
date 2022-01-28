@@ -1,6 +1,6 @@
 #!/bin/bash
 
-### Version: 1.0.109
+### Version: 1.0.110
 ### Build date: 02.07.2021
 ### (C) 2021 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -338,13 +338,14 @@ if [ "$u_reboot" = "" ]; then
 fi
 
 
-
-
-
 printf "\n\n"
 print_center "********************************************************************\n"
 print_center "*                                                                  *\n"
-print_center "*   Thanks for working with VXS, I guess a reboot would be nice    *\n"
+print_center "*                  Thanks for working with VXS                     *\n"
+print_center "*                                                                  *\n"
+print_center "*                                                                  *\n"
+print_center "*                TEST NOW YOUR SSH CONNECTION !!!                  *\n"
+print_center "*                                                                  *\n"
 print_center "*                                                                  *\n"
 print_center "*                      Have a nice day ;-)                         *\n"
 print_center "*                                                                  *\n"
