@@ -51,6 +51,10 @@ vxs
 
 That's it folks!
 
+## Changelog
+
+28/01/22 - Startedt to add support for AWS machines.
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
