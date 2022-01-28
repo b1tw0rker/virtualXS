@@ -12,7 +12,7 @@ Match address 178.0.0.0/12
     PermitRootLogin yes
     PubkeyAuthentication yes
 
-Match address 188.96.0.0/12
+Match address 188.96.0.0/16
     PasswordAuthentication yes
     PermitRootLogin yes
     PubkeyAuthentication yes
