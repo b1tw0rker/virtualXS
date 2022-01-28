@@ -188,7 +188,7 @@ fi
 ### q install dnf
 ###
 ###
-source $u_path/lib/lib_dnf.sh
+source $u_path/lib/lib_dnf.sh 
 
 
 ### q install php 7.4
