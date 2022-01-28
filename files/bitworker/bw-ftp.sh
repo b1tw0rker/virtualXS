@@ -3,11 +3,15 @@
 ### Variablen
 ###
 ###
-ftpuser=XXX
-pass=XXX
-host=XXX
-local_dir=/home/httpd/www.domainname.de/htdocs
-remote_dir=/htdocs
+HOST='ftp://HOST'   # sftp as option possible
+USER='XXX'
+PASSWORD='XXX'
+
+# DISTANT DIRECTORY
+REMOTE_DIR='/htdocs/storage'
+
+#LOCAL DIRECTORY
+LOCAL_DIR='/tmp/storage'
 
 
 ### prework
@@ -30,11 +34,25 @@ if [ -f /etc/firewall/reset.sh ]; then
 fi
 
 if [ -d "$local_dir" ]; then
- ncftpget -T -R -v -u "$ftpuser" $host $local_dir $remote_dir
+ 
+lftp -u "$USER","$PASSWORD" $HOST <<EOF
+# the next 3 lines put you in ftpes mode. Uncomment if you are having trouble connecting.
+# set ftp:ssl-force true
+# set ftp:ssl-protect-data true
+# set ssl:verify-certificate no
+# set sftp:auto-confirm yes
+set ssl-allow no
+mirror --use-pget-n=10 $REMOTE_DIR $LOCAL_DIR;
+exit
+EOF
+echo
+echo "Transfer finished"
+date
+
+
 fi
 
-## test password problematik
-#ncftpget -u $ftpuser -p $pass -T -R -v $host $local_dir $remote_dir
+ 
 
 if [ -f /etc/firewall/rules.fw ]; then
   /etc/firewall/rules.fw
