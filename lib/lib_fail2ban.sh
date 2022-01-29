@@ -24,7 +24,7 @@ if [ "$u_fail2ban" = "y" ]; then
 
 
     file_fail2ban001=/etc/fail2ban/jail.conf
-    file_fail2ban002=/etc/fail2ban/jail.conf.bak
+    #file_fail2ban002=/etc/fail2ban/jail.conf.bak
 
 
     if [ -f "$file_fail2ban001" ]; then

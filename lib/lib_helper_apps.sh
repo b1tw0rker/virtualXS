@@ -33,11 +33,4 @@ if [ "$u_helper_apps" = "y" ]; then
           ln -s $file004/bw-import-mysql.sh /bin/bw-import-mysql.sh
           ln -s $file004/bw-list-zones.sh /bin/bw-list-zones.sh
 
-
-    
-
-    fi
-
-
-
 fi
