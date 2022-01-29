@@ -16,10 +16,9 @@
 #fi
 
 
-
-
-
 if [ "$u_vsftpd" = "y" ]; then
+
+    useradd vsftpd -s /sbin/nologin
 
     file_vsftpd001=/etc/vsftpd/vsftpd_user_conf
     file_vsftpd002=/etc/vsftpd/vsftpd.conf

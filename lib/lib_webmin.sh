@@ -1,6 +1,7 @@
 #!/bin/bash
 
 file_webmin001=/etc/webmin/miniserv.conf
+file_webmin002=/etc/webmin/config
 
 ### /webmin/
 ###
@@ -38,6 +39,27 @@ if [ "$u_webmin" = "y" ]; then
         ###
         ###
         sed -i 's/^port=10000/port=88/' $file_webmin001
+        sed -i 's/^keyfile=\/etc\/webmin\/miniserv.pem\/keyfile=\/etc\/letsencrypt\/live\/'"$u_hostname"'\/privkey.pem/' $file_webmin001
+        
+
+        ##zufügen
+        echo "certfile=/etc/letsencrypt/live/$u_hostname/fullchain.pem" >> $file_webmin002
+        echo "ssl_redirect=1" >> $file_webmin002
+
+        ### apply changes
+        ###
+        ###
+        /etc/webmin/stop
+        /etc/webmin/start
+    fi
+
+
+    if [ -f "$file_webmin002" ]; then
+        ### Change User has just one module
+        ###
+        ###
+        sed -i 's/^gotomodule=/gotomodule=virtualx/' $file_webmin002
+        sed -i 's/^gotoone=/gotoone=1/' $file_webmin002
 
         ### apply changes
         ###

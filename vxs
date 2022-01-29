@@ -22,7 +22,6 @@ u_client_ip=$(echo "$SSH_CLIENT" | cut -d' ' -f 1)
 u_path=/opt/virtualXS # no ending slash
 u_server=w
 u_eth=eth0
-u_aws=n
 
 ### correct time rules first
 ###
@@ -59,15 +58,18 @@ printf "\n"
 ### q prework - ask for ip and servername
 ###
 ###
-read -p "Server IP adress: " -ei $u_ip4 u_ip
-read -p "Servername (FQDN): " -ei $u_hostname u_srv
+read -p "Set Server IP adress: " -ei $u_ip4 u_ip
+read -p "Set Servername (FQDN): " -ei $u_hostname u_srv
 u_domain=$( echo "$u_srv" | cut -d'.' -f 2,3)
 read -p "Domain (eg. domain.tld): " -ei $u_domain u_domain
 read -p "Your IP (Client IP): " -ei $u_client_ip u_client_ip
 read -p "NetzwerkSchnittstelle: " -ei $u_eth u_eth
 read -p "Upcoming MySQL root password: " u_mysql_pwd
 read -p "Create Web or DNS Server [w/d]: " -ei $u_server u_server
-read -p "Create on AWS [y/n]: " -ei $u_aws u_aws
+read -p "Create on AWS [y/n]: " u_aws
+
+#printf "\n\n**** ll except DNS Server Settings) [y/n]: "
+#read u_aws
 
 
 if [ "$u_server" = "d" ]; then

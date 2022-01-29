@@ -15,6 +15,8 @@
 #    u_dovecot=y
 #fi
 
+u_path=/opt/virtualXS # no ending slash
+u_mysql_pwd=G0lden_12
 
 
 
@@ -31,7 +33,8 @@ if [ "$u_dovecot" = "y" ]; then
     sed -i 's/^#protocols = imap pop3 lmtp submission/protocols = imap pop3 ### lmtp submission/' $file_dovecot002
     
     ###sed -i 's/^#mail_location =/mail_location = maildir:\/home\/pop\/%u/' /etc/dovecot/conf.d/10-mail.conf
-    sed -i 's/^#mail_location =/mail_location = mbox:~\/mail:INBOX=\/var\/spool\/mail\/%u' /etc/dovecot/conf.d/10-mail.conf
+    sed -i 's/^#mail_location =/mail_location = mbox:~\/mail:INBOX=\/var\/spool\/mail\/%u/' /etc/dovecot/conf.d/10-mail.conf
+
 
     sed -i 's/#port = 143/port = 0\n    #port=143/' /etc/dovecot/conf.d/10-master.conf
     sed -i 's/#port = 110/port = 0\n    #port=110/' /etc/dovecot/conf.d/10-master.conf
