@@ -67,6 +67,7 @@ if [ "$u_start_apps" = "y" ]; then
     systemctl start postfix
     systemctl start vsftpd
     systemctl start dovecot
+    systemctl start spamassassin
 
 fi 
 
