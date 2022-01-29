@@ -23,6 +23,16 @@ if [ "$u_httpd" = "y" ]; then
 
         sed -i 's/^#ServerName www.example.com:80/ServerName '"$u_ip"':80/' $file005
 
+        ### Activate http2/0
+        echo "### Activate http/2 by Bitworker" >> $file005
+        echo "###" >> $file005
+        echo "###" >> $file005
+        echo "#Protocols h2 h2c http/1.1" >> $file005
+        echo "ProtocolsHonorOrder On" >> $file005
+        echo "Protocols h2 h2c http/1.1" >> $file005
+        echo "H2EarlyHints on" >> $file005
+        echo "" >> $file005
+
     fi
 
 
