@@ -22,6 +22,9 @@ u_mysql_pwd=G0lden_12
 
 if [ "$u_dovecot" = "y" ]; then
 
+    useradd -s /sbin/nologin -g users spam >> /dev/null 2>&1
+    
+
     file_dovecot001=/etc/dovecot/dovecot-sql.conf.ext
     file_dovecot002=/etc/dovecot/dovecot.conf
 
