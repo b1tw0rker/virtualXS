@@ -20,7 +20,6 @@ if [ "$u_vsftpd" = "y" ]; then
 
     useradd -d /dev/null -s /sbin/nologin -g users vsftpd  >> /dev/null 2>&1
 
-    
 
     file_vsftpd001=/etc/vsftpd/vsftpd_user_conf
     file_vsftpd002=/etc/vsftpd/vsftpd.conf

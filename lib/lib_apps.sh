@@ -39,6 +39,10 @@ if [ "$u_enable_apps" = "y" ]; then
         systemctl enable dovecot
     fi
 
+    if [ ! -f "/etc/systemd/system/multi-user.target.wants/spamassassin.service" ]; then
+        systemctl enable spamassassin
+    fi
+
 fi 
 
 
