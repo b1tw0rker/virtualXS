@@ -255,6 +255,12 @@ fi
 source $u_path/lib/lib_fail2ban.sh
 
 
+### q config helper apps
+###
+###
+source $u_path/lib/lib_helper_apps.sh
+
+
 
 ### q config httpd
 ###
