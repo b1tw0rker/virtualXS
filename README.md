@@ -2,7 +2,7 @@
 
 virtualXS is a smart swiss knife utility Script to create a Virtual-Hosting-Server out of the box. The script performs optimizing and securing a Linux Server for hosting purpose.
 
-The following systems are Supported:
+The following systems are supported:
 
 -   RHEL8 (Minimal)
 -   Centos8 (Minimal)
@@ -61,6 +61,7 @@ That's it folks!
 ## Changelog
 
 01/27/22 - Added support for AWS machines.
+
 01/28/22 - Added support for Rocky 8 Linux
 
 ## License
