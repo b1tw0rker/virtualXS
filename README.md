@@ -1,6 +1,13 @@
 # virtualXS
 
-virtualXS is a smart little utility Script to create a Virtual-Hosting-Server out of the box. The script performs optimizing and securing a RHEL8 Minimal or Centos8 Minimal Server for hosting purpose.
+virtualXS is a smart swiss knife utility Script to create a Virtual-Hosting-Server out of the box. The script performs optimizing and securing a Linux Server for hosting purpose.
+
+The following systems are Supported:
+
+-   RHEL8 (Minimal)
+-   Centos8 (Minimal)
+-   Rocky Linux 8.x
+-   AWS machines
 
 ## WARNING:
 
@@ -53,9 +60,8 @@ That's it folks!
 
 ## Changelog
 
-28/01/22 - Added support for AWS machines.
-
-28/01/22 - Added support for Rocky 8 Linux
+01/27/22 - Added support for AWS machines.
+01/28/22 - Added support for Rocky 8 Linux
 
 ## License
 
