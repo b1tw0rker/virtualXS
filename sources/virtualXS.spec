@@ -26,6 +26,7 @@ A collection of utility scripts for setting up a fully virtual machine environme
 echo "BUILDROOT = $RPM_BUILD_ROOT"
 mkdir -p $RPM_BUILD_ROOT/opt/virtualXS
 mkdir -p $RPM_BUILD_ROOT/opt/virtualXS/files
+mkdir -p $RPM_BUILD_ROOT/opt/virtualXS/files/autoconfig
 mkdir -p $RPM_BUILD_ROOT/opt/virtualXS/files/backup
 mkdir -p $RPM_BUILD_ROOT/opt/virtualXS/files/bitworker
 mkdir -p $RPM_BUILD_ROOT/opt/virtualXS/files/certbot
