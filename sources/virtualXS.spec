@@ -44,6 +44,7 @@ mkdir -p $RPM_BUILD_ROOT/opt/virtualXS/sources
 
 cp /opt/virtualXS/vxs $RPM_BUILD_ROOT/opt/virtualXS
 cp /opt/virtualXS/files/backup/* $RPM_BUILD_ROOT/opt/virtualXS/files/backup
+cp /opt/virtualXS/files/autoconfig/* $RPM_BUILD_ROOT/opt/virtualXS/files/autoconfig
 cp /opt/virtualXS/files/bitworker/* $RPM_BUILD_ROOT/opt/virtualXS/files/bitworker
 cp /opt/virtualXS/files/certbot/* $RPM_BUILD_ROOT/opt/virtualXS/files/certbot
 cp /opt/virtualXS/files/dovecot/* $RPM_BUILD_ROOT/opt/virtualXS/files/dovecot
