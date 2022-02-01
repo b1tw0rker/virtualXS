@@ -3,7 +3,7 @@
 ###
 Summary: Utility Script to create a Virtual Server out of the box
 Name: virtualXS
-Version: 1.0.56
+Version: 1.0.1
 Release: 1
 License: GPL
 URL: https://www.bit-worker.com
