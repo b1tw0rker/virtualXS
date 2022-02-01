@@ -10,7 +10,6 @@
 
 clear
 
-
 ### some vars
 ###
 ###
@@ -36,12 +35,14 @@ hostnamectl set-hostname $u_hostname
 ### print centered some lines and write some infos
 ### https://superuser.com/questions/823883/how-to-justify-and-center-text-in-bash/829870
 ###
-print_center(){
+print_center() {
     local x
     local y
     text="$*"
-    x=$(( ($(tput cols) - ${#text}) / 2))
-    echo -ne "\E[6n";read -sdR y; y=$(echo -ne "${y#*[}" | cut -d';' -f1)
+    x=$((($(tput cols) - ${#text}) / 2))
+    echo -ne "\E[6n"
+    read -sdR y
+    y=$(echo -ne "${y#*[}" | cut -d';' -f1)
     echo -ne "\033[${y};${x}f$*"
 }
 
@@ -54,13 +55,12 @@ print_center "*                                                                 
 print_center "********************************************************************\n"
 printf "\n"
 
-
 ### q prework - ask for ip and servername
 ###
 ###
 read -p "Set Server IP adress: " -ei $u_ip4 u_ip
 read -p "Set Servername (FQDN): " -ei $u_hostname u_srv
-u_domain=$( echo "$u_srv" | cut -d'.' -f 2,3)
+u_domain=$(echo "$u_srv" | cut -d'.' -f 2,3)
 read -p "Domain (eg. domain.tld): " -ei $u_domain u_domain
 read -p "Your IP (Client IP): " -ei $u_client_ip u_client_ip
 read -p "NetzwerkSchnittstelle: " -ei $u_eth u_eth
@@ -70,7 +70,6 @@ read -p "Create on AWS [y/n]: " u_aws
 
 #printf "\n\n**** ll except DNS Server Settings) [y/n]: "
 #read u_aws
-
 
 if [ "$u_server" = "d" ]; then
     u_bitworker_repo=y
@@ -88,6 +87,7 @@ if [ "$u_server" = "d" ]; then
     u_httpd=n
     u_dovecot=n
     u_certbot=n
+    u_autoconfig=n
     u_vsftpd=n
     u_mysql=y
     u_ssl=n
@@ -99,51 +99,45 @@ if [ "$u_server" = "d" ]; then
     u_start_firewall=
 fi
 
-
 ### q RUN ALL
 ###
 ###
 if [ "$u_server" = "w" ]; then
- printf "\n\n***********************************************\n\nRun all the stuff without annoying me (All except DNS Server Settings) [y/n]: "
- read u_all
+    printf "\n\n***********************************************\n\nRun all the stuff without annoying me (All except DNS Server Settings) [y/n]: "
+    read u_all
 
- if [ "$u_all" = "y" ]; then
-    u_bitworker_repo=y
-    u_epel_repo=y
-    u_dnf_update=y
-    u_dnf=y
-    u_php74=y
-    u_disable_apps=y
-    u_enable_apps=y
-    u_start_apps=y
-    u_folders_create=y
-    u_postfix=y
-    u_ssh=y
-    u_fail2ban=y
-    u_httpd=y
-    u_dovecot=y
-    u_certbot=y
-    u_vsftpd=y
-    u_mysql=y
-    u_ssl=y
-    u_backup=y
-    u_quota=y
-    u_webmin=y
-    u_firewall=
-    u_start_firewall=
- fi
+    if [ "$u_all" = "y" ]; then
+        u_bitworker_repo=y
+        u_epel_repo=y
+        u_dnf_update=y
+        u_dnf=y
+        u_php74=y
+        u_disable_apps=y
+        u_enable_apps=y
+        u_start_apps=y
+        u_folders_create=y
+        u_postfix=y
+        u_ssh=y
+        u_fail2ban=y
+        u_httpd=y
+        u_dovecot=y
+        u_certbot=y
+        u_autoconfig=y
+        u_vsftpd=y
+        u_mysql=y
+        u_ssl=y
+        u_backup=y
+        u_quota=y
+        u_webmin=y
+        u_firewall=
+        u_start_firewall=
+    fi
 fi
-
-
-
-
 
 ### set hostname
 ###
 ###
 hostnamectl set-hostname $u_srv
-
-
 
 ### q run bitworker.repo
 ###
@@ -155,16 +149,11 @@ if [ ! -f "/etc/yum.repos.d/bitworker.repo" ]; then
         read u_bitworker_repo
     fi
 
+    if [ "$u_bitworker_repo" = "y" ]; then
+        dnf config-manager --add-repo https://srv002.bit-worker.com/repository/bitworker.repo
+    fi
 
- if [ "$u_bitworker_repo" = "y" ]; then
-
-    dnf config-manager --add-repo https://srv002.bit-worker.com/repository/bitworker.repo
- 
- fi
- 
 fi
-
-
 
 ### q run epel.repo
 ###
@@ -176,46 +165,39 @@ if [ ! -f "/etc/yum.repos.d/epel.repo" ]; then
         read u_epel_repo
     fi
 
-
- if [ "$u_epel_repo" = "y" ]; then
+    if [ "$u_epel_repo" = "y" ]; then
 
         dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 
- else
+    else
 
-  printf "Leaving vxs - Without epel, you can not use this app.\n"
-  exit
+        printf "Leaving vxs - Without epel, you can not use this app.\n"
+        exit
 
- fi
+    fi
 
 fi
-
-
-
 
 ### q install dnf
 ###
 ###
-source $u_path/lib/lib_dnf.sh 
+source $u_path/lib/lib_dnf.sh
 
 ### q Reboot
 ###
 ###
 printf "\n\n***********************************************\n\nReboot your machine now - Strongly recommended if this is the initial run [y/n]: "
 if [ "$u_reboot1" = "" ]; then
-   read u_reboot1
+    read u_reboot1
 fi
 if [ "$u_reboot1" = "y" ]; then
     reboot
 fi
 
-
 ### q install php 7.4
 ###
 ###
 source $u_path/lib/lib_php74.sh
-
-
 
 ### q apps
 ###
@@ -223,105 +205,85 @@ source $u_path/lib/lib_php74.sh
 source $u_path/lib/lib_apps_disable.sh
 source $u_path/lib/lib_apps.sh
 
-
-
-
 ### q create standard folders
 ###
 ###
 source $u_path/lib/lib_folders.sh
-
-
 
 ### q config Posftix
 ###
 ###
 source $u_path/lib/lib_postfix.sh
 
-
-
 ### q config SSH
 ###
 ###
 if [ "$u_aws" = "n" ]; then
-  source $u_path/lib/lib_ssh.sh
+    source $u_path/lib/lib_ssh.sh
 fi
-
-
 
 ### q config fail2ban
 ###
 ###
 source $u_path/lib/lib_fail2ban.sh
 
-
 ### q config helper apps
 ###
 ###
 source $u_path/lib/lib_helper_apps.sh
-
-
 
 ### q config httpd
 ###
 ###
 source $u_path/lib/lib_httpd.sh
 
-
 ### q config dovecot
 ###
 ###
 source $u_path/lib/lib_dovecot.sh
-
-
 
 ### q config certbot
 ###
 ###
 source $u_path/lib/lib_certbot.sh
 
-
+### q config autoconfig
+###
+###
+source $u_path/lib/lib_autoconfig.sh
 
 ### q config vsftpd
 ###
 ###
 source $u_path/lib/lib_vsftpd.sh
 
-
-
 ### q config mysql
 ###
 ###
 source $u_path/lib/lib_mysql.sh
 
-
 ### q config ssl
 ###
 ###
 if [ "$u_aws" = "n" ]; then
- source $u_path/lib/lib_ssl.sh
+    source $u_path/lib/lib_ssl.sh
 fi
-
-
 
 ### q config backup
 ###
 ###
 source $u_path/lib/lib_backup.sh
 
-
-
 ### q config backup
 ###
 ###
 source $u_path/lib/lib_quota.sh
 
-
 ### q dns server
 ###
 ###
 if [ "$u_server" = "d" ]; then
- source $u_path/lib/lib_powerdns.sh
+    source $u_path/lib/lib_powerdns.sh
 fi
 
 ### q Webmin
@@ -329,50 +291,42 @@ fi
 ###
 source $u_path/lib/lib_webmin.sh
 
-
 ### q install magento
 ###
 ###
 source $u_path/lib/lib_magento.sh
 
-
-
 ### /etc/firewall
 ###
 ###
 if [ "$u_aws" = "n" ]; then
- source $u_path/lib/lib_firewall.sh
+    source $u_path/lib/lib_firewall.sh
 fi
-
-
 
 ### /etc/logrotate.conf
 ###
 ###
 source $u_path/lib/lib_logrotate.sh
 
-
 ### /etc/selinux/config
 ###
 ###
 source $u_path/lib/lib_selinux.sh
- 
 
- ### do this ahain, for security reason
- ### we to be absolutly surem that this shit is turned off
- if [ -f "/etc/systemd/system/multi-user.target.wants/firewalld.service" ]; then
+### do this ahain, for security reason
+### we to be absolutly surem that this shit is turned off
+if [ -f "/etc/systemd/system/multi-user.target.wants/firewalld.service" ]; then
     systemctl disable firewalld
- fi
-
+fi
 
 ### q Reboot
 ###
 ###
 if [ "$u_aws" = "n" ]; then
- printf "\n\n***********************************************\n\nReboot your machine now [y/n]: "
- if [ "$u_reboot" = "" ]; then
-     read u_reboot
- fi
+    printf "\n\n***********************************************\n\nReboot your machine now [y/n]: "
+    if [ "$u_reboot" = "" ]; then
+        read u_reboot
+    fi
 fi
 
 printf "\n\n"
@@ -394,14 +348,12 @@ if [ -e "/tmp/time.log" ]; then
 fi
 
 if [ "$u_aws" = "n" ]; then
- if [ "$u_reboot" = "y" ]; then
-  reboot
- fi
+    if [ "$u_reboot" = "y" ]; then
+        reboot
+    fi
 fi
-
 
 ### bye bye
 ###
 ###
 exit 0
-
