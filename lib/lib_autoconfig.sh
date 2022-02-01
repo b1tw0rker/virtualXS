@@ -19,10 +19,16 @@ if [ "$u_autoconfig" = "y" ]; then
         if [ ! -d /home/httpd/autoconfig ]; then
             mkdir /home/httpd/autoconfig
         fi
+
         if [ ! -d /home/httpd/autoconfig/htdocs ]; then
             mkdir /home/httpd/autoconfig/htdocs
+        fi
 
+        if [ ! -f /home/httpd/autoconfig/htdocs/favicon.ico ]; then
             touch /home/httpd/autoconfig/htdocs/favicon.ico
+        fi
+
+        if [ ! -f /home/httpd/autoconfig/htdocs/index.html ]; then
             touch /home/httpd/autoconfig/htdocs/index.html
         fi
 
@@ -30,9 +36,16 @@ if [ "$u_autoconfig" = "y" ]; then
             mkdir /home/httpd/autoconfig/logs
         fi
 
-        if [ ! -d /home/httpd/autoconfig/htdocs/mail ]; then
-            mkdir /home/httpd/autoconfig/htdocs/mail
-            mkdir /home/httpd/autoconfig/htdocs/autodiscover
+        if [ -d /home/httpd/autoconfig/htdocs ]; then
+
+            if [ ! -d /home/httpd/autoconfig/htdocs/mail ]; then
+                mkdir /home/httpd/autoconfig/htdocs/mail
+            fi
+
+            if [ ! -d /home/httpd/autoconfig/htdocs/autodiscover ]; then
+                mkdir /home/httpd/autoconfig/htdocs/autodiscover
+            fi
+
             cp $u_path/files/autoconfig/config-v1.1.xml /home/httpd/autoconfig/htdocs/mail/
             cp $u_path/files/autoconfig/autodiscover.xml /home/httpd/autoconfig/htdocs/autodiscover/
         fi

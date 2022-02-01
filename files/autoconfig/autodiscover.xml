@@ -5,7 +5,7 @@
       <Action>settings</Action>
         <Protocol>
            <Type>IMAP</Type>
-           <Server>imap003.host-x.de</Server>
+           <Server>imap.host-x.de</Server>
            <Port>993</Port>
            <DomainRequired>off</DomainRequired>
            <SPA>off</SPA>
@@ -15,13 +15,12 @@
         </Protocol>
         <Protocol>
            <Type>SMTP</Type>
-           <Server>smtp003.host-x.de</Server>
+           <Server>smtp.host-x.de</Server>
            <Port>587</Port>
            <DomainRequired>off</DomainRequired>
            <SPA>off</SPA>
            <SSL>on</SSL>
            <AuthRequired>on</AuthRequired>
-           <UsePOPAuth>off</UsePOPAuth>
            <SMTPLast>on</SMTPLast>
            <LoginName>%EMAILADDRESS%</LoginName>
         </Protocol>
