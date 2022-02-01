@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat
+#https://www.heise.de/ct/ausgabe/2013-8-Selbstkonfiguration-von-E-Mail-Clients-2324925.html
+
 file001=/etc/httpd/conf.d
 
 printf "\n\n***********************************************\n\nCreate Autoconfig and Autodiscover [y/n]: "
