@@ -89,6 +89,7 @@ mkdir -p %{buildroot}/usr/bin/
 
 mkdir -p %{buildroot}/opt/virtualXS
 mkdir -p %{buildroot}/opt/virtualXS/files
+mkdir -p %{buildroot}/opt/virtualXS/files/autoconfig
 mkdir -p %{buildroot}/opt/virtualXS/files/backup
 mkdir -p %{buildroot}/opt/virtualXS/files/bitworker
 mkdir -p %{buildroot}/opt/virtualXS/files/certbot
@@ -106,6 +107,7 @@ mkdir -p %{buildroot}/opt/virtualXS/gui
 mkdir -p %{buildroot}/opt/virtualXS/sources
 
 cp /opt/virtualXS/vxs %{buildroot}/opt/virtualXS
+cp /opt/virtualXS/files/autoconfig/* %{buildroot}/opt/virtualXS/files/autoconfig
 cp /opt/virtualXS/files/backup/* %{buildroot}/opt/virtualXS/files/backup
 cp /opt/virtualXS/files/bitworker/* %{buildroot}/opt/virtualXS/files/bitworker
 cp /opt/virtualXS/files/certbot/* %{buildroot}/opt/virtualXS/files/certbot
