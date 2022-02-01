@@ -103,7 +103,7 @@ fi
 ###
 ###
 if [ "$u_server" = "w" ]; then
-    printf "\n\n***********************************************\n\nRun all the stuff without annoying me (All except DNS Server Settings) [y/n]: "
+    printf "\n\n***********************************************\n\nRun all the stuff at once (All except DNS Server Settings) - EXPERIMENTAL [y/n]: "
     read u_all
 
     if [ "$u_all" = "y" ]; then

@@ -29,13 +29,16 @@ if [ "$u_autoconfig" = "y" ]; then
 
         if [ ! -d /home/httpd/autoconfig/htdocs/mail ]; then
             mkdir /home/httpd/autoconfig/htdocs/mail
+            mkdir /home/httpd/autoconfig/htdocs/autodiscover
             cp $u_path/files/autoconfig/config-v1.1.xml /home/httpd/autoconfig/htdocs/mail/
+            cp $u_path/files/autoconfig/autodiscover.xml /home/httpd/autoconfig/htdocs/autodiscover/
         fi
 
         ### insert som local Vars
         ###
         ###
-        sed -i 's/<VirtualHost XXX:80 XXX:443>/<VirtualHost '"$u_ip4"':80 '"$u_ip4"':443>/' $file001/autoconfig.conf
+        sed -i 's/<VirtualHost XXX:80>/<VirtualHost '"$u_ip4"':80>/' $file001/autoconfig.conf
+        sed -i 's/<VirtualHost XXX:443>/<VirtualHost '"$u_ip4"':443>/' $file001/autoconfig.conf
         sed -i 's/XXX/'"$u_srv"'/' $file001/autoconfig.conf
 
         ### Check Apache State
