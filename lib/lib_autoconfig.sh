@@ -1,8 +1,8 @@
 #!/bin/bash
 
-file001=/etc/httpd/conf.d/
+file001=/etc/httpd/conf.d
 
-printf "\n\n***********************************************\n\nCopy Autoconfig to  /etc/httpd/conf.d/ [y/n]: "
+printf "\n\n***********************************************\n\nCreate Autoconfig and Autodiscover [y/n]: "
 if [ "$u_autoconfig" = "" ]; then
     read u_autoconfig
 fi
@@ -11,7 +11,36 @@ if [ "$u_autoconfig" = "y" ]; then
 
     if [ -d "$file001" ]; then
 
-        cp $u_path/files/autoconfig/autoconfig.html $file001/
+        cp $u_path/files/autoconfig/autoconfig.conf $file001/
+
+        if [ ! -d /home/httpd/autoconfig ]; then
+            mkdir /home/httpd/autoconfig
+        fi
+        if [ ! -d /home/httpd/autoconfig/htdocs ]; then
+            mkdir /home/httpd/autoconfig/htdocs
+
+            touch /home/httpd/autoconfig/htdocs/favicon.ico
+            touch /home/httpd/autoconfig/htdocs/index.html
+        fi
+
+        if [ ! -d /home/httpd/autoconfig/logs ]; then
+            mkdir /home/httpd/autoconfig/logs
+        fi
+
+        if [ ! -d /home/httpd/autoconfig/htdocs/mail ]; then
+            mkdir /home/httpd/autoconfig/htdocs/mail
+            cp $u_path/files/autoconfig/config-v1.1.xml /home/httpd/autoconfig/htdocs/mail/
+        fi
+
+        ### Check Apache State
+        ###
+        ###
+        u_state=$(apachectl -t 2>&1)
+
+        if [ "$u_state" = "Syntax OK" ]; then
+            printf "Reload httpd\n"
+            systemctl reload httpd
+        fi
 
     fi
 
