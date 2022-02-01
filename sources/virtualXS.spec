@@ -31,6 +31,7 @@ mkdir -p $RPM_BUILD_ROOT/opt/virtualXS/files/backup
 mkdir -p $RPM_BUILD_ROOT/opt/virtualXS/files/bitworker
 mkdir -p $RPM_BUILD_ROOT/opt/virtualXS/files/certbot
 mkdir -p $RPM_BUILD_ROOT/opt/virtualXS/files/dovecot
+mkdir -p $RPM_BUILD_ROOT/opt/virtualXS/files/fail2ban
 mkdir -p $RPM_BUILD_ROOT/opt/virtualXS/files/firewall
 mkdir -p $RPM_BUILD_ROOT/opt/virtualXS/files/httpd
 mkdir -p $RPM_BUILD_ROOT/opt/virtualXS/files/mysql
@@ -49,6 +50,7 @@ cp /opt/virtualXS/files/autoconfig/* $RPM_BUILD_ROOT/opt/virtualXS/files/autocon
 cp /opt/virtualXS/files/bitworker/* $RPM_BUILD_ROOT/opt/virtualXS/files/bitworker
 cp /opt/virtualXS/files/certbot/* $RPM_BUILD_ROOT/opt/virtualXS/files/certbot
 cp /opt/virtualXS/files/dovecot/* $RPM_BUILD_ROOT/opt/virtualXS/files/dovecot
+cp /opt/virtualXS/files/fail2ban/* $RPM_BUILD_ROOT/opt/virtualXS/files/fail2ban
 cp /opt/virtualXS/files/firewall/* $RPM_BUILD_ROOT/opt/virtualXS/files/firewall
 cp /opt/virtualXS/files/httpd/* $RPM_BUILD_ROOT/opt/virtualXS/files/httpd
 cp /opt/virtualXS/files/mysql/* $RPM_BUILD_ROOT/opt/virtualXS/files/mysql
@@ -94,6 +96,7 @@ mkdir -p %{buildroot}/opt/virtualXS/files/backup
 mkdir -p %{buildroot}/opt/virtualXS/files/bitworker
 mkdir -p %{buildroot}/opt/virtualXS/files/certbot
 mkdir -p %{buildroot}/opt/virtualXS/files/dovecot
+mkdir -p %{buildroot}/opt/virtualXS/files/fail2ban
 mkdir -p %{buildroot}/opt/virtualXS/files/firewall
 mkdir -p %{buildroot}/opt/virtualXS/files/httpd
 mkdir -p %{buildroot}/opt/virtualXS/files/mysql
@@ -112,6 +115,7 @@ cp /opt/virtualXS/files/backup/* %{buildroot}/opt/virtualXS/files/backup
 cp /opt/virtualXS/files/bitworker/* %{buildroot}/opt/virtualXS/files/bitworker
 cp /opt/virtualXS/files/certbot/* %{buildroot}/opt/virtualXS/files/certbot
 cp /opt/virtualXS/files/dovecot/* %{buildroot}/opt/virtualXS/files/dovecot
+cp /opt/virtualXS/files/fail2ban/* %{buildroot}/opt/virtualXS/files/fail2ban
 cp /opt/virtualXS/files/firewall/* %{buildroot}/opt/virtualXS/files/firewall
 cp /opt/virtualXS/files/httpd/* %{buildroot}/opt/virtualXS/files/httpd
 cp /opt/virtualXS/files/mysql/* %{buildroot}/opt/virtualXS/files/mysql
