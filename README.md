@@ -1,6 +1,6 @@
 # virtualXS
 
-virtualXS is a smart swiss knife utility Script to create a Virtual-Hosting-Server out of the box. The script performs optimizing and securing a Linux Server for hosting purpose.
+virtualXS is a smart swiss knife utility script to create a Virtual-Hosting-Server out of the box. This script performs optimizing and securing a Linux Server for hosting purpose.
 
 The following systems are supported:
 
