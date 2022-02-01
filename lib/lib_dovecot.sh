@@ -14,7 +14,6 @@ fi
 #fi
 
 u_path=/opt/virtualXS # no ending slash
-u_mysql_pwd=XXX
 
 if [ "$u_dovecot" = "y" ]; then
 
