@@ -66,6 +66,9 @@ if [ "$u_httpd" = "y" ]; then
     if [ "$u_state" = "Syntax OK" ]; then
         printf "Reload httpd\n"
         systemctl reload httpd
+    else
+        printf "Reload httpd failed:\n"
+        apachectl -t
     fi
 
 fi

@@ -237,7 +237,7 @@ source $u_path/lib/lib_helper_apps.sh
 ###
 source $u_path/lib/lib_httpd.sh
 
-### q config httpd protocol http/2
+### q activate protocol http/2
 ###
 ###
 source $u_path/lib/lib_httpd2.sh

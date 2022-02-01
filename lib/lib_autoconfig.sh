@@ -32,6 +32,12 @@ if [ "$u_autoconfig" = "y" ]; then
             cp $u_path/files/autoconfig/config-v1.1.xml /home/httpd/autoconfig/htdocs/mail/
         fi
 
+        ### insert som local Vars
+        ###
+        ###
+        sed -i 's/<VirtualHost XXX:80 XXX:443>/<VirtualHost '"$u_ip4"':80 '"$u_ip4"':443>/' $file001/autoconfig.conf
+        sed -i 's/XXX/'"$u_srv"'/' $file001/autoconfig.conf
+
         ### Check Apache State
         ###
         ###
@@ -40,6 +46,9 @@ if [ "$u_autoconfig" = "y" ]; then
         if [ "$u_state" = "Syntax OK" ]; then
             printf "Reload httpd\n"
             systemctl reload httpd
+        else
+            printf "Reload httpd failed:\n"
+            apachectl -t
         fi
 
     fi
