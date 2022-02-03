@@ -19,17 +19,18 @@ if [ "$u_fail2ban" = "y" ]; then
         systemctl start fail2ban
 
         file_fail2ban001=/etc/fail2ban/jail.conf
+        file_fail2ban002=/etc/fail2ban/jail.d/00-firewalld.conf
 
         if [ -f "$file_fail2ban001" ]; then
-
                 cp $u_path/files/fail2ban/virtualxs.conf /etc/fail2ban/jail.d/
-
-                sed -i 's/^[DEFAULT]/#[DEFAULT]/' /etc/fail2ban/jail.d/00-firewalld.conf
-                sed -i 's/^banaction/#banaction/' /etc/fail2ban/jail.d/00-firewalld.conf
-
-                echo "Restart fail2ban"
-                systemctl restart fail2ban
-
         fi
+
+        if [ -f "$file_fail2ban002" ]; then
+                sed -i 's/^[DEFAULT]/#[DEFAULT]/' $file_fail2ban002
+                sed -i 's/^banaction/#banaction/' $file_fail2ban002
+        fi
+
+        echo "Restart fail2ban"
+        systemctl restart fail2ban
 
 fi
