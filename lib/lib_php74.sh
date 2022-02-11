@@ -22,7 +22,7 @@ fi
 ### Mofify php.ini to yor needs here
 ###
 ###
-printf "\n\n***********************************************\n\nFix php-fpm[y/n]: "
+printf "\n\n***********************************************\n\nFix php-fpm [y/n]: "
 if [ "$u_phpfpmfix" = "" ]; then
     read u_phpfpmfix
 fi
@@ -40,7 +40,7 @@ if [ "$u_phpfpmfix" = "y" ]; then
     ###
     ###
     if [ -f "$file_php_002" ]; then
-        x
+        cp $u_path/files/php-fpm/php.conf /etc/httpd/conf.d/
     fi
 
 fi

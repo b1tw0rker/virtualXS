@@ -1,18 +1,12 @@
 #!/bin/bash
 
-
-
-
 ### /etc/postfix/main.cf
 ###
 ###
 printf "\n\n***********************************************\n\nConfigure /etc/postfix/main.cf [y/n]: "
 if [ "$u_postfix" = "" ]; then
-        read u_postfix
+    read u_postfix
 fi
-
-
-
 
 if [ "$u_postfix" = "y" ]; then
 
@@ -23,9 +17,8 @@ if [ "$u_postfix" = "y" ]; then
     u_bitworker=$(grep -m 1 "### by BitWorker" /etc/postfix/main.cf)
 
     if [ -f "$file_postfix001" ] && [ "$u_bitworker" != "### by BitWorker" ]; then
-            cat $u_path/files/postfix/main.cf >> $file_postfix001
+        cat $u_path/files/postfix/main.cf >>$file_postfix001
     fi
-    
 
     cp $u_path/files/postfix/bounce.de.default /etc/postfix/
     cp $u_path/files/postfix/mysql-domains.cf /etc/postfix/
@@ -45,7 +38,6 @@ if [ "$u_postfix" = "y" ]; then
     sed -i 's/^#relay_domains = $mydestination/relay_domains = $mydestination/' $file_postfix001
     sed -i 's/^#mail_spool_directory = \/var\/spool\/mail/mail_spool_directory = \/var\/spool\/mail/' $file_postfix001
 
-
     ### config master.cf
     ### grep BitWorker
     u_bitworker=$(grep -m 1 "### by BitWorker" /etc/postfix/master.cf)
@@ -55,7 +47,7 @@ if [ "$u_postfix" = "y" ]; then
         sed -i 's/^#submission inet n       -       n       -       -       smtpd/submission inet n       -       n       -       -       smtpd/' $file_postfix002
         sed -i 's/^#  -o syslog_name=postfix\/submission/  -o syslog_name=postfix\/submission/' $file_postfix002
         sed -i 's/^#  -o smtpd_tls_security_level=encrypt/  -o smtpd_tls_security_level=encrypt/' $file_postfix002
-        sed -i 's/^#  -o smtpd_tls_auth_only=yes/  -o smtpd_tls_auth_only=yes/' $file_postfix002    
+        sed -i 's/^#  -o smtpd_tls_auth_only=yes/  -o smtpd_tls_auth_only=yes/' $file_postfix002
 
         ### nur erstes vorkommen ersetzen
         ### demo sed -i '0,/one/ s/one/Hello/' test.txt
@@ -64,7 +56,10 @@ if [ "$u_postfix" = "y" ]; then
         sed -i '0,/^#  -o smtpd_relay_restrictions=permit_sasl_authenticated,reject/ s/^#  -o smtpd_relay_restrictions=permit_sasl_authenticated,reject/  -o smtpd_relay_restrictions=permit_sasl_authenticated,reject/' $file_postfix002
         sed -i '0,/^#  -o milter_macro_daemon_name=ORIGINATING/ s/^#  -o milter_macro_daemon_name=ORIGINATING/#  -o milter_macro_daemon_name=ORIGINATING\n\n### port 465/' $file_postfix002
 
+    fi
 
+    if [ -f "/etc/postfix/access" ]; then
+        postmap /etc/postfix/access
     fi
 
     echo "Restart Postfix"
@@ -72,9 +67,3 @@ if [ "$u_postfix" = "y" ]; then
     systemctl restart postfix
 
 fi
-
-
-
-
-
-
