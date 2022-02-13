@@ -14,6 +14,7 @@ if [ "$u_httpd2" = "y" ]; then
     ###
     if [ -d "$file001" ]; then
         cp $u_path/files/httpd/http2.conf $file008/
+        cp $u_path/files/httpd/security.conf $file008/
     fi
 
     ### Check Apache State
