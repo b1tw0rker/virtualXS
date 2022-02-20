@@ -60,6 +60,8 @@ That's it folks!
 
 ## Changelog
 
+02/20/22 - Bugfixes, new disclaimer and maria-db support
+
 01/27/22 - Added support for AWS machines.
 
 01/28/22 - Added support for Rocky Linux 8.x
