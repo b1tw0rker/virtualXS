@@ -2,6 +2,7 @@
 
 file_php_001=/etc/php.ini
 file_php_002=/etc/httpd/conf.d/php.conf
+file_php_003=/etc/php.d
 
 ### install php 7.4
 ###
@@ -41,6 +42,10 @@ if [ "$u_phpfpmfix" = "y" ]; then
     ###
     if [ -f "$file_php_002" ]; then
         cp $u_path/files/php-fpm/php.conf /etc/httpd/conf.d/
+    fi
+
+    if [ -d "$file_php_003" ]; then
+        cp $u_path/files/php/90-bw-security.ini $file_php_003
     fi
 
 fi
