@@ -21,6 +21,8 @@ u_client_ip=$(echo "$SSH_CLIENT" | cut -d' ' -f 1)
 u_path=/opt/virtualXS # no ending slash
 u_server=w
 u_eth=eth0
+u_aws=n
+u_all=n
 
 ### correct time rules first
 ###
@@ -50,7 +52,7 @@ echo -ne "\\033[2J\033[30;1f\e[94m"
 
 print_center "********************************************************************\n"
 print_center "*                                                                  *\n"
-print_center "*             Welcome to Quick and Dirty Install                   *\n"
+print_center "*             Welcome to VirtualXS Install                         *\n"
 print_center "*                                                                  *\n"
 print_center "********************************************************************\n"
 printf "\n"
@@ -72,15 +74,13 @@ read -p "Your IP (Client IP): " -ei $u_client_ip u_client_ip
 read -p "NetzwerkSchnittstelle: " -ei $u_eth u_eth
 read -p "Upcoming MySQL root password: " u_mysql_pwd
 read -p "Create Web or DNS Server [w/d]: " -ei $u_server u_server
-read -p "Create on AWS [y/n]: " u_aws
-
-#printf "\n\n**** ll except DNS Server Settings) [y/n]: "
-#read u_aws
+read -p "Create on AWS [y/n]: " -ei $u_aws u_aws
 
 if [ "$u_server" = "d" ]; then
     u_bitworker_repo=y
     u_epel_repo=y
     u_dnf_update=y
+    u_sql_server=mysql
     u_dnf=n
     u_php74=n
     u_phpfpmfix=n
@@ -110,12 +110,14 @@ fi
 ###
 ###
 if [ "$u_server" = "w" ]; then
-    printf "\n\n***********************************************\n\nRun all the stuff at once (All except DNS Server Settings) - EXPERIMENTAL [y/n]: "
-    read u_all
+    #printf "\n\n***********************************************\n\nRun all the stuff at once (All except DNS Server Settings) - EXPERIMENTAL [y/n]: "
+    #read u_all
+    read -p "Run all the stuff at once (All except DNS Server Settings) - EXPERIMENTAL [y/n]: " -ei $u_all u_all
 
     if [ "$u_all" = "y" ]; then
         u_bitworker_repo=y
         u_epel_repo=y
+        u_sql_server=mysql
         u_dnf_update=y
         u_dnf=y
         u_php74=y
@@ -184,6 +186,17 @@ if [ ! -f "/etc/yum.repos.d/epel.repo" ]; then
 
     fi
 
+fi
+
+printf "\n\n***********************************************\n\nInstall Mysql or MariaDB? (EXPERIMENTAL) [mysql/maria]: "
+if [ "$u_sql_server" = "" ]; then
+    read u_sql_server
+fi
+
+if [ "$u_sql_server" = "maria" ]; then
+    db_server=mariadb-server
+else
+    db_server=mysql-server
 fi
 
 ### q install dnf
