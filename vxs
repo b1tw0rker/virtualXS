@@ -55,6 +55,12 @@ print_center "*                                                                 
 print_center "********************************************************************\n"
 printf "\n"
 
+printf "\n\nATTENTION: This script is designed only for freshly installed server. DO NOT USE IN ON A PRODUCTION MACHINE! To confirm this, type: \"install\" to go on : "
+read u_disclaimer
+if [ "$u_disclaimer" != "install" ]; then
+    exit
+fi
+
 ### q prework - ask for ip and servername
 ###
 ###
