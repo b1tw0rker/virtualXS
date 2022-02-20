@@ -7,16 +7,19 @@
 ### MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ###
 ###
+
+### Sources
 ### color formating: https://misc.flogisoft.com/bash/tip_colors_and_formatting
+###
 
 clear
-infocolor=$(tput setaf 6) # DEV
-tput setaf 6
 
 ### some vars
 ###
 ###
-u_version=1.0.9
+infocolor=$(tput setaf 6) # DEV
+tput setaf 6
+u_version=1.0.11
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
 ### get the ip of the client ssh
@@ -342,6 +345,11 @@ source $u_path/lib/lib_logrotate.sh
 ###
 ###
 source $u_path/lib/lib_selinux.sh
+
+### /etc/crontab
+###
+###
+source $u_path/lib/lib_cron.sh
 
 ### do this ahain, for security reason
 ### we to be absolutly surem that this shit is turned off
