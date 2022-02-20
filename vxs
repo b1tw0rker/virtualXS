@@ -1,18 +1,22 @@
 #!/bin/bash
 
-### Version: 1.0.9
+### Version: 1.0.10
 ### Build date: 20.02.2022
 ### (C) 2021-2022 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
 ### MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ###
 ###
+### color formating: https://misc.flogisoft.com/bash/tip_colors_and_formatting
 
 clear
+infocolor=$(tput setaf 6) # DEV
+tput setaf 6
 
 ### some vars
 ###
 ###
+u_version=1.0.9
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
 ### get the ip of the client ssh
@@ -52,12 +56,12 @@ echo -ne "\\033[2J\033[30;1f\e[94m"
 
 print_center "********************************************************************\n"
 print_center "*                                                                  *\n"
-print_center "*             Welcome to VirtualXS Install                         *\n"
+print_center "*            Welcome to VirtualXS Install - Version $u_version          *\n"
 print_center "*                                                                  *\n"
 print_center "********************************************************************\n"
 printf "\n"
 
-printf "\n\nATTENTION: This script is designed only for freshly installed server. DO NOT USE IN ON A PRODUCTION MACHINE! To confirm this, type: \"install\" to go on : "
+printf "\n\n\e[41mATTENTION:\e[0m This script is designed only for freshly installed server. \e[41mDO NOT USE THIS SCRIPT ON A PRODUCTION MACHINE!!!\e[0m To confirm this, type: \"install\" to go on : "
 read u_disclaimer
 if [ "$u_disclaimer" != "install" ]; then
     exit
