@@ -1,6 +1,6 @@
 #!/bin/bash
 
-### Version: 1.0.12
+### Version: 1.0.13
 ### Build date: 20.02.2022
 ### (C) 2021-2022 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,7 +19,7 @@ clear
 ###
 infocolor=$(tput setaf 6) # DEV
 tput setaf 6
-u_version=1.0.11
+u_version=1.0.13
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
 ### get the ip of the client ssh
