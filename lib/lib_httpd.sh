@@ -58,6 +58,11 @@ if [ "$u_httpd" = "y" ]; then
         cp $u_path/files/httpd/index.html /var/www/html
     fi
 
+    ### Autoindex
+    if [ -d "/usr/share/httpd/noindex" ]; then
+        cp -rf $u_path/files/httpd/index.html /usr/share/httpd/noindex/
+    fi
+
     ### Check Apache State
     ###
     ###
