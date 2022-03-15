@@ -1,4 +1,14 @@
-/home/httpd/*/logs/*.log {
+/home/httpd/*/logs/access.log {
+    missingok
+    notifempty
+    sharedscripts
+    delaycompress
+    postrotate
+        /bin/systemctl reload httpd.service > /dev/null 2>/dev/null || true
+    endscript
+}
+
+/home/httpd/*/logs/error.log {
     missingok
     notifempty
     sharedscripts
