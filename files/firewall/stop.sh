@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "iptables reset... "
+echo "iptables stop... "
 iptables -F
 iptables -X
 iptables -t filter -F

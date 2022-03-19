@@ -1,22 +1,17 @@
 #!/bin/bash
 
-
-
 ### /etc/ssl/
 ###
 ###
 #if [ "$u_all" != "y" ]; then
 printf "\n\n***********************************************\n\nCreate new SSL Keypair [y/n]: "
 if [ "$u_ssl" = "" ]; then
-        read u_ssl
+    read u_ssl
 fi
 
-#else 
+#else
 #    u_ssl=y
 #fi
-
-
-
 
 if [ "$u_ssl" = "y" ]; then
 
@@ -26,21 +21,15 @@ if [ "$u_ssl" = "y" ]; then
 
     echo "Es wurde ein Neues Keypaar in /root/.ssh/ erstellt."
 
-
     printf "Wohin soll der neue Pub Key via ssh-copy-id kopiert werden (Host Adresse, leer für NICHT kopieren)? "
     if [ "$u_new_key" = "" ]; then
         read u_new_key
     fi
 
-
     if [ "$u_new_key" != "" ]; then
-        /etc/firewall/reset.sh
+        /etc/firewall/stop.sh
         ssh-copy-id -i ~/.ssh/id_rsa.pub $u_new_key
         systemctl start firewall
     fi
 
 fi
-
-
-
-

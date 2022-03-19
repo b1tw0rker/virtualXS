@@ -4,7 +4,7 @@ After=network.service
 
 [Service]
 ExecStart=/etc/firewall/rules.fw
-#ExecStop=/etc/firewall/reset.sh
+#ExecStop=/etc/firewall/stop.sh
 #PIDFile=/etc/firewall/firewall.pid
 
 [Install]
