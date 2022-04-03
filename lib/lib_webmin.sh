@@ -2,6 +2,7 @@
 
 file_webmin001=/etc/webmin/miniserv.conf
 file_webmin002=/etc/webmin/config
+webmin_version=1.990
 
 ### /webmin/
 ###
@@ -13,19 +14,18 @@ fi
 
 if [ "$u_webmin" = "y" ]; then
 
-    if [ ! -f "webmin-1.984-1.noarch.rpm" ]; then
+    if [ ! -f "webmin-$webmin_version-1.noarch.rpm" ]; then
 
         cd /root/
-        wget https://prdownloads.sourceforge.net/webadmin/webmin-1.984-1.noarch.rpm
-        rpm -ivh webmin-1.984-1.noarch.rpm
+        wget https://prdownloads.sourceforge.net/webadmin/webmin-$webmin_version-1.noarch.rpm
+        rpm -ivh webmin-$webmin_version-1.noarch.rpm
 
     fi
 
-    if [ ! -f "webmin-1.984-minimal.tar.gz" ]; then
+    if [ ! -f "webmin-$webmin_version-minimal.tar.gz" ]; then
 
         cd /root/
-
-        wget https://prdownloads.sourceforge.net/webadmin/webmin-1.984-minimal.tar.gz
+        wget https://prdownloads.sourceforge.net/webadmin/webmin-$webmin_version-minimal.tar.gz
 
     fi
 
@@ -46,11 +46,6 @@ if [ "$u_webmin" = "y" ]; then
         echo "certfile=/etc/letsencrypt/live/$u_hostname/fullchain.pem" >>$file_webmin002
         echo "ssl_redirect=1" >>$file_webmin002
 
-        ### apply changes
-        ###
-        ###
-        /etc/webmin/stop
-        /etc/webmin/start
     fi
 
     ### /etc/webmin/config
@@ -68,18 +63,13 @@ if [ "$u_webmin" = "y" ]; then
         ###
         sed -i 's/^referers_none=1/referers_none=0/' $file_webmin002
 
-        ### apply changes
-        ###
-        ###
-        /etc/webmin/stop
-        /etc/webmin/start
     fi
 
     ### lang
     ###
     ###
-    if [ -f "/root/webmin-1.984/lang/de" ]; then
-        sed -i 's/^session_header=Anmelden bei Webmin/session_header=Anmelden bei host-x/' /root/webmin-1.984/lang/de
+    if [ -f "/root/webmin-$webmin_version/lang/de" ]; then
+        sed -i 's/^session_header=Anmelden bei Webmin/session_header=Anmelden bei host-x/' /root/webmin-$webmin_version/lang/de
     fi
 
     if [ -f "/usr/libexec/webmin/lang/de" ]; then
@@ -92,5 +82,11 @@ if [ "$u_webmin" = "y" ]; then
     if [ -d "/etc/webmin/authentic-theme" ]; then
         cp $u_path/files/webmin/styles.css /etc/webmin/authentic-theme/
     fi
+
+    ### apply changes
+    ###
+    ###
+    /etc/webmin/stop
+    /etc/webmin/start
 
 fi
