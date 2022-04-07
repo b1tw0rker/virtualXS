@@ -5,3 +5,8 @@ h2.form-signin-heading {
 i.wbm-webmin {
       display: none !important;
 }
+
+html[data-bgs="nightRider"] .session_login .awcheckbox label::after {
+      margin-left: 0 !important;
+      margin-top: 0 !important;
+}
