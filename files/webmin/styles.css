@@ -8,5 +8,5 @@ i.wbm-webmin {
 
 html[data-bgs="nightRider"] .session_login .awcheckbox label::after {
       margin-left: 0 !important;
-      margin-top: 0 !important;
+      margin-top: 1px !important;
 }
