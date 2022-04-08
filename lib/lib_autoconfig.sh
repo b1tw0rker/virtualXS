@@ -70,6 +70,11 @@ if [ "$u_autoconfig" = "y" ]; then
             apachectl -t
         fi
 
+        ### TODO: Automatisch die richtigen Werte einsetzen
+        ###
+        ###
+        printf "HINT: Die Files: /home/httpd/autoconfig/htdocs/autodiscover.xml und config-v1.1.xml müssen noch manuell angepasst werden.\n"
+
     fi
 
 fi

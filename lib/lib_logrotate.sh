@@ -8,4 +8,5 @@ fi
 
 if [ -d "/etc/logrotate.d" ]; then
     cp $u_path/files/logrotate/virtualx /etc/logrotate.d/
+    cp $u_path/files/logrotate/dovecot /etc/logrotate.d/
 fi

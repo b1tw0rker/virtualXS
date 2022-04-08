@@ -1,0 +1,12 @@
+/var/log/dovecot.log {
+    daily
+    missingok
+    rotate 60
+    compress
+    delaycompress
+    notifempty
+    sharedscripts
+    postrotate
+      /bin/systemctl reload dovecot.service > /dev/null 2>/dev/null || true
+    endscript
+}

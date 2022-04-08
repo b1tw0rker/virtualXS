@@ -41,18 +41,24 @@ if [ "$u_dovecot" = "y" ]; then
 
     sed -i 's/^#auth_username_translation =/auth_username_translation = \"\@.\"/' /etc/dovecot/conf.d/10-auth.conf
 
+    ### 10-logging.conf
+    ###
+    ###
+    touch /var/log/dovecot.log
+    sed -i 's/^#log_path = syslog/#log_path = syslog\nlog_path = /var/log/dovecot.log/' /etc/dovecot/conf.d/10-logging.conf
+
     ### TODO UNCOMMEND THIS
     # Postfix smtp-auth
     #unix_listener /var/spool/postfix/private/auth {
     #  mode = 0666
     #}
-    printf "HINT: You must manuel uncomment:unix_listener /var/spool/postfix/private/auth in: /etc/dovecot/10-master.conf\n"
+    printf "HINT: You must manuelly uncomment \"unix_listener /var/spool/postfix/private/auth\" in File: /etc/dovecot/conf.d/10-master.conf\n"
 
 ### TODO 10-auto.conf
 ### #!include auth-deny.conf.ext
 ### #!include auth-master.conf.ext # commented by Nick 4.1.22
 ### #!include auth-system.conf.ext # commented by Nick 4.1.22
-### #!include auth-sql.conf.ext
+### !include auth-sql.conf.ext
 ### #!include auth-ldap.conf.ext
 ### #!include auth-passwdfile.conf.ext
 ### #!include auth-checkpassword.conf.ext
