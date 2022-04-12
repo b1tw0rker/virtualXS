@@ -1,6 +1,6 @@
 failure_template = <<EOF
 Charset: UTF-8
-From: MAILER-DAEMON (BitWorker Mail System)
+From: MAILER-DAEMON (HOST-X Mail System)
 Subject: Fehler bei der Mailzustellung
 
 Dies ist eine Nachricht vom MailServer auf dem host $myhostname.
@@ -10,7 +10,7 @@ Detailierte Informationen finden Sie unten.
 
 
 =============================================================
-BitWorker MailServer
+HOST-X MailServer
 =============================================================
 
 
@@ -33,7 +33,7 @@ EOF
 
 delay_template = <<EOF
 Charset: us-ascii
-From: MAILER-DAEMON (BitWorker Mail System)
+From: MAILER-DAEMON (HOST-X Mail System)
 Subject: Verzoegerte Mail (es wird weiter versucht)
 
 Dies ist eine Nachricht vom MailServer auf dem host $myhostname.
@@ -49,7 +49,7 @@ Der Versuch endet nach $maximal_queue_lifetime_days Tagen.
 
 
 =============================================================
-BitWorker MailServer
+HOST-X MailServer
 =============================================================
 
 

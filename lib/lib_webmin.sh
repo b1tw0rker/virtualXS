@@ -63,6 +63,11 @@ if [ "$u_webmin" = "y" ]; then
         ###
         sed -i 's/^referers_none=1/referers_none=0/' $file_webmin002
 
+        ### goto to module ?? BETA is gotomodule= in a blank webmin installtion present ???
+        ###
+        ###
+        sed -i 's/^gotomodule=/gotomodule=virtualx/' $file_webmin002
+
     fi
 
     ### lang

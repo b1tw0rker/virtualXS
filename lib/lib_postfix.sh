@@ -37,6 +37,7 @@ if [ "$u_postfix" = "y" ]; then
     sed -i 's/^#mynetworks = 168.100.189.0\/28/mynetworks = '"$u_ip"'\/32/' $file_postfix001
     sed -i 's/^#relay_domains = $mydestination/relay_domains = $mydestination/' $file_postfix001
     sed -i 's/^#mail_spool_directory = \/var\/spool\/mail/mail_spool_directory = \/var\/spool\/mail/' $file_postfix001
+    sed -i 's/^inet_protocols = all/inet_protocols = ipv4/' $file_postfix001
 
     ### config master.cf
     ### grep BitWorker
