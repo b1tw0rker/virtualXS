@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if [ -f "/etc/firewall/test.sh" ]; then
+    /etc/firewall/test.sh >>/dev/null 2>&1
+fi
+
+exit 0

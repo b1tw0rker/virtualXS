@@ -1,5 +1,6 @@
-#!/bin/bash
-echo "iptables stop... "
+#!/bin/sh
+
+echo "Stopping Firewall"
 iptables -F
 iptables -X
 iptables -t filter -F

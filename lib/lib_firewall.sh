@@ -16,9 +16,11 @@ if [ "$u_firewall" = "y" ]; then
     if [ -d "$file004" ]; then
         cp $u_path/files/firewall/stop.sh $file004
         cp $u_path/files/firewall/rules.fw $file004
+        cp $u_path/files/firewall/test.sh $file004
 
         chmod 700 $file004/stop.sh
         chmod 700 $file004/rules.fw
+        chmod 700 $file004/test.sh
 
         sed -i 's/$IPTABLES -A INPUT -i venet0:0   -s 195.90.209.193   -j Cid4533X20228.0/$IPTABLES -A INPUT -i venet0:0   -s '"$u_ip"'   -j Cid4533X20228.0 #by BitWorker/' $file004/rules.fw
         sed -i 's/$IPTABLES -A Cid4533X20228.0  -d 195.90.209.193   -j In_RULE_0/$IPTABLES -A Cid4533X20228.0  -d '"$u_ip"'   -j In_RULE_0 #by BitWorker/' $file004/rules.fw
@@ -51,29 +53,19 @@ if [ "$u_firewall" = "y" ]; then
         cp $u_path/files/firewall/firewall.service /usr/lib/systemd/system/
     fi
 
+    ### create cronjob in cron.hourly
+    ###
+    ###
+    if [ ! -f "/etc/cron.hourly/firewall-test" ]; then
+        cp $u_path/files/firewall/firewall-test /etc/cron.hourly/
+        chmod 700 /etc/cron.hourly/firewall-test
+    fi
+
 fi
 
 ###
 ###
 ###
-
-#printf "\n\n***********************************************\n\nStart firewall at startup [y/n]: "
-#if [ "$u_start_firewall" = "" ]; then
-#        read u_start_firewall
-#fi
-#
-#
-#if [ "$u_start_firewall" = "y" ]; then
-#
-#    if [ ! -f "/usr/lib/systemd/system/firewall.service" ]; then
-#        cp $u_path/files/firewall/firewall.service /usr/lib/systemd/system/
-#    fi
-#
-#    if [ ! -f "/etc/systemd/system/multi-user.target.wants/firewall.service" ]; then
-#        systemctl enable firewall
-#    fi
-#
-#fi
 
 printf "\n\n***********************************************\n\nActivate firewall now [y/n]: "
 if [ "$u_activate_firewall" = "" ]; then
@@ -90,7 +82,7 @@ if [ "$u_activate_firewall" = "y" ]; then
 
         /etc/firewall/stop.sh
 
-        echo "iptables reset 2 ... "
+        echo "Stopping Firewall"
         iptables -F
         iptables -X
         iptables -t filter -F
@@ -114,3 +106,5 @@ if [ "$u_activate_firewall" = "y" ]; then
     fi
 
 fi
+
+printf "\nHINT: Don't forget to enable Firewall with: -systemctl enable firewall- after reboot\n"
