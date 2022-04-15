@@ -3,15 +3,19 @@
 ### Variablen
 ###
 ###
-HOST='ftp://HOST' # sftp as option possible
+HOST='ftp://srv002.host-x.de' # sftp as option possible - HOST-X uses ftp
 USER='XXX'
 PASSWORD='XXX'
 
-# DISTANT DIRECTORY
-REMOTE_DIR='/htdocs/storage'
+### DESTINATION DIR
+###
+###
+REMOTE_DIR='/htdocs' # no ending slash
 
-#LOCAL DIRECTORY
-LOCAL_DIR='/tmp/storage'
+### LOCAL DIR
+###
+###
+LOCAL_DIR='/tmp/storage' # no ending shlash
 
 ### prework
 ###
@@ -26,18 +30,19 @@ fi
 ###
 ###
 if [ -f /etc/firewall/stop.sh ]; then
-  /etc/firewall/stop.sh
+  systemctl stop firewall
 fi
 
 if [ -d "$LOCAL_DIR" ]; then
 
   lftp -u "$USER","$PASSWORD" $HOST <<EOF
 # the next 3 lines put you in ftpes mode. Uncomment if you are having trouble connecting.
-# set ftp:ssl-force true
-# set ftp:ssl-protect-data true
-# set ssl:verify-certificate no
-# set sftp:auto-confirm yes
-set ssl-allow no
+# use it for HOST-X FTP Service. HOST-X only uses enryption
+set ftp:ssl-force true
+set ftp:ssl-protect-data true
+set ssl:verify-certificate no
+set sftp:auto-confirm yes
+#set ssl-allow no
 mirror --use-pget-n=10 $REMOTE_DIR $LOCAL_DIR;
 exit
 EOF
@@ -48,7 +53,7 @@ EOF
 fi
 
 if [ -f /etc/firewall/rules.fw ]; then
-  /etc/firewall/rules.fw
+  systemctl start firewall
 fi
 
 ### exit

@@ -30,7 +30,7 @@ if [ "$u_dnf" = "y" ]; then
 
     ### perltidy not found on fucking RHEL - "an dnf error not found" installiert kein einziges Paket !!!
     dnf -y install epel-release yum-utils
-    dnf -y install chrony httpd mysql $db_server webalizer php php-mysqlnd php-intl php-json php-ldap php-pecl-zip php-process net-tools which certbot createrepo bind-utils whois postfix postfix-mysql figlet mod_fcgid mod_security mod_security_crs vsftpd php-mbstring dovecot dovecot-mysql rsyslog iptraf-ng dnf-automatic perl-DBI perl-DBD-MySQL perl-Encode-Detect perl-JSON gd gd-devel php-gd perl-Net-SSLeay python3-certbot-apache spamassassin tcp_wrappers php-soap php-xml mod_http2 at conntrack-tools rsync tar wget lftp unzip git nodejs quota jq perl-Net-LibIDN perl-Net-LibIDN2 libidn libidn2 opendkim opendkim-tools lsof
+    dnf -y install chrony httpd mysql $db_server webalizer php php-mysqlnd php-intl php-json php-ldap php-pecl-zip php-process net-tools which certbot createrepo bind-utils whois postfix postfix-mysql figlet mod_fcgid mod_security mod_security_crs vsftpd php-mbstring dovecot dovecot-mysql rsyslog iptraf-ng dnf-automatic perl-DBI perl-DBD-MySQL perl-Encode-Detect perl-JSON gd gd-devel php-gd perl-Net-SSLeay python3-certbot-apache spamassassin tcp_wrappers php-soap php-xml mod_http2 at conntrack-tools rsync tar wget lftp ncftp unzip git nodejs quota jq perl-Net-LibIDN perl-Net-LibIDN2 libidn libidn2 opendkim opendkim-tools lsof
 
     ### Solange wir die Signatur nicht ändern können, müssen wir lokal installieren
     ###

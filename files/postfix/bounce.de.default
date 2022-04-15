@@ -5,7 +5,7 @@ Subject: Fehler bei der Mailzustellung
 
 Dies ist eine Nachricht vom MailServer auf dem host $myhostname.
 
-Ihre Nachricht konnte leider nicht ausgeliefert werden.
+Deine Nachricht konnte leider nicht ausgeliefert werden.
 Detailierte Informationen finden Sie unten.
 
 
@@ -42,7 +42,7 @@ Dies ist eine Nachricht vom MailServer auf dem host $myhostname.
 # DIES IST EINE WARNUNG. DIE MAIL BRAUCHT NICHT ERNEUT VERSENDET ZU WERDEN. #
 #############################################################################
 
-Ihre Nachricht konnte in den letzten $delay_warning_time_hours Stunden nicht ausgeliefert werden.
+Deine Nachricht konnte in den letzten $delay_warning_time_hours Stunden nicht ausgeliefert werden.
 Dies weist auf ein Problem des entfernten Mailservers hin.
 Es wird weiterhin versucht die Nachricht auszuliefern.
 Der Versuch endet nach $maximal_queue_lifetime_days Tagen.
