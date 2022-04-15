@@ -1,16 +1,21 @@
 #!/bin/bash
 
+### Choose App (ncftpget, lftp)
+### ncftpget has no SSL support!
+###
+APP='lftp'
+
 ### Variablen
 ###
 ###
-HOST='ftp://srv002.host-x.de' # sftp as option possible - HOST-X uses ftp
-USER='XXX'
-PASSWORD='XXX'
+HOST='XXX'
+USR='XXX'
+PASS='XXX'
 
 ### DESTINATION DIR
 ###
 ###
-REMOTE_DIR='/htdocs' # no ending slash
+REMOTE_DIR='/htdocs' # no ending shlash
 
 ### LOCAL DIR
 ###
@@ -26,34 +31,45 @@ if [ ! -d $LOCAL_DIR ]; then
 
 fi
 
+### Check if firewall is active
+###
+###
+if [[ $(systemctl status firewall | grep 'active (exited)') ]]; then
+  ftprule='true'
+
+  iptables -A OUTPUT -p tcp -m tcp -d $HOST --dport 21 -m state --state NEW -j ACCEPT
+  iptables -A OUTPUT -p tcp -m tcp -d $HOST --dport 10000:11000 -m state --state NEW -j ACCEPT
+fi
+
 ### Action
 ###
 ###
-if [ -f /etc/firewall/stop.sh ]; then
-  systemctl stop firewall
-fi
 
 if [ -d "$LOCAL_DIR" ]; then
 
-  lftp -u "$USER","$PASSWORD" $HOST <<EOF
-# the next 3 lines put you in ftpes mode. Uncomment if you are having trouble connecting.
-# use it for HOST-X FTP Service. HOST-X only uses enryption
-set ftp:ssl-force true
-set ftp:ssl-protect-data true
-set ssl:verify-certificate no
-set sftp:auto-confirm yes
-#set ssl-allow no
-mirror --use-pget-n=10 $REMOTE_DIR $LOCAL_DIR;
-exit
-EOF
-  echo
-  echo "Transfer finished"
-  date
+  if [ "$APP" == "lftp" ]; then
+
+    lftp -c 'set ftp:ssl-force true ; set ftp:ssl-allow true ; set ssl:verify-certificate no; open -u '$USR','$PASS' -e "mirror -c --parallel=20 --ignore-time --ignore-size --transfer-all '$REMOTE_DIR' '$LOCAL_DIR' ; quit" '$HOST''
+
+    echo
+    echo "Transfer finished"
+    date
+    echo ""
+
+  else
+    ncftpget -T -R -v -u "$USR" -p $PASS $HOST $LOCAL_DIR $REMOTE_DIR
+  fi
 
 fi
 
-if [ -f /etc/firewall/rules.fw ]; then
-  systemctl start firewall
+if [ "$ftprule" == "true" ]; then
+  iptables -D OUTPUT -p tcp -m tcp -d $HOST --dport 21 -m state --state NEW -j ACCEPT
+  iptables -D OUTPUT -p tcp -m tcp -d $HOST --dport 10000:11000 -m state --state NEW -j ACCEPT
+
+  systemctl restart firewall
+
+  echo "Firewall restarted"
+  echo ""
 fi
 
 ### exit
