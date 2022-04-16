@@ -18,7 +18,7 @@ if [ "$u_webmin" = "y" ]; then
 
         cd /root/
         wget https://prdownloads.sourceforge.net/webadmin/webmin-$webmin_version-1.noarch.rpm
-        rpm -ivh webmin-$webmin_version-1.noarch.rpm
+        rpm -Uvh webmin-$webmin_version-1.noarch.rpm
 
     fi
 
@@ -86,6 +86,20 @@ if [ "$u_webmin" = "y" ]; then
     ###
     if [ -d "/etc/webmin/authentic-theme" ]; then
         cp $u_path/files/webmin/styles.css /etc/webmin/authentic-theme/
+    fi
+
+    ### status monitor
+    ###
+    ###
+    if [ -d "/etc/webmin/status" ]; then
+
+        # del standard services first
+        rm -f /etc/webmin/status/services/*.serv
+
+        cp $u_path/files/webmin/status/config /etc/webmin/status/
+        cp $u_path/files/webmin/status/monitor.pl /etc/webmin/status/
+        cp $u_path/files/webmin/status/services/*.serv /etc/webmin/status/services/
+
     fi
 
     ### apply changes
