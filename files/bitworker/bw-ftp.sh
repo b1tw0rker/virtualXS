@@ -25,8 +25,8 @@ REMOTE_DIR='/htdocs' # no ending shlash
 ### LOCAL DIR
 ###
 ###
-LOCAL_DIR='/tmp/storage' # no ending shlash
-#LOCAL_DIR='/home/httpd/XXX/htdocs' # no ending shlash
+#LOCAL_DIR='/tmp/storage' # no ending shlash
+LOCAL_DIR="/home/httpd/www.$LOCAL_USR/htdocs" # no ending shlash
 
 ### prework
 ###
@@ -93,6 +93,25 @@ if [ "$ftprule" == "true" ]; then
 
   echo "Firewall restarted"
   echo ""
+fi
+
+### Check for .sql.gz file
+###
+###
+TMP="${LOCAL_USR//[.-]/_}"
+DBNAME="${TMP}_1"
+DBZIP="${DBNAME}.sql.gz"
+
+if [ -f "$LOCAL_DIR/$DBZIP" ]; then
+
+  echo "Unzipping and importing Database"
+  echo ""
+  gunzip $LOCAL_DIR/$DBZIP
+
+  mysql -u root -pG0lden_12 $DB <$LOCAL_DIR/${DBNAME}.sql
+
+  #rm -f $LOCAL_DIR/${DBNAME}.sql
+
 fi
 
 ### exit
