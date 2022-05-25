@@ -1,7 +1,7 @@
 #!/bin/bash
 
-### version 1.0.0
-### 15.04.2022
+### version 1.0.1
+### 17.05.2022
 ###
 
 ### Choose App (ncftpget, lftp)
