@@ -34,27 +34,18 @@ if [ "$u_dovecot" = "y" ]; then
     ###
     ###
     touch /var/log/dovecot.log
-    sed -i 's/^#log_path = syslog/#log_path = syslog\n\nlog_path = /var/log/dovecot.log/' /etc/dovecot/conf.d/10-logging.conf
+    sed -i 's/^#log_path = syslog/#log_path = syslog\nlog_path = \/var\/log\/dovecot.log/' /etc/dovecot/conf.d/10-logging.conf
 
-    ### TODO UNCOMMEND THIS
-    # Postfix smtp-auth
-    #unix_listener /var/spool/postfix/private/auth {
-    #  mode = 0666
-    #}
-    printf "TODO: You must manuelly uncomment \"unix_listener /var/spool/postfix/private/auth\" in File: /etc/dovecot/conf.d/10-master.conf\n"
+    ### https://unix.stackexchange.com/questions/56123/remove-line-containing-certain-string-and-the-following-line
+    ###
+    ###
+    sed -i '/unix_listener \/var\/spool\/postfix\/private\/auth/,+2 d' /opt/virtualXS/10-master.conf
+    sed -i 's/Postfix smtp-auth/Postfix smtp-auth\n  unix_listener \/var\/spool\/postfix\/private\/auth {\n    mode = 0666\n  }/' /opt/virtualXS/10-master.conf
 
+    ###
+    ###
+    ###
     sed -i 's/^!include auth-system.conf.ext/#!include auth-system.conf.ext/' /etc/dovecot/conf.d/10-auth.conf
     sed -i 's/^#!include auth-sql.conf.ext/!include auth-sql.conf.ext/' /etc/dovecot/conf.d/10-auth.conf
-
-### TODO 10-auth.conf
-### #!include auth-deny.conf.ext
-### #!include auth-master.conf.ext
-### #!include auth-system.conf.ext # commented by Nick 4.1.22
-### !include auth-sql.conf.ext
-### #!include auth-ldap.conf.ext
-### #!include auth-passwdfile.conf.ext
-### #!include auth-checkpassword.conf.ext
-### #!include auth-vpopmail.conf.ext
-### #!include auth-static.conf.ext
 
 fi
