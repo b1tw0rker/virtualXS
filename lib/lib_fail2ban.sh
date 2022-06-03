@@ -22,7 +22,7 @@ if [ "$u_fail2ban" = "y" ]; then
         file_fail2ban002=/etc/fail2ban/jail.d/00-firewalld.conf
 
         if [ -f "$file_fail2ban001" ]; then
-                cp $u_path/files/fail2ban/virtualxs.conf /etc/fail2ban/jail.d/
+                cp $u_path/files/fail2ban/jail.d/* /etc/fail2ban/jail.d/
         fi
 
         if [ -f "$file_fail2ban002" ]; then
