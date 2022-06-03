@@ -60,7 +60,7 @@ That's it folks!
 
 ## Changelog
 
-06/03/22 - Bugfix Version
+06/03/22 - Bugfix Version and tarted to prog a Python Version
 
 02/20/22 - Bugfixes, new disclaimer and maria-db support
 
