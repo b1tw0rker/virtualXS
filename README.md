@@ -4,10 +4,10 @@ virtualXS is a smart swiss knife utility script to create a Virtual-Hosting-Serv
 
 The following systems are supported:
 
--   RHEL8 (Minimal)
--   Centos8 (Minimal)
--   Rocky Linux 8.x
--   AWS machines
+- RHEL8 (Minimal)
+- Centos8 (Minimal)
+- Rocky Linux 8.x
+- AWS machines
 
 ## WARNING:
 
@@ -59,6 +59,8 @@ vxs
 That's it folks!
 
 ## Changelog
+
+06/03/22 - Bugfix Version
 
 02/20/22 - Bugfixes, new disclaimer and maria-db support
 
