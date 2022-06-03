@@ -50,6 +50,8 @@ if [ "$u_certbot_dovecot" = "y" ]; then
     certbot --apache certonly -d $u_imap
 
     ### update dovecot to new cert
+    ###
+    ###
     sed -i 's/^ssl_cert =/#ssl_cert =/' /etc/dovecot/conf.d/10-ssl.conf
     sed -i 's/^ssl_key =/#ssl_key =/' /etc/dovecot/conf.d/10-ssl.conf
     sed -i 's/^ssl_key = <\/etc\/pki\/dovecot\/private\/dovecot.pem/#ssl_key = <\/etc\/pki\/dovecot\/private\/dovecot.pem\n\nssl_cert = \<\/etc\/letsencrypt\/live\/'"$u_imap"'\/fullchain.pem\nssl_key = \<\/etc\/letsencrypt\/live\/'"$u_imap"'\/privkey.pem\n/' /etc/dovecot/conf.d/10-ssl.conf

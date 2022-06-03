@@ -73,7 +73,7 @@ if [ "$u_autoconfig" = "y" ]; then
         ### TODO: Automatisch die richtigen Werte einsetzen
         ###
         ###
-        printf "HINT: The files: /home/httpd/autoconfig/htdocs/autodiscover.xml und config-v1.1.xml must be configured manually.\n"
+        printf "TODO: The files: /home/httpd/autoconfig/htdocs/autodiscover.xml und config-v1.1.xml must be configured manually.\n"
 
     fi
 

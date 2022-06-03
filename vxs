@@ -1,6 +1,6 @@
 #!/bin/bash
 
-### Version: 1.1.2
+### Version: 1.1.3
 ### Build date: 03.06.2022
 ### (C) 2021-2022 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -116,40 +116,40 @@ fi
 ### q RUN ALL
 ###
 ###
-if [ "$u_server" = "w" ]; then
-    #printf "\n\n***********************************************\n\nRun all the stuff at once (All except DNS Server Settings) - EXPERIMENTAL [y/n]: "
-    #read u_all
-    read -p "Run all the stuff at once (All except DNS Server Settings) - EXPERIMENTAL [y/n]: " -ei $u_all u_all
-
-    if [ "$u_all" = "y" ]; then
-        u_bitworker_repo=y
-        u_epel_repo=y
-        u_sql_server=mysql
-        u_dnf_update=y
-        u_dnf=y
-        u_php74=y
-        u_phpfpmfix=y
-        u_disable_apps=y
-        u_enable_apps=y
-        u_start_apps=y
-        u_folders_create=y
-        u_postfix=y
-        u_ssh=y
-        u_fail2ban=y
-        u_httpd=y
-        u_dovecot=y
-        u_certbot=y
-        u_autoconfig=y
-        u_vsftpd=y
-        u_mysql=y
-        u_ssl=y
-        u_backup=y
-        u_quota=y
-        u_webmin=y
-        u_firewall=
-        u_start_firewall=
-    fi
-fi
+#if [ "$u_server" = "w" ]; then
+#    #printf "\n\n***********************************************\n\nRun all the stuff at once (All except DNS Server Settings) - EXPERIMENTAL [y/n]: "
+#    #read u_all
+#    read -p "Run all the stuff at once (All except DNS Server Settings) - EXPERIMENTAL [y/n]: " -ei $u_all u_all
+#
+#    if [ "$u_all" = "y" ]; then
+#        u_bitworker_repo=y
+#        u_epel_repo=y
+#        u_sql_server=mysql
+#        u_dnf_update=y
+#        u_dnf=y
+#        u_php74=y
+#        u_phpfpmfix=y
+#        u_disable_apps=y
+#        u_enable_apps=y
+#        u_start_apps=y
+#        u_folders_create=y
+#        u_postfix=y
+#        u_ssh=y
+#        u_fail2ban=y
+#        u_httpd=y
+#        u_dovecot=y
+#        u_certbot=y
+#        u_autoconfig=y
+#        u_vsftpd=y
+#        u_mysql=y
+#        u_ssl=y
+#        u_backup=y
+#        u_quota=y
+#        u_webmin=y
+#        u_firewall=
+#        u_start_firewall=
+#    fi
+#fi
 
 ### set hostname
 ###
