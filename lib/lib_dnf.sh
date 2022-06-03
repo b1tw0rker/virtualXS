@@ -5,10 +5,14 @@ file001=/etc/dnf/automatic.conf
 ### q run upate
 ###
 ###
-printf "\n\n***********************************************\n\nRun dnf update [y/n]: "
-if [ "$u_dnf_update" = "" ]; then
-    read u_dnf_update
-fi
+u_dnf_update=y
+printf "\n\n***********************************************\n\n"
+read -p "Run dnf update [y/n]: " -ei $u_dnf_update u_dnf_update
+
+#printf "\n\n***********************************************\n\nRun dnf update [y/n]: "
+#if [ "$u_dnf_update" = "" ]; then
+#    read u_dnf_update
+#fi
 
 if [ "$u_dnf_update" = "y" ]; then
     printf "\n"
@@ -21,10 +25,13 @@ fi
 ### install
 ###
 ###
-printf "\n\n***********************************************\n\nInstall apps via dnf [y/n]: "
-if [ "$u_dnf" = "" ]; then
-    read u_dnf
-fi
+u_dnf=y
+printf "\n\n***********************************************\n\n"
+read -p "Install apps via dnf [y/n]: " -ei $u_dnf u_dnf
+#printf "\n\n***********************************************\n\nInstall apps via dnf [y/n]: "
+#if [ "$u_dnf" = "" ]; then
+#    read u_dnf
+#fi
 
 if [ "$u_dnf" = "y" ]; then
 

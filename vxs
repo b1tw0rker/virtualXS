@@ -1,7 +1,7 @@
 #!/bin/bash
 
-### Version: 1.0.23
-### Build date: 20.02.2022
+### Version: 1.1.2
+### Build date: 03.06.2022
 ### (C) 2021-2022 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
 ### MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
@@ -195,10 +195,13 @@ if [ ! -f "/etc/yum.repos.d/epel.repo" ]; then
 
 fi
 
-printf "\n\n***********************************************\n\nInstall Mysql or MariaDB? (EXPERIMENTAL) [mysql/maria]: "
-if [ "$u_sql_server" = "" ]; then
-    read u_sql_server
-fi
+u_sql_server=mysql
+printf "\n\n***********************************************\n\n"
+read -p "Install Mysql or MariaDB? [mysql/maria]: " -ei $u_sql_server u_sql_server
+#printf "\n\n***********************************************\n\nInstall Mysql or MariaDB? (EXPERIMENTAL) [mysql/maria]: "
+#if [ "$u_sql_server" = "" ]; then
+#    read u_sql_server
+#fi
 
 if [ "$u_sql_server" = "maria" ]; then
     db_server=mariadb-server
