@@ -34,12 +34,12 @@ if [ "$u_dovecot" = "y" ]; then
     ###
     ###
     touch /var/log/dovecot.log
-    sed -i 's/^#log_path = syslog/#log_path = syslog\nlog_path = \/var\/log\/dovecot.log/' /etc/dovecot/conf.d/10-logging.conf
+    sed -i 's/^#log_path = syslog/###log_path = syslog\nlog_path = \/var\/log\/dovecot.log/' /etc/dovecot/conf.d/10-logging.conf
 
     ### https://unix.stackexchange.com/questions/56123/remove-line-containing-certain-string-and-the-following-line
     ###
     ###
-    sed -i '/unix_listener \/var\/spool\/postfix\/private\/auth/,+2 d' /etc/dovecot/conf.d/10-master.conf
+    sed -i '/#unix_listener \/var\/spool\/postfix\/private\/auth/,+2 d' /etc/dovecot/conf.d/10-master.conf
     sed -i 's/Postfix smtp-auth/Postfix smtp-auth\n  unix_listener \/var\/spool\/postfix\/private\/auth {\n    mode = 0666\n  }/' /etc/dovecot/conf.d/10-master.conf
 
     ###
