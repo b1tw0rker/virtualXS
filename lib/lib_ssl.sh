@@ -19,9 +19,9 @@ if [ "$u_ssl" = "y" ]; then
     ### https://stackoverflow.com/questions/43235179/how-to-execute-ssh-keygen-without-prompt/45031320
     ssh-keygen -q -t rsa -b 4096 -N '' -f ~/.ssh/id_rsa <<<y 2>&1 >/dev/null
 
-    echo "Es wurde ein Neues Keypaar in /root/.ssh/ erstellt."
+    echo "A new keypair stored in: /root/.ssh/"
 
-    printf "Wohin soll der neue Pub Key via ssh-copy-id kopiert werden (Host Adresse, leer für NICHT kopieren)? "
+    printf "You want to copy the pubkey? (Host adress, leave empty if you DON'T want to copy)? "
     if [ "$u_new_key" = "" ]; then
         read u_new_key
     fi
