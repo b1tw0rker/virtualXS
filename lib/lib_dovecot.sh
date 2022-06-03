@@ -39,8 +39,8 @@ if [ "$u_dovecot" = "y" ]; then
     ### https://unix.stackexchange.com/questions/56123/remove-line-containing-certain-string-and-the-following-line
     ###
     ###
-    sed -i '/unix_listener \/var\/spool\/postfix\/private\/auth/,+2 d' /opt/virtualXS/10-master.conf
-    sed -i 's/Postfix smtp-auth/Postfix smtp-auth\n  unix_listener \/var\/spool\/postfix\/private\/auth {\n    mode = 0666\n  }/' /opt/virtualXS/10-master.conf
+    sed -i '/unix_listener \/var\/spool\/postfix\/private\/auth/,+2 d' /etc/dovecot/conf.d/10-master.conf
+    sed -i 's/Postfix smtp-auth/Postfix smtp-auth\n  unix_listener \/var\/spool\/postfix\/private\/auth {\n    mode = 0666\n  }/' /etc/dovecot/conf.d/10-master.conf
 
     ###
     ###
