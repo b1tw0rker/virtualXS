@@ -23,7 +23,7 @@ fi
 ### Mofify php.ini to yor needs here
 ###
 ###
-printf "\n\n***********************************************\n\nFix php-fpm [y/n]: "
+printf "\n\n***********************************************\n\nFix php-fpm and garbage-collector [y/n]: "
 if [ "$u_phpfpmfix" = "" ]; then
     read u_phpfpmfix
 fi
@@ -47,5 +47,11 @@ if [ "$u_phpfpmfix" = "y" ]; then
     if [ -d "$file_php_003" ]; then
         cp $u_path/files/php/90-bw-security.ini $file_php_003
     fi
+
+    ### set garbage-collector cron.daily
+    ###
+    ###
+    cp $u_path/files/php/garbage-collector /etc/cron.hourly/garbage-collector
+    chmod 700 /etc/cron.hourly/garbage-collector
 
 fi
