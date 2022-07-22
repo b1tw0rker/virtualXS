@@ -6,6 +6,7 @@ The following systems are supported:
 
 - RHEL8 (Minimal)
 - Centos8 (Minimal)
+- Rocky Linux 9.x
 - Rocky Linux 8.x
 - AWS machines
 
@@ -25,13 +26,13 @@ virtualXS will be distributed by dnf. To install the programm on your RHEL8 or C
 -1- Import the RPM-GPG Key to your system:
 
 ```bash
-rpm --import https://srv002.bit-worker.com/repository/RPM-GPG-KEY-BitWorker
+rpm --import https://repo.virt-x.de/RPM-GPG-KEY-BitWorker
 ```
 
--2- Install the BitWorker Repository by adding the Repo to your server:
+-2- Install the Virt-X Repository by adding the repo to your server:
 
 ```bash
-dnf config-manager --add-repo https://srv002.bit-worker.com/repository/bitworker.repo
+dnf config-manager --add-repo https://repo.virt-x.de/virtx.repo
 ```
 
 If the shell aborts with an error: No such command: config-manager. Install the core plugins:
@@ -60,7 +61,9 @@ That's it folks!
 
 ## Changelog
 
-06/03/22 - Bugfix Version and tarted to prog a Python Version
+07/22/22 - Changed Repo to: repo.virt-x.de. Added Support for Rocky Linux 9
+
+06/03/22 - Bugfix Version and started to prog a Python Version
 
 02/20/22 - Bugfixes, new disclaimer and maria-db support
 
