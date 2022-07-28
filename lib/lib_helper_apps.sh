@@ -18,18 +18,13 @@ if [ "$u_helper_apps" = "y" ]; then
 
   cp $u_path/files/bitworker/bw-* $file004/
 
-  chmod 700 $file004/bw-show-jails.sh
-  chmod 700 $file004/bw-unban-jails.sh
-  chmod 700 $file004/bw-import-mysql.sh
-  chmod 700 $file004/bw-list-zones.sh
-  chmod 700 $file004/bw-ftp.sh
-  chmod 700 $file004/bw-multichange.sh
-  chmod 700 $file004/bw-garbage-collector.sh
+  chmod 700 $file004/bw*
 
   ln -s $file004/bw-show-jails.sh /bin/bw-show-jails.sh
   ln -s $file004/bw-unban-jails.sh /bin/bw-unban-jails.sh
   ln -s $file004/bw-import-mysql.sh /bin/bw-import-mysql.sh
   ln -s $file004/bw-list-zones.sh /bin/bw-list-zones.sh
   ln -s $file004/bw-multichange.sh /bin/bw-multichange.sh
+  ln -s $file004/bw-createDkimKey.sh /bin/bw-createDkimKey.sh
 
 fi

@@ -51,7 +51,13 @@ if [ "$u_phpfpmfix" = "y" ]; then
     ### set garbage-collector cron.daily
     ###
     ###
-    cp $u_path/files/php/garbage-collector /etc/cron.hourly/garbage-collector
+    cp $u_path/files/php/garbage-collector /etc/cron.hourly/
     chmod 700 /etc/cron.hourly/garbage-collector
+
+    ### set clearBuffer
+    ###
+    ###
+    cp $u_path/files/php/clearBuffer /etc/cron.hourly/
+    chmod 700 /etc/cron.hourly/clearBuffer
 
 fi
