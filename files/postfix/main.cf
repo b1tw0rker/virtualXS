@@ -7,7 +7,6 @@
 ###
 ###
 smtpd_sasl_auth_enable = yes
-#smtpd_sasl_type = cyrus
 smtpd_sasl_type = dovecot
 smtpd_sasl_path = private/auth
 smtpd_tls_auth_only = yes
@@ -51,12 +50,19 @@ bounce_template_file = /etc/postfix/bounce.de.default
 
 
 
-### opendkim standard config (uncommed for use)
+### opendkim standard config (uncomment for use)
 ###
 ###
 #milter_default_action = accept
 #milter_protocol   = 6
-#smtpd_milters     = , inet:127.0.0.1:8891
-#non_smtpd_milters = , inet:127.0.0.1:8891
+#smtpd_milters     = inet:127.0.0.1:8891
+#non_smtpd_milters = inet:127.0.0.1:8891
 
 
+### Cert
+### Hint: Cert must be an fullchain to work correctly with roundcube
+### Comment smtpd_tls_cert_file and smtpd_tls_key_file above in the main.cf smtpd_tls_key_file
+###
+###
+#smtpd_tls_cert_file = /etc/ssl/certs/domainname.fullchain
+#smtpd_tls_key_file = /etc/ssl/certs/domainname.key
