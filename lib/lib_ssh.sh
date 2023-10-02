@@ -39,6 +39,9 @@ if [ "$u_ssh" = "y" ]; then
             sed -i 's/^Match address XXX/Match address '"$u_client_ip"'/' $file_ssh001
     fi
 
+
+    ### TODO: Only copy if file authorized_keys im emtpy or does not exists
+    
     cp $u_path/files/ssh/authorized_keys /root/.ssh/
     
 
