@@ -30,6 +30,9 @@ if [ "$u_disable_apps" = "y" ]; then
         systemctl disable atd
     fi
 
+    ### do not disable sssd.service for various reasons
+    ###
+    ###
     #if [ -f "/etc/systemd/system/multi-user.target.wants/sssd.service" ]; then
     #    systemctl disable sssd
     #fi
@@ -38,7 +41,7 @@ if [ "$u_disable_apps" = "y" ]; then
         systemctl stop atd
     fi
 
-    if [ -f "/etc/systemd/system/atd.service" ]; then
+    if [ -f "/etc/systemd/system/sendmail.service" ]; then
         systemctl stop sendmail
     fi
 

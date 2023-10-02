@@ -3,10 +3,10 @@
 ### Sources
 ### color formating: https://misc.flogisoft.com/bash/tip_colors_and_formatting
 ###
+###
 
 
-
-### Confirm Funktion
+### Confirm function
 ### version 1.0.0
 ### last-modified: 01.10.23
 ###

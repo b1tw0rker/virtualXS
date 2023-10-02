@@ -9,11 +9,6 @@
 ###
 clear
 
-###
-###
-###
-source $u_path/lib/functions.sh
-
 
 ### prework
 ###
@@ -52,6 +47,10 @@ u_eth=eth0
 u_aws=n
 u_all=n
 
+### (After u_path defintion)
+###
+###
+source $u_path/lib/functions.sh
 
 ### correct time rules first
 ###
@@ -94,7 +93,7 @@ fi
 ### get ip and servername
 ###
 ###
-read -p "Server IP adress: " -ei $u_ip4 u_ip
+read -p "1/10 • Server IP adress: " -ei $u_ip4 u_ip
 
 ### get FQDN
 ###
@@ -102,7 +101,7 @@ read -p "Server IP adress: " -ei $u_ip4 u_ip
 regex='^[^.]+\.[^.]+\.[^.]+$'
 
 while true; do
-    read -p "Servername (FQDN): " -ei "$u_hostname" u_srv
+    read -p "2/10 • Servername (FQDN): " -ei "$u_hostname" u_srv
     if [[ $u_srv =~ $regex ]]; then
         break
     else
@@ -120,7 +119,7 @@ u_domain=$(echo "$u_srv" | awk -F'.' '{print $(NF-1)"."$NF}')
 ###
 ###
 ###
-read -p "Your IP (Client IP): " -ei $u_client_ip u_client_ip
+read -p "3/10 • Your IP (Client IP): " -ei $u_client_ip u_client_ip
 
 
 
@@ -129,9 +128,9 @@ read -p "Your IP (Client IP): " -ei $u_client_ip u_client_ip
 ###
 if [ -f "$dir001/interface" ]; then
     INTERFACE=$(cat $dir001/interface)
-    read -p "NetworkInterface: " -ei $INTERFACE u_eth
+    read -p "4/10 • NetworkInterface: " -ei $INTERFACE u_eth
 else
-    read -p "NetworkInterface: " -ei $u_eth u_eth
+    read -p "4/10 • NetworkInterface: " -ei $u_eth u_eth
     printf "$u_eth" >$dir001/interface
 fi
 
@@ -142,11 +141,11 @@ fi
 ###
 while true; do
     # Erste Abfrage
-    read -s -p "Upcoming MySQL root password: " u_mysql_pwd
+    read -s -p "5/10 • Upcoming MySQL root password: " u_mysql_pwd
     echo # Zeilenumbruch nach der Eingabe, da -s keinen Zeilenumbruch erzeugt
     
     # Zweite Abfrage zur Bestätigung
-    read -s -p "Confirm MySQL root password: " u_mysql_pwd_confirm
+    read -s -p "6/10 • Confirm MySQL root password: " u_mysql_pwd_confirm
     echo # Zeilenumbruch
 
     # Vergleiche die beiden Eingaben

@@ -42,7 +42,7 @@ if [ "$u_powerdns_master" = "y" ]; then
     ### install powerdns mysql scheme
     ###
     ###
-    MYSQL_PWD=$u_mysql_pwd mysql -u root <$u_path/files/powerdns/schema.mysql.sql
+    MYSQL_PWD=$u_mysql_pwd mysql -u root <$u_path/files/powerdns/schema-4.7.mysql.sql
 
     sed -i 's/^# local-address=0.0.0.0, ::/local-address='"$u_ip4"', ::/' $file_powerdns001
     sed -i 's/^# master=no/master=yes/' $file_powerdns001
@@ -90,7 +90,7 @@ if [ "$u_powerdns_slave" = "y" ]; then
     ###
     systemctl start mysqld
 
-    MYSQL_PWD=$u_mysql_pwd mysql -u root <$u_path/files/powerdns/schema.mysql.sql
+    MYSQL_PWD=$u_mysql_pwd mysql -u root <$u_path/files/powerdns/schema-4.7.mysql.sql
 
     sed -i 's/^# local-address=0.0.0.0, ::/local-address='"$u_ip4"', ::/' $file_powerdns001
     sed -i 's/^# slave=no/slave=yes/' $file_powerdns001
