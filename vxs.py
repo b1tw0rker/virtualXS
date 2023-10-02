@@ -17,7 +17,7 @@ u_hostname = os.popen("hostname").read().strip()
 u_client_ip = os.environ.get("SSH_CLIENT", "").split()[0]
 u_path = "/opt/virtualXS"
 u_server = "w"
-u_eth = "eth0"
+u_iface = "eth0"
 u_aws = "n"
 u_all = "n"
 
@@ -48,11 +48,11 @@ interface_file = os.path.join(dir001, "interface")
 if os.path.isfile(interface_file):
     with open(interface_file) as f:
         INTERFACE = f.read().strip()
-    u_eth = input("NetzwerkSchnittstelle: ") or INTERFACE
+    u_iface = input("NetzwerkSchnittstelle: ") or INTERFACE
 else:
-    u_eth = input("NetzwerkSchnittstelle: ") or u_eth
+    u_iface = input("NetzwerkSchnittstelle: ") or u_iface
     with open(interface_file, "w") as f:
-        f.write(u_eth)
+        f.write(u_iface)
 
 u_mysql_pwd = input("Upcoming MySQL root password: ")
 u_server = input("Create Web or DNS Server [w/d]: ") or u_server

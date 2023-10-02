@@ -42,8 +42,11 @@ u_hostname=$(hostname)
 ### https://unix.stackexchange.com/questions/322227/how-to-get-ssh-client-ip-address-using-shell-script
 u_client_ip=$(echo "$SSH_CLIENT" | cut -d' ' -f 1)
 u_path=/opt/virtualXS # no ending slash
-#u_server=w
-u_eth=eth0
+
+### detect interface
+###
+###
+u_iface=$(ip route | grep default | awk '{print $5}' | head -n 1)
 u_aws=n
 u_all=n
 
@@ -128,10 +131,10 @@ read -p "3/10 • Your IP (Client IP): " -ei $u_client_ip u_client_ip
 ###
 if [ -f "$dir001/interface" ]; then
     INTERFACE=$(cat $dir001/interface)
-    read -p "4/10 • NetworkInterface: " -ei $INTERFACE u_eth
+    read -p "4/10 • NetworkInterface: " -ei $INTERFACE u_iface
 else
-    read -p "4/10 • NetworkInterface: " -ei $u_eth u_eth
-    printf "$u_eth" >$dir001/interface
+    read -p "4/10 • NetworkInterface: " -ei $u_iface u_iface
+    printf "$u_iface" >$dir001/interface
 fi
 
 
@@ -182,9 +185,9 @@ confirm "Create on AWS" "$u_aws"
 
 
 
-###
-###
-###
+### DNS Server presettings.
+### All with 'y' marked options will be executed autmatticly.
+### All with 'n' marked options will NOT executed.
 if [ "$u_server" = "d" ]; then
     u_bitworker_repo=y
     u_epel_repo=y

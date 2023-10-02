@@ -81,7 +81,10 @@ fi
 if [ "$u_powerdns_slave" = "y" ]; then
 
     read -p "Master Server IP: " u_master_server_ip
-    read -p "Slave Server FQDN (example: ns1.domain.org): " -ei $u_srv u_slave_server_fqdn
+    # Reverse Lookup mit dig
+    u_reverse=$(dig +short -x $u_master_server_ip | sed 's/\.$//')
+
+    read -p "Slave Server FQDN (example: ns1.$u_domain): " -ei $u_reverse u_slave_server_fqdn
 
     dnf -y install $dns_apps
 
@@ -98,7 +101,9 @@ if [ "$u_powerdns_slave" = "y" ]; then
     sed -i 's/^# autosecondary=no/autosecondary=yes/' $file_powerdns001
     sed -i 's/^launch=bind/# launch=bind/' $file_powerdns001
 
-    ###grep BitWorker
+    ### grep BitWorker
+    ###
+    ###
     u_bitworker=$(grep -m 1 "### by BitWorker" /etc/pdns/pdns.conf)
 
     if [ -f "$file_powerdns001" ] && [ "$u_bitworker" != "### by BitWorker" ]; then
@@ -121,8 +126,8 @@ if [ "$u_powerdns_slave" = "y" ]; then
 
     systemctl start pdns
 
-    printf "*******************************************************************************************************\n"
-    printf "*** Don't forget to insert udp port 53 network traffic from master to slave in your iptables script ***\n"
-    printf "*******************************************************************************************************\n"
+    printf "**********************************************************************************************************\n"
+    printf "*** Don't forget to insert udp/tcp port 53 network traffic from master to slave in your iptables script ***\n"
+    printf "**********************************************************************************************************\n"
 
 fi

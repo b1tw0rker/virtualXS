@@ -29,7 +29,7 @@ if [ "$u_firewall" = "y" ]; then
         ### muss nach der rule kommen, die noch nach venet0:0 sucht! (see 3 lines above)
         ###
         ###
-        sed -i 's/venet0:0/'"$u_eth"'/g' $file004/rules.fw
+        sed -i 's/venet0:0/'"$u_iface"'/g' $file004/rules.fw
 
         ### place client ip in firewall script
         ### $u_client_ip is defined install.sh on top
