@@ -2,7 +2,7 @@
 
 file004=/etc/firewall
 
-printf "\n\n***********************************************\n\nCreate /etc/firewall [y/n]: "
+printf "\n\n***********************************************\n\nCreate /etc/firewall [y/N]: "
 if [ "$u_firewall" = "" ]; then
     read u_firewall
 fi
@@ -67,7 +67,7 @@ fi
 ###
 ###
 
-printf "\n\n***********************************************\n\nActivate firewall now [y/n]: "
+printf "\n\n***********************************************\n\nActivate firewall now [y/N]: "
 if [ "$u_activate_firewall" = "" ]; then
     read u_activate_firewall
 fi

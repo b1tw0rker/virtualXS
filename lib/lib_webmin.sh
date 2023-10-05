@@ -7,7 +7,7 @@ webmin_version=2.102
 ### /webmin/
 ###
 ###
-printf "\n\n***********************************************\n\nDownload and Install Webmin [y/n]: "
+printf "\n\n***********************************************\n\nDownload and Install Webmin [y/N]: "
 if [ "$u_webmin" = "" ]; then
     read u_webmin
 fi
@@ -17,6 +17,7 @@ if [ "$u_webmin" = "y" ]; then
     if [ ! -f "webmin-$webmin_version-1.noarch.rpm" ]; then
 
         cd /root/
+
         wget https://prdownloads.sourceforge.net/webadmin/webmin-$webmin_version-1.noarch.rpm
         rpm -Uvh webmin-$webmin_version-1.noarch.rpm
 
@@ -25,6 +26,7 @@ if [ "$u_webmin" = "y" ]; then
     if [ ! -f "webmin-$webmin_version-minimal.tar.gz" ]; then
 
         cd /root/
+
         wget https://prdownloads.sourceforge.net/webadmin/webmin-$webmin_version-minimal.tar.gz
 
     fi
@@ -94,7 +96,13 @@ if [ "$u_webmin" = "y" ]; then
     if [ -d "/etc/webmin/status" ]; then
 
         # del standard services first
-        rm -f /etc/webmin/status/services/*.serv
+        if [ -d "/etc/webmin/status/services" ]; then
+            rm -f /etc/webmin/status/services/*.serv
+        fi
+
+        if [ ! -d "/etc/webmin/status/services" ]; then
+            mkdir /etc/webmin/status/services
+        fi
 
         cp $u_path/files/webmin/status/config /etc/webmin/status/
         cp $u_path/files/webmin/status/monitor.pl /etc/webmin/status/

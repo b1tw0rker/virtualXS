@@ -1,17 +1,12 @@
 #!/bin/bash
 
-
-
 ### q enable apps
 ###
 ###
-printf "\n\n***********************************************\n\nEnable apps at startup [y/n]: "
+printf "\n\n***********************************************\n\nEnable apps at startup [y/N]: "
 if [ "$u_enable_apps" = "" ]; then
-        read u_enable_apps
+    read u_enable_apps
 fi
-
-
-
 
 if [ "$u_enable_apps" = "y" ]; then
 
@@ -43,21 +38,15 @@ if [ "$u_enable_apps" = "y" ]; then
         systemctl enable spamassassin
     fi
 
-fi 
-
-
-
-
+fi
 
 ### q start apps
 ###
 ###
-printf "\n\n***********************************************\n\nStart apps now [y/n]: "
+printf "\n\n***********************************************\n\nStart apps now [y/N]: "
 if [ "$u_start_apps" = "" ]; then
-        read u_start_apps
+    read u_start_apps
 fi
-
-
 
 if [ "$u_start_apps" = "y" ]; then
 
@@ -69,6 +58,4 @@ if [ "$u_start_apps" = "y" ]; then
     systemctl start dovecot
     systemctl start spamassassin
 
-fi 
-
-
+fi

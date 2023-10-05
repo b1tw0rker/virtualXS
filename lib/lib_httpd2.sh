@@ -2,7 +2,7 @@
 
 file001=/etc/httpd/conf.d
 
-printf "\n\n***********************************************\n\nActivate Protocol http/2 [y/n]: "
+printf "\n\n***********************************************\n\nActivate Protocol http/2 [y/N]: "
 if [ "$u_httpd2" = "" ]; then
     read u_httpd2
 fi

@@ -9,7 +9,6 @@
 ###
 clear
 
-
 ### prework
 ###
 ###
@@ -28,7 +27,6 @@ for release in /etc/*-release; do
         break
     fi
 done
-
 
 ### some vars & presetting
 ###
@@ -60,13 +58,10 @@ source $u_path/lib/functions.sh
 ###
 timedatectl set-timezone Europe/Berlin
 
-
 ### set new hostname
 ###
 ###
 hostnamectl set-hostname $u_hostname
-
-
 
 echo -ne "\\033[2J\033[30;1f\e[94m"
 print_center "********************************************************************\n"
@@ -76,8 +71,6 @@ print_center " *                    Detected OS: $OS - Version: $VERSION        
 print_center " *                                                                  *\n"
 print_center " ********************************************************************\n"
 printf "\n"
-
-
 
 if [ ! -f "$dir001/disclaimer" ]; then
 
@@ -90,8 +83,6 @@ if [ ! -f "$dir001/disclaimer" ]; then
     touch $dir001/disclaimer
 
 fi
-
-
 
 ### get ip and servername
 ###
@@ -117,14 +108,10 @@ done
 ###
 u_domain=$(echo "$u_srv" | awk -F'.' '{print $(NF-1)"."$NF}')
 
-
-
 ###
 ###
 ###
 read -p "3/10 • Your IP (Client IP): " -ei $u_client_ip u_client_ip
-
-
 
 ### Detect and/or set eth
 ###
@@ -137,8 +124,6 @@ else
     printf "$u_iface" >$dir001/interface
 fi
 
-
-
 ### Ask for MySql Password
 ###
 ###
@@ -146,7 +131,7 @@ while true; do
     # Erste Abfrage
     read -s -p "5/10 • Upcoming MySQL root password: " u_mysql_pwd
     echo # Zeilenumbruch nach der Eingabe, da -s keinen Zeilenumbruch erzeugt
-    
+
     # Zweite Abfrage zur Bestätigung
     read -s -p "6/10 • Confirm MySQL root password: " u_mysql_pwd_confirm
     echo # Zeilenumbruch
@@ -160,30 +145,22 @@ while true; do
     fi
 done
 
-
-
-
 ###
 ###
 ###
 while true; do
     read -p "Create Web or DNS Server [w/d]: " u_server
     case $u_server in
-        [w] ) break;;
-        [d] ) break;;
-        * ) echo "Please enter only 'w' or 'd'.";;
+    [w]) break ;;
+    [d]) break ;;
+    *) echo "Please enter only 'w' or 'd'." ;;
     esac
 done
-
-
 
 ###
 ###
 ###
 confirm "Create on AWS" "$u_aws"
-
-
-
 
 ### DNS Server presettings.
 ### All with 'y' marked options will be executed autmatticly.
@@ -219,21 +196,17 @@ if [ "$u_server" = "d" ]; then
     u_start_firewall=
 fi
 
-
-
 ### set hostname
 ###
 ###
 hostnamectl set-hostname $u_srv
-
-
 
 ### q run virtx.repo
 ###
 ###
 if [ ! -f "/etc/yum.repos.d/virtx.repo" ]; then
 
-    printf "\n\n***********************************************\n\nAdd VIRTX Repo? [y/n]: "
+    printf "\n\n***********************************************\n\nAdd VIRTX Repo? [y/N]: "
     if [ "$u_virtx_repo" = "" ]; then
         read u_virtx_repo
     fi
@@ -244,14 +217,12 @@ if [ ! -f "/etc/yum.repos.d/virtx.repo" ]; then
 
 fi
 
-
-
 ### q run epel.repo
 ###
 ###
 if [ ! -f "/etc/yum.repos.d/epel.repo" ]; then
 
-    printf "\n\n***********************************************\n\nAdd Epel Repo? [y/n]: "
+    printf "\n\n***********************************************\n\nAdd Epel Repo? [y/N]: "
     if [ "$u_epel_repo" = "" ]; then
         read u_epel_repo
     fi
@@ -268,8 +239,6 @@ if [ ! -f "/etc/yum.repos.d/epel.repo" ]; then
     fi
 
 fi
-
-
 
 u_sql_server=mysql
 printf "\n\n***********************************************\n\n"
@@ -294,7 +263,7 @@ source $u_path/lib/lib_dnf.sh
 ###
 ###
 if [ ! -f "$dir001/rebooted" ]; then
-    printf "\n\n***********************************************\n\nReboot your machine now (after reboot rerun vxs) - Strongly recommended if this is the initial run [y/n]: "
+    printf "\n\n***********************************************\n\nReboot your machine now (after reboot rerun vxs) - Strongly recommended if this is the initial run [y/N]: "
     if [ "$u_reboot1" = "" ]; then
         read u_reboot1
     fi
@@ -303,8 +272,6 @@ if [ ! -f "$dir001/rebooted" ]; then
         reboot
     fi
 fi
-
-
 
 ### q install php 8.1
 ### don't show, if we install on ROCKY 9. ROCKY 9 will install php 8 by default
@@ -315,23 +282,16 @@ else
     source $u_path/lib/lib_php81.sh
 fi
 
-
-
-
 ### q apps
 ###
 ###
 source $u_path/lib/lib_apps_disable.sh
 source $u_path/lib/lib_apps.sh
 
-
-
 ### q create standard folders
 ###
 ###
 source $u_path/lib/lib_folders.sh
-
-
 
 ### q config Posftix
 ###
@@ -345,39 +305,29 @@ if [ "$u_aws" = "n" ]; then
     source $u_path/lib/lib_ssh.sh
 fi
 
-
-
 ### q config fail2ban
 ###
 ###
-if ! command -v fail2ban-client &> /dev/null; then
+if ! command -v fail2ban-client &>/dev/null; then
     source $u_path/lib/lib_fail2ban.sh
 fi
-
-
 
 ### q config helper apps
 ###
 ###
 source $u_path/lib/lib_helper_apps.sh
 
-
-
 ### q config httpd
 ###
 ###
 source $u_path/lib/lib_httpd.sh
-
-
 
 ### q activate protocol http/2
 ###
 ###
 if [ "$u_server" = "w" ]; then
     source $u_path/lib/lib_httpd2.sh
-fi 
-
-
+fi
 
 ### q config dovecot
 ###
@@ -389,16 +339,12 @@ source $u_path/lib/lib_dovecot.sh
 ###
 if [ "$u_server" = "w" ]; then
     source $u_path/lib/lib_certbot.sh
-fi 
-
-
+fi
 
 ### q config autoconfig
 ###
 ###
 source $u_path/lib/lib_autoconfig.sh
-
-
 
 ### q config vsftpd
 ###
@@ -410,8 +356,6 @@ source $u_path/lib/lib_vsftpd.sh
 ###
 source $u_path/lib/lib_mysql.sh
 
-
-
 ### q config ssl
 ###
 ###
@@ -419,21 +363,15 @@ if [ "$u_aws" = "n" ]; then
     source $u_path/lib/lib_ssl.sh
 fi
 
-
-
 ### q config backup
 ###
 ###
 source $u_path/lib/lib_backup.sh
 
-
-
 ### q config backup
 ###
 ###
 source $u_path/lib/lib_quota.sh
-
-
 
 ### q dns server
 ###
@@ -442,21 +380,15 @@ if [ "$u_server" = "d" ]; then
     source $u_path/lib/lib_powerdns.sh
 fi
 
-
-
 ### q Webmin
 ###
 ###
 source $u_path/lib/lib_webmin.sh
 
-
-
 ### q install magento
 ###
 ###
 ### source $u_path/lib/lib_magento.sh
-
-
 
 ### /etc/firewall
 ###
@@ -465,28 +397,20 @@ if [ "$u_aws" = "n" ]; then
     source $u_path/lib/lib_firewall.sh
 fi
 
-
-
 ### /etc/logrotate.conf
 ###
 ###
 source $u_path/lib/lib_logrotate.sh
-
-
 
 ### /etc/selinux/config
 ###
 ###
 source $u_path/lib/lib_selinux.sh
 
-
-
 ### /etc/crontab
 ###
 ###
 source $u_path/lib/lib_cron.sh
-
-
 
 ### we want to be absolutly sure that firewalld is turned off
 ###
@@ -495,19 +419,15 @@ if [ -f "/etc/systemd/system/multi-user.target.wants/firewalld.service" ]; then
     systemctl disable firewalld
 fi
 
-
-
 ### q Reboot
 ###
 ###
 if [ "$u_aws" = "n" ]; then
-    printf "\n\n***********************************************\n\nReboot your machine now [y/n]: "
+    printf "\n\n***********************************************\n\nReboot your machine now [y/N]: "
     if [ "$u_reboot" = "" ]; then
         read u_reboot
     fi
 fi
-
-
 
 printf "\n\n"
 print_center "********************************************************************\n"
@@ -523,14 +443,12 @@ print_center "*                                                                 
 print_center "********************************************************************\n"
 printf "\n"
 
-
 ###
 ###
 ###
 if [ -e "/tmp/time.log" ]; then
     unlink /tmp/time.log
 fi
-
 
 ###
 ###
@@ -540,8 +458,6 @@ if [ "$u_aws" = "n" ]; then
         reboot
     fi
 fi
-
-
 
 ###
 ###

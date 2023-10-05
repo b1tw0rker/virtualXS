@@ -5,7 +5,7 @@ file006=/etc/httpd/conf.d/obsolete
 file007=/etc/httpd/conf.modules.d/obsolete
 file008=/etc/httpd/conf.d
 
-printf "\n\n***********************************************\n\nConfigure /etc/httpd/conf/httpd.conf [y/n]: "
+printf "\n\n***********************************************\n\nConfigure /etc/httpd/conf/httpd.conf [y/N]: "
 if [ "$u_httpd" = "" ]; then
     read u_httpd
 fi

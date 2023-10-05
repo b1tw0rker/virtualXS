@@ -3,7 +3,7 @@
 ### /etc/postfix/main.cf
 ###
 ###
-printf "\n\n***********************************************\n\nConfigure /etc/postfix/main.cf [y/n]: "
+printf "\n\n***********************************************\n\nConfigure /etc/postfix/main.cf [y/N]: "
 if [ "$u_postfix" = "" ]; then
     read u_postfix
 fi

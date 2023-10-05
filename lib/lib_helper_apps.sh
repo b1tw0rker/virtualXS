@@ -3,7 +3,7 @@
 ### /etc/fail2ban/
 ###
 ###
-printf "\n\n***********************************************\n\nCopy helper apps to /etc/bitworker [y/n]: "
+printf "\n\n***********************************************\n\nCopy helper apps to /etc/bitworker [y/N]: "
 if [ "$u_helper_apps" = "" ]; then
   read u_helper_apps
 fi

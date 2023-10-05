@@ -5,7 +5,6 @@
 ###
 ###
 
-
 ### Confirm function
 ### version 1.0.0
 ### last-modified: 01.10.23
@@ -16,16 +15,14 @@ confirm() {
     local result
 
     while true; do
-        read -p "$prompt [y/n]: " -ei "$default_value" result
+        read -p "$prompt [y/N]: " -ei "$default_value" result
         case $result in
-            [y] ) return 0;;  # return 0 bedeutet Erfolg bzw. "ja"
-            [n] ) return 1;;  # return 1 bedeutet "nein"
-            * ) echo "Please enter only 'y' or 'n'.";;
+        [y]) return 0 ;; # return 0 bedeutet Erfolg bzw. "ja"
+        [n]) return 1 ;; # return 1 bedeutet "nein"
+        *) echo "Please enter only 'y' or 'n'." ;;
         esac
     done
 }
-
-
 
 ### print centered some lines and write some infos
 ### https://superuser.com/questions/823883/how-to-justify-and-center-text-in-bash/829870
@@ -42,5 +39,3 @@ print_center() {
     y=$(echo -ne "${y#*[}" | cut -d';' -f1)
     echo -ne "\033[${y};${x}f$*"
 }
-
-

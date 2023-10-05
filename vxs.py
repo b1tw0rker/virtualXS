@@ -56,4 +56,4 @@ else:
 
 u_mysql_pwd = input("Upcoming MySQL root password: ")
 u_server = input("Create Web or DNS Server [w/d]: ") or u_server
-u_aws = input("Create on AWS [y/n]: ") or u_aws
+u_aws = input("Create on AWS [y/N]: ") or u_aws

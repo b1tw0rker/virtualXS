@@ -3,7 +3,7 @@
 ### q disable apps / Prework
 ###
 ###
-printf "\n\n***********************************************\n\nDisable useless apps at startup [y/n]: "
+printf "\n\n***********************************************\n\nDisable useless apps at startup [y/N]: "
 if [ "$u_disable_apps" = "" ]; then
     read u_disable
 fi

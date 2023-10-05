@@ -3,7 +3,7 @@
 ### q install magento stuff dnf
 ###
 ###
-printf "\n\n***********************************************\n\nInstall Magento apps via dnf [y/n]: "
+printf "\n\n***********************************************\n\nInstall Magento apps via dnf [y/N]: "
 if [ "$u_magento_dnf" = "" ]; then
     read u_magento_dnf
 fi

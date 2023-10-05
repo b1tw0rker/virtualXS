@@ -4,7 +4,7 @@
 ###
 ###
 
-printf "\n\n***********************************************\n\nConfigure Dovecot [y/n]: "
+printf "\n\n***********************************************\n\nConfigure Dovecot [y/N]: "
 if [ "$u_dovecot" = "" ]; then
     read u_dovecot
 fi

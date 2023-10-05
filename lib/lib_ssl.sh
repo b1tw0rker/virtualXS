@@ -4,7 +4,7 @@
 ###
 ###
 #if [ "$u_all" != "y" ]; then
-printf "\n\n***********************************************\n\nCreate new SSL Keypair [y/n]: "
+printf "\n\n***********************************************\n\nCreate new SSL Keypair [y/N]: "
 if [ "$u_ssl" = "" ]; then
     read u_ssl
 fi

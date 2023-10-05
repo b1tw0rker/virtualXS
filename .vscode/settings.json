@@ -1,0 +1,21 @@
+{
+      "editor.formatOnPaste": true,
+      "editor.formatOnSave": true,
+
+      "prettier.printWidth": 1250,
+      "prettier.tabWidth": 6,
+      "prettier.singleQuote": true,
+
+      "editor.fontFamily": "MonoLisa",
+      "editor.fontLigatures": true,
+      "editor.fontSize": 12,
+
+      "emmet.triggerExpansionOnTab": true,
+      "emmet.showSuggestionsAsSnippets": true,
+      "editor.snippetSuggestions": "top",
+      "emmet.extensionsPath": [".\\.vscode"],
+
+      "editor.bracketPairColorization.enabled": true,
+      "editor.guides.bracketPairs": true,
+      "git.autofetch": true
+}

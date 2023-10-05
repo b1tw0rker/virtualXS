@@ -3,7 +3,7 @@
 ### certbot
 ###
 ###
-printf "\n\n***********************************************\n\nCreate Let's Enycrypt Cert for Server: $u_srv [y/n]: "
+printf "\n\n***********************************************\n\nCreate Let's Enycrypt Cert for Server: $u_srv [y/N]: "
 if [ "$u_certbot" = "" ]; then
     read u_certbot
 fi
@@ -33,7 +33,7 @@ if [ "$u_certbot" = "y" ]; then
 
 fi
 
-printf "\n\n***********************************************\n\nCreate Let's Enycrypt Cert for dovecot [y/n]: "
+printf "\n\n***********************************************\n\nCreate Let's Enycrypt Cert for dovecot [y/N]: "
 if [ "$u_certbot_dovecot" = "" ]; then
     read u_certbot_dovecot
 fi
