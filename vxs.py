@@ -19,7 +19,6 @@ u_path = "/opt/virtualXS"
 u_server = "w"
 u_iface = "eth0"
 u_aws = "n"
-u_all = "n"
 
 os.system("timedatectl set-timezone Europe/Berlin")
 os.system(f"hostnamectl set-hostname {u_hostname}")

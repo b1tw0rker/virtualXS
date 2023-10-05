@@ -11,14 +11,14 @@
 ###
 confirm() {
     local prompt="$1"
-    local default_value="$2"
+    local default_value="${2:-N}" # Setze standardmäßig auf 'N', falls kein Wert angegeben wird
     local result
 
     while true; do
-        read -p "$prompt [y/N]: " -ei "$default_value" result
-        case $result in
-        [y]) return 0 ;; # return 0 bedeutet Erfolg bzw. "ja"
-        [n]) return 1 ;; # return 1 bedeutet "nein"
+        read -p "$prompt [y/N]: " -i "$default_value" result
+        case ${result,,} in          # Konvertiert die Eingabe in Kleinbuchstaben, um Groß- und Kleinschreibung zu ignorieren
+        "y" | "yes") return 0 ;;     # return 0 bedeutet Erfolg bzw. "ja"
+        "n" | "no" | "") return 1 ;; # return 1 bedeutet "nein"; das leere "" fängt eine Enter-Eingabe ohne Inhalt ab
         *) echo "Please enter only 'y' or 'n'." ;;
         esac
     done

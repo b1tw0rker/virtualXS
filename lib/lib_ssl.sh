@@ -3,7 +3,6 @@
 ### /etc/ssl/
 ###
 ###
-#if [ "$u_all" != "y" ]; then
 printf "\n\n***********************************************\n\nCreate new SSL Keypair [y/N]: "
 if [ "$u_ssl" = "" ]; then
     read u_ssl

@@ -14,18 +14,16 @@ fi
 
 if [ "$u_webmin" = "y" ]; then
 
-    if [ ! -f "webmin-$webmin_version-1.noarch.rpm" ]; then
+    cd /root/
 
-        cd /root/
+    if [ ! -f "/root/webmin-$webmin_version-1.noarch.rpm" ]; then
 
         wget https://prdownloads.sourceforge.net/webadmin/webmin-$webmin_version-1.noarch.rpm
         rpm -Uvh webmin-$webmin_version-1.noarch.rpm
 
     fi
 
-    if [ ! -f "webmin-$webmin_version-minimal.tar.gz" ]; then
-
-        cd /root/
+    if [ ! -f "/root/webmin-$webmin_version-minimal.tar.gz" ]; then
 
         wget https://prdownloads.sourceforge.net/webadmin/webmin-$webmin_version-minimal.tar.gz
 
@@ -39,8 +37,11 @@ if [ "$u_webmin" = "y" ]; then
         ###
         ###
         sed -i 's/^port=10000/port=88/' $file_webmin001
-        sed -i 's/^blockhost_time=60/blockhost_time=3601/' $file_webmin001
-        sed -i 's/^keyfile=\/etc\/webmin\/miniserv.pem\/keyfile=\/etc\/letsencrypt\/live\/'"$u_hostname"'\/privkey.pem/' $file_webmin001
+        #sed -i 's/^blockhost_time=60/blockhost_time=3601/' $file_webmin001
+        #sed -i 's/^keyfile=\/etc\/webmin\/miniserv.pem\/keyfile=\/etc\/letsencrypt\/live\/'"$u_hostname"'\/privkey.pem/' $file_webmin001
+
+        sed -i 's|^blockhost_time=60|blockhost_time=3601|' "$file_webmin001"
+        sed -i 's|^keyfile=/etc/webmin/miniserv.pem|keyfile=/etc/letsencrypt/live/'"$u_hostname"'/privkey.pem|' "$file_webmin001"
 
         ### add certificate
         ###

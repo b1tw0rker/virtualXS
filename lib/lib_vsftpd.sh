@@ -3,7 +3,6 @@
 ### /etc/vsftpd/
 ###
 ###
-#if [ "$u_all" != "y" ]; then
 printf "\n\n***********************************************\n\nConfigure Vsftpd [y/N]: "
 if [ "$u_vsftpd" = "" ]; then
     read u_vsftpd
