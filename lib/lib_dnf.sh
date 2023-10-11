@@ -5,14 +5,12 @@ file001=/etc/dnf/automatic.conf
 ### q run upate
 ###
 ###
-u_dnf_update=y
-printf "\n\n***********************************************\n\n"
-read -p "Run dnf update [y/N]: " -ei $u_dnf_update u_dnf_update
+confirm "Run dnf update" "$u_dnf_update"
 
-#printf "\n\n***********************************************\n\nRun dnf update [y/N]: "
-#if [ "$u_dnf_update" = "" ]; then
-#    read u_dnf_update
-#fi
+printf "\n\n***********************************************\n\nRun dnf update [y/N]: "
+if [ "$u_dnf_update" = "" ]; then
+    read u_dnf_update
+fi
 
 if [ "$u_dnf_update" = "y" ]; then
     printf "\n"

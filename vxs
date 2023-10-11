@@ -205,7 +205,7 @@ hostnamectl set-hostname $u_srv
 ###
 if [ ! -f "/etc/yum.repos.d/virtx.repo" ]; then
 
-    printf "\n\n***********************************************\n\nAdd VIRTX Repo? [y/N]: "
+    printf "\n\n***********************************************\n\nAdd Virt-X Repo? [y/N]: "
     if [ "$u_virtx_repo" = "" ]; then
         read u_virtx_repo
     fi

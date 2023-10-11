@@ -37,11 +37,8 @@ if [ "$u_webmin" = "y" ]; then
         ###
         ###
         sed -i 's/^port=10000/port=88/' $file_webmin001
-        #sed -i 's/^blockhost_time=60/blockhost_time=3601/' $file_webmin001
-        #sed -i 's/^keyfile=\/etc\/webmin\/miniserv.pem\/keyfile=\/etc\/letsencrypt\/live\/'"$u_hostname"'\/privkey.pem/' $file_webmin001
-
         sed -i 's|^blockhost_time=60|blockhost_time=3601|' "$file_webmin001"
-        sed -i 's|^keyfile=/etc/webmin/miniserv.pem|keyfile=/etc/letsencrypt/live/'"$u_hostname"'/privkey.pem|' "$file_webmin001"
+        sed -i 's|^keyfile=/etc/webmin/miniserv.pem|keyfile=/etc/letsencrypt/live/'"$u_hostname"'/privkey.pem\ncertfile=/etc/letsencrypt/live/'"$u_hostname"'/cert.pem|' "$file_webmin001"
 
         ### add certificate
         ###

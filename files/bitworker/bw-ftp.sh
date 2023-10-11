@@ -16,8 +16,8 @@ IPTABLES="/usr/sbin/iptables"
 HOST='XXX'
 REMOTE_USR='XXX'
 LOCAL_USR='XXX'
-PASS='XXX'
-MYSQLPASS='XXX'
+REMOTE_PASS='XXX'
+LOCAL_MYSQLPASS='XXX'
 
 ### DESTINATION DIR
 ###
@@ -56,8 +56,8 @@ if [ -d "$LOCAL_DIR" ]; then
 
   if [ "$APP" == "lftp" ]; then
 
-    lftp -c 'set ftp:ssl-force true ; set ftp:ssl-allow true ; set ssl:verify-certificate no; set ftp:list-options -a ; open -u '$REMOTE_USR','$PASS' -e "mirror -c --parallel=20 '$REMOTE_DIR' '$LOCAL_DIR' ; quit" '$HOST''
-    #lftp -c 'set ftp:ssl-force true ; set ftp:ssl-allow true ; set ssl:verify-certificate no; open -u '$REMOTE_USR','$PASS' -e "mirror -c --parallel=20 --ignore-time --ignore-size --transfer-all '$REMOTE_DIR' '$LOCAL_DIR' ; quit" '$HOST''
+    lftp -c 'set ftp:ssl-force true ; set ftp:ssl-allow true ; set ssl:verify-certificate no; set ftp:list-options -a ; open -u '$REMOTE_USR','$REMOTE_PASS' -e "mirror -c --parallel=20 '$REMOTE_DIR' '$LOCAL_DIR' ; quit" '$HOST''
+    #lftp -c 'set ftp:ssl-force true ; set ftp:ssl-allow true ; set ssl:verify-certificate no; open -u '$REMOTE_USR','$REMOTE_PASS' -e "mirror -c --parallel=20 --ignore-time --ignore-size --transfer-all '$REMOTE_DIR' '$LOCAL_DIR' ; quit" '$HOST''
 
     echo
     echo "Transfer finished"
@@ -81,7 +81,7 @@ if [ -d "$LOCAL_DIR" ]; then
     chown -R $LOCAL_USR:users $LOCAL_DIR
 
   else
-    ncftpget -T -R -v -u "$USR" -p $PASS $HOST $LOCAL_DIR $REMOTE_DIR
+    ncftpget -T -R -v -u "$USR" -p $REMOTE_PASS $HOST $LOCAL_DIR $REMOTE_DIR
   fi
 
 fi
@@ -109,7 +109,7 @@ if [ -f "$LOCAL_DIR/$DBZIP" ]; then
   echo ""
   gunzip $LOCAL_DIR/$DBZIP
 
-  mysql -u root -p$MYSQLPASS $DB <$LOCAL_DIR/${DBNAME}.sql
+  mysql -u root -p$LOCAL_MYSQLPASS $DB <$LOCAL_DIR/${DBNAME}.sql
 
   #rm -f $LOCAL_DIR/${DBNAME}.sql
 
