@@ -27,5 +27,5 @@ if [ "$u_helper_apps" = "y" ]; then
   ln -s $file004/bw-multichange.sh /bin/bw-multichange.sh
   ln -s $file004/bw-createDkimKey.sh /bin/bw-createDkimKey.sh
   ln -s $file004/bw-delete-zone /bin/bw-delete-zone.sh
-  ln -s $file004/bw-notofy-slave /bin/bw-notify-slave.sh
+  ln -s $file004/bw-notify-slave /bin/bw-notify-slave.sh
 fi
