@@ -108,3 +108,16 @@ if [ "$u_activate_firewall" = "y" ]; then
 fi
 
 printf "\nTODO: Don't forget to enable Firewall with: -systemctl enable firewall- after reboot\n"
+
+printf "\n\n***********************************************\n\nServer Hardening [y/N]: "
+if [ "$u_hardening" = "" ]; then
+    read u_hardening
+fi
+
+if [ "$u_hardening" = "y" ]; then
+
+    if [ -d "/etc/sysctl.d" ]; then
+        cp $u_path/files/firewall/bw-disable-ip-forwarding.conf /etc/sysctl.d/
+    fi
+
+fi

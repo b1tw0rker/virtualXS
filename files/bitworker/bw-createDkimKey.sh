@@ -6,7 +6,7 @@
 
 dir=/etc/opendkim/keys
 
-if [[ "$1" =~ ^[a-z]+\.[a-z]{2,}$ ]]; then
+if [[ "$1" =~ ^[a-z-]+\.[a-z-]{2,}$ ]]; then
 
     opendkim-genkey --domain=$1 --bits=2048 --restrict --selector=default --directory=/etc/opendkim/keys/
 

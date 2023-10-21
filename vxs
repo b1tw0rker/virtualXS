@@ -190,7 +190,6 @@ if [ "$u_server" = "d" ]; then
     u_backup=n
     u_quota=n
     u_webmin=n
-    u_magento_dnf=n
     u_firewall=
     u_start_firewall=
 fi
@@ -383,11 +382,6 @@ fi
 ###
 ###
 source $u_path/lib/lib_webmin.sh
-
-### q install magento
-###
-###
-### source $u_path/lib/lib_magento.sh
 
 ### /etc/firewall
 ###

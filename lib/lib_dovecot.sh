@@ -22,7 +22,7 @@ if [ "$u_dovecot" = "y" ]; then
     cp $u_path/files/dovecot/dovecot-sql.conf.ext /etc/dovecot/
 
     sed -i 's/password=XXX/password='"$u_mysql_pwd"'/' $file_dovecot001
-    sed -i 's/^#protocols = imap pop3 lmtp submission/protocols = imap pop3 ### lmtp submission/' $file_dovecot002
+    sed -i 's/^#protocols = imap pop3 lmtp submission/protocols = imap ### pop3 lmtp submission/' $file_dovecot002
 
     ###sed -i 's/^#mail_location =/mail_location = maildir:\/home\/pop\/%u/' /etc/dovecot/conf.d/10-mail.conf
     sed -i 's/^#mail_location =/mail_location = mbox:~\/mail:INBOX=\/var\/spool\/mail\/%u/' /etc/dovecot/conf.d/10-mail.conf
