@@ -121,3 +121,10 @@ if [ "$u_hardening" = "y" ]; then
     fi
 
 fi
+
+### we want to be absolutly sure that firewalld is turned off
+###
+###
+if [ -f "/etc/systemd/system/multi-user.target.wants/firewalld.service" ]; then
+    systemctl disable firewalld
+fi

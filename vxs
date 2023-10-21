@@ -403,13 +403,6 @@ source $u_path/lib/lib_selinux.sh
 ###
 source $u_path/lib/lib_cron.sh
 
-### we want to be absolutly sure that firewalld is turned off
-###
-###
-if [ -f "/etc/systemd/system/multi-user.target.wants/firewalld.service" ]; then
-    systemctl disable firewalld
-fi
-
 ### q Reboot
 ###
 ###

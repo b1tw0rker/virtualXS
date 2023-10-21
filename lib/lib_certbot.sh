@@ -29,7 +29,7 @@ if [ "$u_certbot" = "y" ]; then
     ### get cert from Let's Encrypt
     ###
     ###
-    certbot -d $u_srv -d $u_domain
+    certbot -d $u_srv
 
 fi
 

@@ -10,47 +10,25 @@ fi
 
 if [ "$u_disable_apps" = "y" ]; then
 
-    if [ -f "/etc/systemd/system/multi-user.target.wants/atd.service" ]; then
-        systemctl disable atd
-    fi
+    systemctl disable atd
 
-    if [ -f "/etc/systemd/system/multi-user.target.wants/sendmail.service" ]; then
-        systemctl disable sendmail
-    fi
+    systemctl disable sendmail
 
-    if [ -f "/etc/systemd/system/multi-user.target.wants/firewalld.service" ]; then
-        systemctl disable firewalld
-    fi
+    systemctl disable firewalld
 
-    if [ -f "/etc/systemd/system/multi-user.target.wants/saslauthd.service" ]; then
-        systemctl disable saslauthd
-    fi
-
-    if [ -f "/etc/systemd/system/multi-user.target.wants/atd.service" ]; then
-        systemctl disable atd
-    fi
+    systemctl disable saslauthd
 
     ### do not disable sssd.service for various reasons
     ###
     ###
-    #if [ -f "/etc/systemd/system/multi-user.target.wants/sssd.service" ]; then
-    #    systemctl disable sssd
-    #fi
+    #systemctl disable sssd
 
-    if [ -f "/etc/systemd/system/atd.service" ]; then
-        systemctl stop atd
-    fi
+    systemctl stop atd
 
-    if [ -f "/etc/systemd/system/sendmail.service" ]; then
-        systemctl stop sendmail
-    fi
+    systemctl stop sendmail
 
-    if [ -f "/etc/systemd/system/firewalld.service" ]; then
-        systemctl stop firewalld
-    fi
+    systemctl stop firewalld
 
-    if [ -f "/etc/systemd/system/saslauthd.service" ]; then
-        systemctl stop saslauthd
-    fi
+    systemctl stop saslauthd
 
 fi

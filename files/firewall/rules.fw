@@ -1,12 +1,11 @@
 #!/bin/sh
 #
-#  This is automatically generated file. DO NOT MODIFY !
 #
 #  Firewall Builder  fwb_ipt v5.1.0.3599
 #
-#  Generated Sun Apr 04 13:40:08 2021 Mitteleurop�ische Sommerzeit by Nick
+#  Generated Sun 10/21/2023
 #
-# files: * srv002.bit-worker.com.fw /etc/firewall/srv002.bit-worker.com.fw
+# files: * rules.fw stop.sh test.sh
 #
 # Compiled for iptables 1.4.4
 #
