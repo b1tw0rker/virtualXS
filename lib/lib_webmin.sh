@@ -23,11 +23,9 @@ if [ "$u_webmin" = "y" ]; then
 
     fi
 
-    if [ ! -f "/root/webmin-$webmin_version-minimal.tar.gz" ]; then
-
-        wget https://prdownloads.sourceforge.net/webadmin/webmin-$webmin_version-minimal.tar.gz
-
-    fi
+    #if [ ! -f "/root/webmin-$webmin_version-minimal.tar.gz" ]; then
+    #   wget https://prdownloads.sourceforge.net/webadmin/webmin-$webmin_version-minimal.tar.gz
+    #fi
 
     ### miniserv.conf
     ###
