@@ -386,9 +386,7 @@ source $u_path/lib/lib_webmin.sh
 ### /etc/firewall
 ###
 ###
-if [ "$u_aws" = "n" ]; then
-    source $u_path/lib/lib_firewall.sh
-fi
+source $u_path/lib/lib_firewall.sh
 
 ### /etc/logrotate.conf
 ###
