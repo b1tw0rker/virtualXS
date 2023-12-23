@@ -1,6 +1,5 @@
 #!/bin/bash
 
-pdnsutil list-all-zones
+pdnsutil list-all-zones | sort
 
 exit
-
