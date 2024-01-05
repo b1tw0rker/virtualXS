@@ -75,3 +75,9 @@ bounce_template_file = /etc/postfix/bounce.de.default
 message_size_limit = 102400000
 mailbox_size_limit = 1024000000
 virtual_mailbox_limit = 1024000000
+
+### Postfix SMTP smuggeling patch
+### https://www.postfix.org/smtp-smuggling.html
+###
+smtpd_forbid_bare_newline = yes
+smtpd_forbid_bare_newline_exclusions = $mynetworks
