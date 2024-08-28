@@ -47,6 +47,7 @@ if [ "$u_postfix" = "y" ]; then
 
     ### config master.cf
     ### grep BitWorker
+    ###
     u_bitworker=$(grep -m 1 "### by BitWorker" /etc/postfix/master.cf)
 
     if [ "$u_bitworker" != "### by BitWorker" ]; then
