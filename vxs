@@ -261,7 +261,7 @@ source $u_path/lib/lib_dnf.sh
 ###
 ###
 if [ ! -f "$dir001/rebooted" ]; then
-    printf "\n\n***********************************************\n\nReboot your machine now (after reboot rerun vxs) - Strongly recommended if this is the initial run [y/N]: "
+    printf "\n\n***********************************************\n\n\n (after reboot rerun vxs) - Strongly recommended if this is the initial run [y/N]: "
     if [ "$u_reboot1" = "" ]; then
         read u_reboot1
     fi
@@ -419,7 +419,7 @@ print_center "*                                                                 
 print_center "*                  Thanks for working with VXS                     *\n"
 print_center "*                                                                  *\n"
 print_center "*                                                                  *\n"
-print_center "*                NOW TEST YOUR SSH CONNECTION !!!                  *\n"
+print_center "*       BEFORE DISCONNECTING, TEST YOUR SSH CONNECTION !!!         *\n"
 print_center "*                                                                  *\n"
 print_center "*                                                                  *\n"
 print_center "*                      Have a nice day ;-)                         *\n"
