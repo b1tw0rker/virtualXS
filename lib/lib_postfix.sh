@@ -12,6 +12,7 @@ if [ "$u_postfix" = "y" ]; then
 
     file_postfix001=/etc/postfix/main.cf
     file_postfix002=/etc/postfix/master.cf
+    file_postfix003=/etc/postfix/header_checks
 
     ### grep BitWorker
     ###
@@ -40,6 +41,9 @@ if [ "$u_postfix" = "y" ]; then
     sed -i 's/^#relay_domains = $mydestination/relay_domains = $mydestination/' $file_postfix001
     sed -i 's/^#mail_spool_directory = \/var\/spool\/mail/mail_spool_directory = \/var\/spool\/mail/' $file_postfix001
     sed -i 's/^inet_protocols = all/inet_protocols = ipv4/' $file_postfix001
+
+    sed -i 's/^#header_checks = regexp:\/etc/postfix\/header_checks\/header_checks = regexp:\/etc\/postfix\/header_checks/' $file_postfix001
+    echo "/^User-Agent:.*$/ REPLACE User-Agent: HOST-X Agent/1.3 " >>$file_postfix003
 
     ### config master.cf
     ### grep BitWorker
