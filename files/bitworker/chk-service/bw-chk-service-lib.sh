@@ -46,6 +46,7 @@ function bwHeadline() {
         echo ""
     fi
 }
+
 # Funktion, um Dienste aus der Konfigurationsdatei chk-service.cfg zu überprüfen
 # version 1.0.0
 # last-modified. 23.12.2023

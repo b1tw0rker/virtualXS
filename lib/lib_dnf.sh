@@ -39,7 +39,7 @@ if [ "$u_dnf" = "y" ]; then
     ### you need to activate unsupported packages first: dnf config-manager --set-enabled crb
 
     dnf -y install epel-release yum-utils
-    dnf -y install chrony httpd mysql $db_server php php-mysqlnd php-intl php-json php-ldap php-pecl-zip php-process net-tools which certbot createrepo bind-utils whois postfix postfix-mysql figlet mod_fcgid mod_security mod_security_crs vsftpd php-mbstring dovecot dovecot-mysql dovecot-pigeonhole rsyslog iptraf-ng dnf-automatic perl perl-DBI perl-DBD-MySQL perl-Encode-Detect perl-JSON gd gd-devel php-gd perl-Net-SSLeay python3 python3-certbot-apache spamassassin tcp_wrappers php-soap php-xml php-gmp mod_http2 at conntrack-tools rsync tar bzip2 wget lftp ncftp unzip git nodejs quota jq perl-Net-LibIDN2 libidn libidn2 lsof htop iftop glibc-langpack-de tripwire lynis rkhunter
+    dnf -y install chrony httpd mysql $db_server php php-mysqlnd php-intl php-json php-ldap php-pecl-zip php-process php-bcmath php-gmp net-tools which certbot createrepo bind-utils whois postfix postfix-mysql figlet mod_fcgid mod_security mod_security_crs vsftpd php-mbstring dovecot dovecot-mysql dovecot-pigeonhole rsyslog iptraf-ng dnf-automatic perl perl-DBI perl-DBD-MySQL perl-Encode-Detect perl-JSON gd gd-devel php-gd perl-Net-SSLeay python3 python3-certbot-apache spamassassin tcp_wrappers php-soap php-xml php-gmp mod_http2 at conntrack-tools rsync tar bzip2 wget lftp ncftp unzip git nodejs quota jq perl-Net-LibIDN2 libidn libidn2 lsof htop iftop glibc-langpack-de tripwire lynis rkhunter
 
     ### Solange wir die Signatur nicht ändern können, müssen wir lokal installieren
     ###

@@ -5,9 +5,10 @@ file_php_002=/etc/httpd/conf.d/php.conf
 file_php_003=/etc/php.d
 
 ### install php 8.1
+### todo install php 8.2
 ###
 ###
-printf "\n\n***********************************************\n\nInstall php 8.1 instead using php 8.1 [y/N]: "
+printf "\n\n***********************************************\n\nInstall php 8.1 instead using php 8.0 [y/N]: "
 if [ "$u_php81" = "" ]; then
     read u_php81
 fi
