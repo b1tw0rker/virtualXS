@@ -26,7 +26,7 @@ The following systems are supported:
 THIS SCRIPT COMES WITH ABSOLUTE NO WARRANTY,
 THIS SCRIPT IS ABSOLUTE BETA STUFF. DO NOT USE IT ON PRODUCTION SYSTEMS
 
-(C) 2021-2023 by Dipl. Wirt.-Ing. Nick Herrmann
+(C) 2021-2024 by Dipl. Wirt.-Ing. Nick Herrmann
 This program is WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
