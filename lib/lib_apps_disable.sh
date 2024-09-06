@@ -10,25 +10,14 @@ fi
 
 if [ "$u_disable_apps" = "y" ]; then
 
-    systemctl disable atd
-
-    systemctl disable sendmail
-
-    systemctl disable firewalld
-
-    systemctl disable saslauthd
-
     ### do not disable sssd.service for various reasons
-    ###
-    ###
-    #systemctl disable sssd
+    services=("atd" "certbot-renew.timer" "dnf-automatic.timer" "dnf-makecache.timer" "firewalld" "saslauthd" "sendmail")
 
-    systemctl stop atd
-
-    systemctl stop sendmail
-
-    systemctl stop firewalld
-
-    systemctl stop saslauthd
+    for service in "${services[@]}"; do
+        if systemctl list-unit-files | grep -q "$service"; then
+            systemctl disable "$service"
+            systemctl stop "$service"
+        fi
+    done
 
 fi
