@@ -16,7 +16,7 @@ if [ "$u_disable_apps" = "y" ]; then
     for service in "${services[@]}"; do
         if systemctl list-unit-files | grep -q "$service"; then
             systemctl disable "$service"
-            systemctl stop "$service"
+systemctl stop "$service"
         fi
     done
 
