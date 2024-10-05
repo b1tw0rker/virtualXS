@@ -15,12 +15,12 @@ LOCAL_FILE='/tmp/storage/boot.iso' # no ending slash
 ###
 if [[ $(systemctl status firewall | grep 'active (exited)') ]]; then
     ftprule='true'
-
+    
     #http://www.devops-blog.net/iptables/iptables-settings-for-outgoing-ftp
     $IPTABLES -A OUTPUT -p tcp --dport 21 -d $HOST -m state --state NEW,ESTABLISHED -j ACCEPT
     $IPTABLES -A OUTPUT -p tcp --dport 20 -d $HOST -m state --state ESTABLISHED -j ACCEPT
     $IPTABLES -A OUTPUT -p tcp --sport 1024: --dport 1024: -m state --state ESTABLISHED,RELATED,NEW -j ACCEPT
-
+    
 fi
 
 ### Action
