@@ -1,16 +1,17 @@
 #!/bin/bash
 
-### version 0.0.9
+### version 1.0.0
 ### last-modified: 05.10.2024
 
 ###
 ###
 ###
+printf "Name des vollständigen (keine README.md) LEEREN Repository auf github: "
+read io_repo
+
+
 printf "Projekt Directory (starting like /...): "
 read io_project_dir
-
-printf "Name des LEEREN Repository auf github: "
-read io_repo
 
 
 if [ -d "$io_project_dir" ]; then
@@ -27,8 +28,15 @@ if [ -d "$io_project_dir" ]; then
         git branch -M master
         git remote add origin https://github.com/b1tw0rker/$io_repo.git
         
+        exit 0
         
-        exit
+        
+        sed -i 's|url = https://github.com/b1tw0rker/virtualx-build.git|url = https://github.com/b1tw0rker/www.host-x.de.git|' /root/virtualsx-bild/.git/config
+        
+        git config user.name "b1tw0rker"
+        git config user.email "mail@bit-worker.com"
+        
+        
         git push -u origin master
     fi
     
