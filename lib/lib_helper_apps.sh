@@ -29,4 +29,5 @@ if [ "$u_helper_apps" = "y" ]; then
     ln -s $file004/bw-delete-zone.sh /bin/bw-delete-zone
     ln -s $file004/bw-notify-slave.sh /bin/bw-notify-slave
     ln -s $file004/bw-git-init.sh /bin/bw-git-init
+    ln -s $file004/bw-pihole-http-switcher.sh /bin/bw-pihole-http-switcher
 fi
