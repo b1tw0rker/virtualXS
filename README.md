@@ -2,6 +2,10 @@
 
 ![virtualXS version](https://img.shields.io/badge/version-v1.0.4-green.svg)
 
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+
+![Letztes Update](https://img.shields.io/github/last-commit/b1tw0rker/virtualXS.svg)
+
 ## Disclaimer
 
 The Python part of this script is still in development and in ALPHA state!
