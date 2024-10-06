@@ -1,10 +1,6 @@
 # virtualXS
 
-![virtualXS version](https://img.shields.io/badge/version-v1.0.4-green.svg)
-
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
-
-![Letztes Update](https://img.shields.io/github/last-commit/b1tw0rker/virtualXS.svg)
+![virtualXS version](https://img.shields.io/badge/version-v1.0.4-green.svg) ![Letztes Update](https://img.shields.io/github/last-commit/b1tw0rker/virtualXS.svg) ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 ## Disclaimer
 
