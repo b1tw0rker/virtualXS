@@ -12,9 +12,9 @@
 ### vars
 ###
 ###
-token=""
-usr="b1tw0rker"
-mail="mail@bit-worker.com"
+token="" # github token
+usr="" # user by github
+mail="" # mail by github
 branch="main"
 
 ###
