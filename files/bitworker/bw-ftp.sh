@@ -45,7 +45,7 @@ if [[ $(systemctl status firewall | grep 'active (exited)') ]]; then
     ftprule='true'
     
     $IPTABLES -A OUTPUT -p tcp -m tcp -d $HOST --dport 21 -m state --state NEW -j ACCEPT
-    $IPTABLES -A OUTPUT -p tcp -m tcp -d $HOST --dport 10000:11000 -m state --state NEW -j ACCEPT
+    $IPTABLES -A OUTPUT -p tcp -m tcp -d $HOST --dport 10000:10255 -m state --state NEW -j ACCEPT
 fi
 
 ### Action
@@ -88,7 +88,7 @@ fi
 
 if [ "$ftprule" == "true" ]; then
     $IPTABLES -D OUTPUT -p tcp -m tcp -d $HOST --dport 21 -m state --state NEW -j ACCEPT
-    $IPTABLES -D OUTPUT -p tcp -m tcp -d $HOST --dport 10000:11000 -m state --state NEW -j ACCEPT
+    $IPTABLES -D OUTPUT -p tcp -m tcp -d $HOST --dport 10000:10255 -m state --state NEW -j ACCEPT
     
     systemctl restart firewall
     

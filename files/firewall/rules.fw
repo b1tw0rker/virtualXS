@@ -122,7 +122,7 @@ reset_iptables_v4() {
     $IPTABLES -P OUTPUT DROP
     $IPTABLES -P INPUT DROP
     $IPTABLES -P FORWARD DROP
-
+    
     cat /proc/net/ip_tables_names | while read table; do
         $IPTABLES -t $table -L -n | while read c chain rest; do
             if test "X$c" = "XChain"; then
@@ -137,7 +137,7 @@ reset_iptables_v6() {
     $IP6TABLES -P OUTPUT DROP
     $IP6TABLES -P INPUT DROP
     $IP6TABLES -P FORWARD DROP
-
+    
     cat /proc/net/ip6_tables_names | while read table; do
         $IP6TABLES -t $table -L -n | while read c chain rest; do
             if test "X$c" = "XChain"; then
@@ -153,34 +153,34 @@ P2P_INTERFACE_WARNING=""
 missing_address() {
     address=$1
     cmd=$2
-
+    
     oldIFS=$IFS
     IFS="@"
     set $address
     addr=$1
     interface=$2
     IFS=$oldIFS
-
+    
     $IP addr show dev $interface | grep -q POINTOPOINT && {
         test -z "$P2P_INTERFACE_WARNING" && echo "Warning: Can not update address of interface $interface. fwbuilder can not manage addresses of point-to-point interfaces yet"
         P2P_INTERFACE_WARNING="yes"
         return
     }
-
+    
     test "$cmd" = "add" && {
         echo "# Adding ip address: $interface $addr"
         echo $addr | grep -q ':' && {
             $FWBDEBUG $IP addr $cmd $addr dev $interface
-        } || {
+            } || {
             $FWBDEBUG $IP addr $cmd $addr broadcast + dev $interface
         }
     }
-
+    
     test "$cmd" = "del" && {
         echo "# Removing ip address: $interface $addr"
         $FWBDEBUG $IP addr $cmd $addr dev $interface || exit 1
     }
-
+    
     $FWBDEBUG $IP link set $interface up
 }
 
@@ -189,15 +189,15 @@ list_addresses_by_scope() {
     scope=$2
     ignore_list=$3
     $IP addr ls dev $interface |
-        awk -v IGNORED="$ignore_list" -v SCOPE="$scope" \
-            'BEGIN {
+    awk -v IGNORED="$ignore_list" -v SCOPE="$scope" \
+    'BEGIN {
            split(IGNORED,ignored_arr);
            for (a in ignored_arr) {ignored_dict[ignored_arr[a]]=1;}
          }
-         (/inet |inet6 / && $0 ~ SCOPE && !($2 in ignored_dict)) {print $2;}' |
-        while read addr; do
-            echo "${addr}@$interface"
-        done | sort
+    (/inet |inet6 / && $0 ~ SCOPE && !($2 in ignored_dict)) {print $2;}' |
+    while read addr; do
+        echo "${addr}@$interface"
+    done | sort
 }
 
 update_addresses_of_interface() {
@@ -205,41 +205,41 @@ update_addresses_of_interface() {
     set $1
     interface=$1
     shift
-
+    
     FWB_ADDRS=$(
         for addr in $*; do
             echo "${addr}@$interface"
         done | sort
     )
-
+    
     CURRENT_ADDRS_ALL_SCOPES=""
     CURRENT_ADDRS_GLOBAL_SCOPE=""
-
+    
     $IP link show dev $interface >/dev/null 2>&1 && {
         CURRENT_ADDRS_ALL_SCOPES=$(list_addresses_by_scope $interface 'scope .*' "$ignore_list")
         CURRENT_ADDRS_GLOBAL_SCOPE=$(list_addresses_by_scope $interface 'scope global' "$ignore_list")
-    } || {
+        } || {
         echo "# Interface $interface does not exist"
         # Stop the script if we are not in test mode
         test -z "$FWBDEBUG" && exit 1
     }
-
+    
     diff_intf missing_address "$FWB_ADDRS" "$CURRENT_ADDRS_ALL_SCOPES" add
     diff_intf missing_address "$CURRENT_ADDRS_GLOBAL_SCOPE" "$FWB_ADDRS" del
 }
 
 clear_addresses_except_known_interfaces() {
     $IP link show | sed 's/://g' | awk -v IGNORED="$*" \
-        'BEGIN {
+    'BEGIN {
            split(IGNORED,ignored_arr);
            for (a in ignored_arr) {ignored_dict[ignored_arr[a]]=1;}
          }
-         (/state/ && !($2 in ignored_dict)) {print $2;}' |
-        while read intf; do
-            echo "# Removing addresses not configured in fwbuilder from interface $intf"
-            $FWBDEBUG $IP addr flush dev $intf scope global
-            $FWBDEBUG $IP link set $intf down
-        done
+    (/state/ && !($2 in ignored_dict)) {print $2;}' |
+    while read intf; do
+        echo "# Removing addresses not configured in fwbuilder from interface $intf"
+        $FWBDEBUG $IP addr flush dev $intf scope global
+        $FWBDEBUG $IP link set $intf down
+    done
 }
 
 check_file() {
@@ -251,7 +251,7 @@ check_file() {
 
 check_run_time_address_table_files() {
     :
-
+    
 }
 
 load_modules() {
@@ -273,17 +273,17 @@ load_modules() {
 
 verify_interfaces() {
     :
-
+    
 }
 
 prolog_commands() {
     echo "Running prolog script"
-
+    
 }
 
 epilog_commands() {
     echo "Running epilog script"
-
+    
 }
 
 run_epilog_and_exit() {
@@ -298,7 +298,7 @@ configure_interfaces() {
 
 script_body() {
     # ================ IPv4
-
+    
     # ================ Table 'filter', automatic rules
     # accept established sessions
     $IPTABLES -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
@@ -307,7 +307,7 @@ script_body() {
     # backup ssh access
     $IPTABLES -A INPUT -p tcp -m tcp -s 195.90.208.180/255.255.255.255 --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
     $IPTABLES -A OUTPUT -p tcp -m tcp -d 195.90.208.180/255.255.255.255 --sport 22 -m state --state ESTABLISHED,RELATED -j ACCEPT
-
+    
     # ================ Table 'filter', rule set Policy
     #
     # Rule 0 (venet0:0)
@@ -335,7 +335,7 @@ script_body() {
     echo "Rule 2 (global)"
     #
     $IPTABLES -A INPUT -p icmp -m icmp --icmp-type 8/0 -m state --state NEW -j ACCEPT
-    $IPTABLES -A INPUT -p tcp -m tcp --dport 10000:11000 -m state --state NEW -j ACCEPT
+    $IPTABLES -A INPUT -p tcp -m tcp --dport 10000:10255 -m state --state NEW -j ACCEPT
     $IPTABLES -A INPUT -p tcp -m tcp -m multiport --dports 88,21,25,80,443,993,995,587 -m state --state NEW -j ACCEPT
     #
     # Rule 3 (global)
@@ -345,7 +345,7 @@ script_body() {
     $IPTABLES -N Cid4625X20228.0
     $IPTABLES -A INPUT -p tcp -m tcp --dport 22 -m state --state NEW -j Cid4625X20228.0
     $IPTABLES -A Cid4625X20228.0 -m iprange --src-range 88.70.196.1-88.71.159.254 -j ACCEPT
-
+    
     #
     # Rule 4 (global)
     #
@@ -456,60 +456,60 @@ test -z "$cmd" && {
 }
 
 case "$cmd" in
-start)
-    log "Activating firewall script generated Sun Apr 04 13:40:08 2021 by Nick"
-    check_tools
-    prolog_commands
-    check_run_time_address_table_files
-
-    load_modules " "
-    configure_interfaces
-    verify_interfaces
-
-    reset_all
-
-    script_body
-    ip_forward
-    epilog_commands
-    RETVAL=$?
+    start)
+        log "Activating firewall script generated Sun Apr 04 13:40:08 2021 by Nick"
+        check_tools
+        prolog_commands
+        check_run_time_address_table_files
+        
+        load_modules " "
+        configure_interfaces
+        verify_interfaces
+        
+        reset_all
+        
+        script_body
+        ip_forward
+        epilog_commands
+        RETVAL=$?
     ;;
-
-stop)
-    stop_action
-    RETVAL=$?
+    
+    stop)
+        stop_action
+        RETVAL=$?
     ;;
-
-status)
-    status_action
-    RETVAL=$?
+    
+    status)
+        status_action
+        RETVAL=$?
     ;;
-
-block)
-    block_action
-    RETVAL=$?
+    
+    block)
+        block_action
+        RETVAL=$?
     ;;
-
-reload)
-    $0 stop
-    $0 start
-    RETVAL=$?
+    
+    reload)
+        $0 stop
+        $0 start
+        RETVAL=$?
     ;;
-
-interfaces)
-    configure_interfaces
-    RETVAL=$?
+    
+    interfaces)
+        configure_interfaces
+        RETVAL=$?
     ;;
-
-test_interfaces)
-    FWBDEBUG="echo"
-    configure_interfaces
-    RETVAL=$?
+    
+    test_interfaces)
+        FWBDEBUG="echo"
+        configure_interfaces
+        RETVAL=$?
     ;;
-
-*)
-    echo "Usage $0 [start|stop|status|block|reload|interfaces|test_interfaces]"
+    
+    *)
+        echo "Usage $0 [start|stop|status|block|reload|interfaces|test_interfaces]"
     ;;
-
+    
 esac
 
 exit $RETVAL
