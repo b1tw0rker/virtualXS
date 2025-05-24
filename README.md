@@ -1,10 +1,6 @@
 # virtualXS
 
-![virtualXS version](https://img.shields.io/badge/version-v1.0.4-green.svg) ![Letztes Update](https://img.shields.io/github/last-commit/b1tw0rker/virtualXS.svg) ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
-
-## Disclaimer
-
-The Python part of this script is still in development and in ALPHA state!
+![virtualXS version](https://img.shields.io/badge/version-v1.0.5-green.svg) ![Letztes Update](https://img.shields.io/github/last-commit/b1tw0rker/virtualXS.svg) ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 ##
 
@@ -21,12 +17,12 @@ The following systems are supported:
 - Alma Linux 9.x (Minimal is recommended)
 - AWS and Azure machines.
 
-## WARNING:
+## WARNING - DISCLAIMER
 
 THIS SCRIPT COMES WITH ABSOLUTE NO WARRANTY,
 THIS SCRIPT IS ABSOLUTE BETA STUFF. DO NOT USE IT ON PRODUCTION SYSTEMS
 
-(C) 2021-2024 by Dipl. Wirt.-Ing. Nick Herrmann
+(C) 2021-2025 by Dipl. Wirt.-Ing. Nick Herrmann
 This program is WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -71,6 +67,8 @@ vxs
 That's it folks!
 
 ## Changelog
+
+05/24/25 - Some smaller bugfixes , improvment in dovecot
 
 07/27/23 - Documentation work
 
