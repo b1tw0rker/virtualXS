@@ -16,11 +16,11 @@ if [ "$u_firewall" = "y" ]; then
     if [ -d "$file004" ]; then
         cp $u_path/files/firewall/stop.sh $file004
         cp $u_path/files/firewall/rules.fw $file004
-        cp $u_path/files/firewall/test.sh $file004
+        cp $u_path/files/firewall/start.sh $file004
         
         chmod 700 $file004/stop.sh
         chmod 700 $file004/rules.fw
-        chmod 700 $file004/test.sh
+        chmod 700 $file004/start.sh
         
         sed -i 's/$IPTABLES -A INPUT -i venet0:0   -s 195.90.209.193   -j Cid4533X20228.0/$IPTABLES -A INPUT -i venet0:0   -s '"$u_ip"'   -j Cid4533X20228.0 #by BitWorker/' $file004/rules.fw
         sed -i 's/$IPTABLES -A Cid4533X20228.0  -d 195.90.209.193   -j In_RULE_0/$IPTABLES -A Cid4533X20228.0  -d '"$u_ip"'   -j In_RULE_0 #by BitWorker/' $file004/rules.fw

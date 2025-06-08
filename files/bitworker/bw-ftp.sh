@@ -121,7 +121,7 @@ fi
 if [ $ftprule == "true" ]; then
     
     /etc/firewall/stop.sh
-    /etc/firewall/test.sh
+    /etc/firewall/start.sh
     
 fi
 

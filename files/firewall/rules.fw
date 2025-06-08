@@ -3,9 +3,9 @@
 #
 #  Firewall Builder  fwb_ipt v5.1.0.3599
 #
-#  Generated Sun 10/21/2023
+#  Generated 08.06.2025
 #
-# files: * rules.fw stop.sh test.sh
+# files: * rules.fw stop.sh start.sh
 #
 # Compiled for iptables 1.4.4
 #
