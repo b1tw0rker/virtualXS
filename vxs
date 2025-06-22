@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-### Version: 1.1.57
+### Version: 1.1.58
 ### Build date: 01.10.2023
 ### (C) 2021 - 2023 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -33,7 +33,7 @@ done
 ###
 infocolor=$(tput setaf 6) # DEV
 tput setaf 6
-u_version=1.1.57
+u_version=1.1.58
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
 ### get the ip of the client ssh
@@ -72,15 +72,15 @@ print_center " *****************************************************************
 printf "\n"
 
 if [ ! -f "$dir001/disclaimer" ]; then
-
+    
     printf "\n\n\e[41mATTENTION:\e[0m This script is designed ONLY on freshly installed servers. \e[41mDO NOT USE THIS SCRIPT ON A PRODUCTION MACHINE!!!\e[0m To confirm this, type: \"install\" to go on: "
     read u_disclaimer
     if [ "$u_disclaimer" != "install" ]; then
         exit
     fi
-
+    
     touch $dir001/disclaimer
-
+    
 fi
 
 ### get ip and servername
@@ -130,11 +130,11 @@ while true; do
     # Erste Abfrage
     read -s -p "5/10 • Upcoming MySQL root password: " u_mysql_pwd
     echo # Zeilenumbruch nach der Eingabe, da -s keinen Zeilenumbruch erzeugt
-
+    
     # Zweite Abfrage zur Bestätigung
     read -s -p "6/10 • Confirm MySQL root password: " u_mysql_pwd_confirm
     echo # Zeilenumbruch
-
+    
     # Vergleiche die beiden Eingaben
     if [ "$u_mysql_pwd" == "$u_mysql_pwd_confirm" ]; then
         echo "Passwords match."
@@ -150,9 +150,9 @@ done
 while true; do
     read -p "Create Web or DNS Server [w/d]: " u_server
     case $u_server in
-    [w]) break ;;
-    [d]) break ;;
-    *) echo "Please enter only 'w' or 'd'." ;;
+        [w]) break ;;
+        [d]) break ;;
+        *) echo "Please enter only 'w' or 'd'." ;;
     esac
 done
 
@@ -203,39 +203,39 @@ hostnamectl set-hostname $u_srv
 ###
 ###
 if [ ! -f "/etc/yum.repos.d/virtx.repo" ]; then
-
+    
     printf "\n\n***********************************************\n\nAdd Virt-X Repo? [y/N]: "
     if [ "$u_virtx_repo" = "" ]; then
         read u_virtx_repo
     fi
-
+    
     if [ "$u_virtx_repo" = "y" ]; then
         dnf config-manager --add-repo https://repo.virt-x.de/virtx.repo
     fi
-
+    
 fi
 
 ### q run epel.repo
 ###
 ###
 if [ ! -f "/etc/yum.repos.d/epel.repo" ]; then
-
+    
     printf "\n\n***********************************************\n\nAdd Epel Repo? [y/N]: "
     if [ "$u_epel_repo" = "" ]; then
         read u_epel_repo
     fi
-
+    
     if [ "$u_epel_repo" = "y" ]; then
-
+        
         dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
-
+        
     else
-
+        
         printf "Leaving vxs - Without epel, you can not use this app.\n"
         exit
-
+        
     fi
-
+    
 fi
 
 u_sql_server=mysql
@@ -382,6 +382,11 @@ fi
 ###
 ###
 source $u_path/lib/lib_webmin.sh
+
+### q Wordpress
+###
+###
+source $u_path/lib/lib_wordpress.sh
 
 ### /etc/firewall
 ###
