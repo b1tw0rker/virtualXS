@@ -34,7 +34,6 @@ if [ "$u_phpfpmfix" = "y" ]; then
     if [ -f "$file_php_001" ]; then
 
         sed -i 's/^upload_max_filesize = 2M/upload_max_filesize = 20M/' $file_php_001
-        sed -i 's/^memory_limit = .*/memory_limit = 1024M/' $file_php_001
 
     fi
 
