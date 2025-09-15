@@ -1,0 +1,19 @@
+# VirtualXS Tripwire Policy Extensions
+# Diese Datei enthält zusätzliche Überwachungsregeln für VirtualXS
+
+# Web-Verzeichnisse überwachen
+/home/httpd -> $(SEC_BIN) ;
+
+# Log-Verzeichnisse mit weniger strikter Überwachung
+/var/log/httpd -> $(SEC_LOG) ;
+/var/log/php-fpm -> $(SEC_LOG) ;
+/var/log/mysql -> $(SEC_LOG) ;
+/var/log/postfix -> $(SEC_LOG) ;
+/var/log/dovecot -> $(SEC_LOG) ;
+
+# Wichtige Konfigurationsdateien
+/etc/httpd/conf/httpd.conf -> $(SEC_CRIT) ;
+/etc/php.ini -> $(SEC_CRIT) ;
+/etc/my.cnf -> $(SEC_CRIT) ;
+/etc/postfix/main.cf -> $(SEC_CRIT) ;
+/etc/dovecot/dovecot.conf -> $(SEC_CRIT) ;
