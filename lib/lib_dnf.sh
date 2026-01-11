@@ -34,8 +34,9 @@ if [ "$u_dnf" = "y" ]; then
     dnf module enable nodejs:22
     dnf -y install nodejs
     
-    
-    
+    ### php 8.4 from remi repo
+    #dnf -y install https://rpms.remirepo.net/enterprise/remi-release-9.rpm
+    #dnf module enable php:remi-8.4
     
     
     ### Solange wir die Signatur nicht ändern können, müssen wir lokal installieren
