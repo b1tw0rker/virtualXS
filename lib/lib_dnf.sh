@@ -32,8 +32,8 @@ if [ "$u_dnf" = "y" ]; then
     dnf -y install at bind-utils bzip2 certbot chrony conntrack-tools createrepo dnf-automatic dovecot dovecot-mysql dovecot-pigeonhole fail2ban figlet gd gd-devel git glibc-langpack-de goaccess htop httpd iftop iptraf-ng jq lftp libidn libidn2 lsof lynis mlocate mod_http2 mod_proxy_fcgid mod_security mod_security_crs mysql ncftp net-tools perl perl-DBI perl-DBD-MySQL perl-Encode-Detect perl-JSON perl-Net-LibIDN2 perl-Net-SSLeay php php-bcmath php-gd php-gmp php-imap php-intl php-json php-ldap php-mbstring php-mysqlnd php-pecl-zip php-process php-soap php-xml postfix postfix-mysql python3 python3-certbot-apache quota ripgrep rkhunter rsync rsyslog spamassassin tar tcp_wrappers tripwire unzip vsftpd wget which whois
     
     ### to newest nodejs version
-    dnf module enable nodejs:22
-    dnf -y install nodejs
+    #dnf module enable nodejs:22
+    #dnf -y install nodejs
     
     ### php 8.4 from remi repo
     #dnf -y install https://rpms.remirepo.net/enterprise/remi-release-9.rpm
@@ -43,7 +43,7 @@ if [ "$u_dnf" = "y" ]; then
     ### Solange wir die Signatur nicht ändern können, müssen wir lokal installieren
     ###
     ###
-    rpm -Uvh --nosignature $u_path/files/rpm/pam_mysql-0.8.1-0.6.el8.x86_64.rpm
+    #rpm -Uvh --nosignature $u_path/files/rpm/pam_mysql-0.8.1-0.6.el8.x86_64.rpm
     
     ### setze automatic dnf
     ### https://www.tecmint.com/setup-automatic-updates-for-centos-8/

@@ -312,6 +312,7 @@ source $u_path/lib/lib_postfix.sh
 ###
 if [ "$u_aws" = "n" ]; then
     source $u_path/lib/lib_ssh.sh
+    source $u_path/lib/lib_ssh_sftp.sh
 fi
 
 ### q config fail2ban
