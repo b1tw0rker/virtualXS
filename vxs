@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-### Version: 1.1.61
+### Version: 1.1.62
 ### Build date: 01.10.2023
 ### (C) 2021 - 2023 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -33,7 +33,7 @@ done
 ###
 infocolor=$(tput setaf 6) # DEV
 tput setaf 6
-u_version=1.1.61
+u_version=1.1.62
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
 ### get the ip of the client ssh
@@ -215,7 +215,7 @@ hostnamectl set-hostname $u_srv
 ###
 if [ ! -f "/etc/yum.repos.d/virtx.repo" ]; then
     
-    printf "\n\n***********************************************\n\nAdd Virt-X Repo? [y/N]: "
+    printf "\n***********************************************\n\nAdd Virt-X Repo? [y/N]: "
     if [ "$u_virtx_repo" = "" ]; then
         read u_virtx_repo
     fi
@@ -231,7 +231,7 @@ fi
 ###
 if [ ! -f "/etc/yum.repos.d/epel.repo" ]; then
     
-    printf "\n\n***********************************************\n\nAdd Epel Repo? [y/N]: "
+    printf "\n***********************************************\n\nAdd Epel Repo? [y/N]: "
     if [ "$u_epel_repo" = "" ]; then
         read u_epel_repo
     fi
@@ -250,9 +250,9 @@ if [ ! -f "/etc/yum.repos.d/epel.repo" ]; then
 fi
 
 u_sql_server=mysql
-printf "\n\n***********************************************\n\n"
+printf "\n***********************************************\n\n"
 read -p "Install Mysql or MariaDB? [mysql/maria]: " -ei $u_sql_server u_sql_server
-#printf "\n\n***********************************************\n\nInstall Mysql or MariaDB? (EXPERIMENTAL) [mysql/maria]: "
+#printf "\n***********************************************\n\nInstall Mysql or MariaDB? (EXPERIMENTAL) [mysql/maria]: "
 #if [ "$u_sql_server" = "" ]; then
 #    read u_sql_server
 #fi
@@ -272,7 +272,7 @@ source $u_path/lib/lib_dnf.sh
 ###
 ###
 if [ ! -f "$dir001/rebooted" ]; then
-    printf "\n\n***********************************************\n\n\n (after reboot rerun vxs) - Strongly recommended if this is the initial run [y/N]: "
+    printf "\n***********************************************\n\n (after reboot rerun vxs) - Strongly recommended if this is the initial run [y/N]: "
     if [ "$u_reboot1" = "" ]; then
         read u_reboot1
     fi
@@ -423,7 +423,7 @@ source $u_path/lib/lib_cron.sh
 ###
 ###
 if [ "$u_aws" = "n" ]; then
-    printf "\n\n***********************************************\n\nReboot your machine now [y/N]: "
+    printf "\n***********************************************\n\nReboot your machine now [y/N]: "
     if [ "$u_reboot" = "" ]; then
         read u_reboot
     fi

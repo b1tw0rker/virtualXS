@@ -3,7 +3,7 @@
 ### /etc/ssh/sshd_config
 ###
 ###
-printf "\n\n***********************************************\n\nConfigure  /etc/ssh/sshd_config [y/N]: "
+printf "\n***********************************************\n\nConfigure  /etc/ssh/sshd_config [y/N]: "
 if [ "$u_ssh" = "" ]; then
         read u_ssh
 fi

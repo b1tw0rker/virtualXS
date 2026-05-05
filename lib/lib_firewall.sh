@@ -2,7 +2,7 @@
 
 file004=/etc/firewall
 
-printf "\n\n***********************************************\n\nCreate /etc/firewall [y/N]: "
+printf "\n***********************************************\n\nCreate /etc/firewall [y/N]: "
 if [ "$u_firewall" = "" ]; then
     read u_firewall
 fi
@@ -67,7 +67,7 @@ fi
 ###
 ###
 
-printf "\n\n***********************************************\n\nActivate firewall now [y/N]: "
+printf "\n***********************************************\n\nActivate firewall now [y/N]: "
 if [ "$u_activate_firewall" = "" ]; then
     read u_activate_firewall
 fi
@@ -109,7 +109,7 @@ fi
 
 printf "\nTODO: Don't forget to enable Firewall with: -systemctl enable firewall- after reboot\n"
 
-#printf "\n\n***********************************************\n\nServer Hardening [y/N]: "
+#printf "\n***********************************************\n\nServer Hardening [y/N]: "
 #if [ "$u_hardening" = "" ]; then
 #    read u_hardening
 #fi

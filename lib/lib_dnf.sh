@@ -5,6 +5,7 @@ file001=/etc/dnf/automatic.conf
 ### q run upate
 ###
 ###
+printf "\n***********************************************\n\n"
 confirm "Run dnf update" "$u_dnf_update"
 
 if [ "$u_dnf_update" = "y" ]; then
@@ -18,7 +19,7 @@ fi
 ### install
 ###
 ###
-printf "\n\n***********************************************\n\nInstall apps via dnf [y/N]: "
+printf "\n***********************************************\n\nInstall apps via dnf [y/N]: "
 if [ "$u_dnf" = "" ]; then
     read u_dnf
 fi

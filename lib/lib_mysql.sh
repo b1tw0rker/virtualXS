@@ -3,7 +3,7 @@
 ### /MySQL/
 ###
 ###
-printf "\n\n***********************************************\n\nConfigure MySQL Stuff [y/N]: "
+printf "\n***********************************************\n\nConfigure MySQL Stuff [y/N]: "
 if [ "$u_mysql" = "" ]; then
   read u_mysql
 fi

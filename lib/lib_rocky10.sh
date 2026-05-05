@@ -3,7 +3,7 @@
 ### set crypto-policies to legacy
 ### https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/10/html/security_hardening/using-the-system-wide-cryptographic-policies_security-hardening
 ###
-printf "\n\n***********************************************\n\nSet Rocky 10 crypto-policies to LEGACY [y/N]: "
+printf "\n***********************************************\n\nSet Rocky 10 crypto-policies to LEGACY [y/N]: "
 if [ "$u_crypto" = "" ]; then
     read u_crypto
 fi

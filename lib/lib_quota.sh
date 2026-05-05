@@ -9,7 +9,7 @@ file_fstab002=/etc/fstab.bak
 ### q quota
 ###
 ###
-printf "\n\n***********************************************\n\nActivate Quota for /home [y/N]: "
+printf "\n***********************************************\n\nActivate Quota for /home [y/N]: "
 if [ "$u_quota" = "" ]; then
     read u_quota
 fi

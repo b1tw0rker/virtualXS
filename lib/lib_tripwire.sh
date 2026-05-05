@@ -3,7 +3,7 @@
 ### /etc/tripwire/
 ###
 ###
-printf "\n\n***********************************************\n\nInstall & Configure Tripwire [y/N]: "
+printf "\n***********************************************\n\nInstall & Configure Tripwire [y/N]: "
 if [ "$u_tripwire" = "" ]; then
     read u_tripwire
 fi

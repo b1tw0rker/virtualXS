@@ -1,6 +1,6 @@
 #!/bin/bash
 
-printf "\n\n***********************************************\n\nCreate standard folders [y/N]: "
+printf "\n***********************************************\n\nCreate standard folders [y/N]: "
 if [ "$u_folders_create" = "" ]; then
   read u_folders_create
 fi

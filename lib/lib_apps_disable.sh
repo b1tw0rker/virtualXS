@@ -3,7 +3,7 @@
 ### q disable apps / Prework
 ### Wird auch in ks.cfg schon erledigt. Prüfen ob das noch notwendig ist. , 03.05.2026
 ###
-printf "\n\n***********************************************\n\nDisable useless apps at startup [y/N]: "
+printf "\n***********************************************\n\nDisable useless apps at startup [y/N]: "
 if [ "$u_disable_apps" = "" ]; then
     read u_disable
 fi

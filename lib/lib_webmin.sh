@@ -7,7 +7,7 @@ webmin_version=2.102
 ### /webmin/
 ###
 ###
-printf "\n\n***********************************************\n\nDownload and Install Webmin [y/N]: "
+printf "\n***********************************************\n\nDownload and Install Webmin [y/N]: "
 if [ "$u_webmin" = "" ]; then
     read u_webmin
 fi

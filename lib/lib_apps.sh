@@ -3,7 +3,7 @@
 ### q enable apps
 ###
 ###
-printf "\n\n***********************************************\n\nEnable apps at startup [y/N]: "
+printf "\n***********************************************\n\nEnable apps at startup [y/N]: "
 if [ "$u_enable_apps" = "" ]; then
     read u_enable_apps
 fi
@@ -43,7 +43,7 @@ fi
 ### q start apps
 ###
 ###
-printf "\n\n***********************************************\n\nStart apps now [y/N]: "
+printf "\n***********************************************\n\nStart apps now [y/N]: "
 if [ "$u_start_apps" = "" ]; then
     read u_start_apps
 fi
