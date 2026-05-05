@@ -10,8 +10,6 @@ fi
 
 if [ "$u_fail2ban" = "y" ]; then
 
-        dnf -y install fail2ban
-
         if [ ! -f "/etc/systemd/system/multi-user.target.wants/fail2ban.service" ]; then
                 systemctl enable fail2ban
         fi

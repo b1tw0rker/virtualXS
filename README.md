@@ -8,13 +8,11 @@ virtualXS is a smart swiss knife utility script to create a Virtual-Hosting-Serv
 
 The following systems are supported:
 
+- RHEL10 (Minimal is recommended)
 - RHEL9 (Minimal is recommended)
 - RHEL8 (Minimal is recommended)
-- Centos8 (Minimal is recommended)
+- Rocky Linux 10.x (Minimal is recommended)
 - Rocky Linux 9.x (Minimal is recommended)
-- Rocky Linux 8.x (Minimal is recommended)
-- Alma Linux 8.x (Minimal is recommended)
-- Alma Linux 9.x (Minimal is recommended)
 - AWS and Azure machines.
 
 ## WARNING - DISCLAIMER
@@ -22,7 +20,7 @@ The following systems are supported:
 THIS SCRIPT COMES WITH ABSOLUTE NO WARRANTY,
 THIS SCRIPT IS ABSOLUTE BETA STUFF. DO NOT USE IT ON PRODUCTION SYSTEMS
 
-(C) 2021-2025 by Dipl. Wirt.-Ing. Nick Herrmann
+(C) 2021-2026 by Dipl. Wirt.-Ing. Nick Herrmann
 This program is WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -67,6 +65,8 @@ vxs
 That's it folks!
 
 ## Changelog
+
+05/05/26 - added RHEL10, Rocky 10 Support
 
 05/24/25 - Some smaller bugfixes , improvment in dovecot
 

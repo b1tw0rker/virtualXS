@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-### Version: 1.1.58
+### Version: 1.1.61
 ### Build date: 01.10.2023
 ### (C) 2021 - 2023 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -33,7 +33,7 @@ done
 ###
 infocolor=$(tput setaf 6) # DEV
 tput setaf 6
-u_version=1.1.58
+u_version=1.1.61
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
 ### get the ip of the client ssh
@@ -63,12 +63,22 @@ timedatectl set-timezone Europe/Berlin
 hostnamectl set-hostname $u_hostname
 
 echo -ne "\\033[2J\033[30;1f\e[94m"
-print_center "********************************************************************\n"
-print_center "*                                                                  *\n"
-print_center " *            Welcome to VirtualXS Install - Version $u_version         *\n"
-print_center " *                    Detected OS: $OS - Version: $VERSION             *\n"
-print_center " *                                                                  *\n"
-print_center " ********************************************************************\n"
+_BOX_W=68
+_BOX_I=$(( _BOX_W - 2 ))
+_BOX_BORDER=$(printf '%*s' $_BOX_W '' | tr ' ' '*')
+_box_line() {
+    local txt="$1" tlen lpad rpad
+    tlen=${#txt}
+    lpad=$(( (_BOX_I - tlen) / 2 ))
+    rpad=$(( _BOX_I - tlen - lpad ))
+    printf '*%*s%s%*s*' $lpad '' "$txt" $rpad ''
+}
+print_center "${_BOX_BORDER}\n"
+print_center "$(_box_line '')\n"
+print_center "$(_box_line "Welcome to VirtualXS Install - Version ${u_version}")\n"
+print_center "$(_box_line "Detected OS: ${OS} - Version: ${VERSION}")\n"
+print_center "$(_box_line '')\n"
+print_center "${_BOX_BORDER}\n"
 printf "\n"
 
 if [ ! -f "$dir001/disclaimer" ]; then
@@ -273,10 +283,10 @@ if [ ! -f "$dir001/rebooted" ]; then
 fi
 
 ### q install php 8.1
-### don't show, if we install on ROCKY 9. ROCKY 9 will install php 8 by default
+### don't show, if we install on ROCKY. ROCKY will install php 8 by default
 ###
 if [ "$OS" = "ROCKY" ]; then
-    source $u_path/lib/lib_rocky9.sh
+    source $u_path/lib/lib_rocky10.sh
 else
     source $u_path/lib/lib_php81.sh
 fi
