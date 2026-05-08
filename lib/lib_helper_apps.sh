@@ -16,8 +16,14 @@ if [ "$u_helper_apps" = "y" ]; then
         mkdir $file004
     fi
     
+    ###
+    ###
+    ###
     cp $u_path/files/bitworker/bw-* $file004/
 
+    ###
+    ###
+    ###
     for helper_file in $file004/bw-*.sh; do
         if [ -f "$helper_file" ]; then
             chmod 700 "$helper_file"
@@ -30,6 +36,9 @@ if [ "$u_helper_apps" = "y" ]; then
         fi
     done
 
+    ###
+    ###
+    ###
     for helper_file in $file004/bw-*.sh; do
         if [ -f "$helper_file" ]; then
             helper_name=$(basename "$helper_file" .sh)
