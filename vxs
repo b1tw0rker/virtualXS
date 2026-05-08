@@ -161,7 +161,8 @@ done
 ###
 ###
 while true; do
-    read -p "Create Web or DNS Server [w/d]: " u_server
+    read -p "Create Web or DNS Server [W/d]: " u_server
+    u_server=${u_server:-w}
     case $u_server in
         [w]) break ;;
         [d]) break ;;

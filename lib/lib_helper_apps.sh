@@ -1,6 +1,6 @@
 #!/bin/bash
 
-### /etc/fail2ban/
+### /etc/bitworker/
 ###
 ###
 printf "\n***********************************************\n\nCopy helper apps to /etc/bitworker [y/N]: "
@@ -17,8 +17,18 @@ if [ "$u_helper_apps" = "y" ]; then
     fi
     
     cp $u_path/files/bitworker/bw-* $file004/
-    
-    chmod 700 $file004/bw*
+
+    for helper_file in $file004/bw-*.sh; do
+        if [ -f "$helper_file" ]; then
+            chmod 700 "$helper_file"
+        fi
+    done
+
+    for helper_file in $file004/bw-*.cfg; do
+        if [ -f "$helper_file" ]; then
+            chmod 644 "$helper_file"
+        fi
+    done
 
     for helper_file in $file004/bw-*.sh; do
         if [ -f "$helper_file" ]; then
