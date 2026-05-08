@@ -181,7 +181,7 @@ if [ "$u_server" = "d" ]; then
     u_bitworker_repo=y
     u_epel_repo=y
     u_dnf_update=y
-    u_sql_server=mysql
+    u_sql_server=maria
     u_dnf=n
     u_php74=n
     u_php81=n
@@ -252,19 +252,7 @@ if [ ! -f "/etc/yum.repos.d/epel.repo" ]; then
     
 fi
 
-u_sql_server=mysql
-printf "\n***********************************************\n\n"
-read -p "Install Mysql or MariaDB? [mysql/maria]: " -ei $u_sql_server u_sql_server
-#printf "\n***********************************************\n\nInstall Mysql or MariaDB? (EXPERIMENTAL) [mysql/maria]: "
-#if [ "$u_sql_server" = "" ]; then
-#    read u_sql_server
-#fi
-
-if [ "$u_sql_server" = "maria" ]; then
-    db_server=mariadb-server
-else
-    db_server=mysql-server
-fi
+db_server=mariadb-server
 
 ### q install dnf
 ###
