@@ -203,7 +203,6 @@ if [ "$u_server" = "d" ]; then
     u_ssl=n
     u_backup=n
     u_quota=n
-    u_webmin=n
     u_firewall=
     u_start_firewall=
 fi
@@ -387,11 +386,6 @@ if [ "$u_server" = "d" ]; then
 fi
 
 ### q Webmin
-###
-###
-source $u_path/lib/lib_webmin.sh
-
-### /etc/firewall
 ###
 ###
 source $u_path/lib/lib_firewall.sh
