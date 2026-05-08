@@ -1,3 +1,4 @@
 **/sshd_config
 **/authorized_keys
 **/sources
+files/certbot/config/dns-config.conf

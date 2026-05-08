@@ -62,6 +62,16 @@ vxs
 
 (which is placed in: /usr/local/bin/vxs) on the shell, the script start's to optimize your machine for virtual hosting purpose.
 
+## Local Certbot DNS Configuration
+
+The file files/certbot/config/dns-config.conf is intentionally not tracked by Git because it may contain provider endpoints and API credentials.
+
+Create your local configuration from the versioned template before using DNS challenge automation:
+
+```bash
+cp /opt/virtualXS/files/certbot/config/dns-config.example /opt/virtualXS/files/certbot/config/dns-config.conf
+```
+
 That's it folks!
 
 ## Changelog

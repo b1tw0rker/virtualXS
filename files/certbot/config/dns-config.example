@@ -6,13 +6,13 @@
 
 ### DNS Provider Settings
 ###
-DNS_SERVER="95.217.220.42"
+DNS_SERVER="dns.example.invalid"
 DNS_PORT="8081"
-API_KEY="YourVerySecretKey007"  # TODO: In Produktionsumgebung ueber sichere Methode setzen
+API_KEY="replace-with-your-api-key"
 
 ### Let's Encrypt Settings
 ###
-EMAIL="mail@bit-worker.com"
+EMAIL="admin@example.com"
 STAGING_MODE="false"
 AGREE_TOS="--agree-tos"
 
