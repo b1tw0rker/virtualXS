@@ -36,6 +36,7 @@ tput setaf 6
 u_version=1.1.64
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
+WEBHOSTER=host-x.de
 ### get the ip of the client ssh
 ### https://unix.stackexchange.com/questions/322227/how-to-get-ssh-client-ip-address-using-shell-script
 u_client_ip=$(echo "$SSH_CLIENT" | cut -d' ' -f 1)
@@ -101,21 +102,23 @@ read -p "1/10 • Server IP adress: " -ei $u_ip4 u_ip
 ### get FQDN
 ###
 ###
-regex='^[^.]+\.[^.]+\.[^.]+$'
+u_hostname_short=$(echo "$u_hostname" | cut -d'.' -f 1)
+regex='^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?$'
 
 while true; do
-    read -p "2/10 • Servername (FQDN): " -ei "$u_hostname" u_srv
-    if [[ $u_srv =~ $regex ]]; then
+    read -p "2/10 • Servername (FQDN): " -ei "$u_hostname_short" u_srv_short
+    if [[ $u_srv_short =~ $regex ]]; then
+        u_srv=$u_srv_short.$WEBHOSTER
         break
     else
-        echo "Servername must be FQDN."
+        echo "Servername must be a valid hostname."
     fi
 done
 
 ### get domain
 ###
 ###
-u_domain=$(echo "$u_srv" | awk -F'.' '{print $(NF-1)"."$NF}')
+u_domain=$WEBHOSTER
 
 ###
 ###
