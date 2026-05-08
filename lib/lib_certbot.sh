@@ -69,6 +69,8 @@ certbot_dns_issue() {
 
     certbot_cmd+=(-d "$certbot_domain")
 
+    printf "\nRequesting a certificate via DNS-Challenge for: %s\n\n" "$certbot_domain"
+
     "${certbot_cmd[@]}"
 }
 
