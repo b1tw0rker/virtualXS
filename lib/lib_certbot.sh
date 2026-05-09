@@ -16,8 +16,8 @@ certbot_dns_prepare() {
         mkdir -p "$certbot_dns_config_dir"
     fi
 
-    cp "$u_path/files/certbot/certbotcron" /etc/cron.weekly/certbot
-    chmod 700 /etc/cron.weekly/certbot
+    cp "$u_path/files/certbot/certbot-renew" /etc/cron.weekly/certbot-renew
+    chmod 700 /etc/cron.weekly/certbot-renew
 
     cp "$u_path/files/certbot/hooks/auto-hook.sh" "$certbot_dns_auth_hook"
     cp "$u_path/files/certbot/hooks/cleanup-hook.sh" "$certbot_dns_cleanup_hook"
