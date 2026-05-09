@@ -9,9 +9,16 @@ file_fstab002=/etc/fstab.bak
 ### q quota
 ###
 ###
-printf "\n***********************************************\n\nActivate Quota for /home [y/N]: "
-if [ "$u_quota" = "" ]; then
-    read u_quota
+u_quota_check=$(grep -m 1 "uquota" /etc/fstab)
+if [ "$u_quota_check" != "" ]; then
+    printf "\n********************************************************************\n\nActivate Quota for /home [y/N]: (already active - skipping) \n"
+    u_quota=n
+else
+    printf "\n********************************************************************\n\nActivate Quota for /home [y/N]: "
+    if [ "$u_quota" = "" ]; then
+        read u_quota
+        printf "\n"
+    fi
 fi
 
 if [ "$u_quota" = "y" ]; then

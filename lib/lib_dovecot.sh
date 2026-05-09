@@ -4,9 +4,10 @@
 ###
 ###
 
-printf "\n***********************************************\n\nConfigure Dovecot [y/N]: "
+printf "\n********************************************************************\n\nConfigure Dovecot [y/N]: "
 if [ "$u_dovecot" = "" ]; then
     read u_dovecot
+    printf "\n"
 fi
 
 u_path=/opt/virtualXS # no ending slash

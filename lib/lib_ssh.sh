@@ -3,9 +3,10 @@
 ### /etc/ssh/sshd_config
 ###
 ###
-printf "\n***********************************************\n\nConfigure  /etc/ssh/sshd_config [y/N]: "
+printf "\n********************************************************************\n\nConfigure  /etc/ssh/sshd_config [y/N]: "
 if [ "$u_ssh" = "" ]; then
         read u_ssh
+        printf "\n"
 fi
 
 if [ "$u_ssh" = "y" ]; then

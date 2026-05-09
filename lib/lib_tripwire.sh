@@ -3,9 +3,10 @@
 ### /etc/tripwire/
 ###
 ###
-printf "\n***********************************************\n\nInstall & Configure Tripwire [y/N]: "
+printf "\n********************************************************************\n\nInstall & Configure Tripwire [y/N]: "
 if [ "$u_tripwire" = "" ]; then
     read u_tripwire
+    printf "\n"
 fi
 
 if [ "$u_tripwire" = "y" ]; then
@@ -18,7 +19,7 @@ if [ "$u_tripwire" = "y" ]; then
     file_tripwire_config=/etc/tripwire/twcfg.txt
     file_virtualxs_policy=$u_path/files/tripwire/virtualxs-policy.txt
     
-    # Backup der ursprünglichen Policy-Datei
+    # Backup of the original policy file
     if [ -f "$file_tripwire_policy" ]; then
         cp $file_tripwire_policy ${file_tripwire_policy}.backup
     fi
@@ -56,7 +57,7 @@ if [ "$u_tripwire" = "y" ]; then
         tripwire --init
     fi
     
-    # Systemd service aktivieren (falls vorhanden)
+    # Enable systemd service (if available)
     if systemctl list-unit-files | grep -q tripwire; then
         systemctl enable tripwire
         systemctl start tripwire

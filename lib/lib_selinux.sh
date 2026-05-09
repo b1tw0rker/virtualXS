@@ -1,7 +1,8 @@
 #!/bin/bash
 
-printf "\n***********************************************\n\nSELinux deaktivieren (permissive) [y/N]: "
+printf "\n********************************************************************\n\nDisable SELinux enforcement (set to permissive) [y/N]: "
 read u_selinux
+printf "\n"
 
 if [ "$u_selinux" = "y" ]; then
 

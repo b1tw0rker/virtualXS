@@ -144,7 +144,7 @@ while true; do
     read -s -p "5/6 • Upcoming MySQL root password: " u_mysql_pwd
     echo # Zeilenumbruch nach der Eingabe, da -s keinen Zeilenumbruch erzeugt
     
-    # Zweite Abfrage zur Bestätigung
+    # Second prompt for confirmation
     read -s -p "6/6 • Confirm MySQL root password: " u_mysql_pwd_confirm
     echo # Zeilenumbruch
     
@@ -221,9 +221,10 @@ hostnamectl set-hostname $u_srv
 ###
 if [ ! -f "/etc/yum.repos.d/virtx.repo" ]; then
     
-    printf "\n***********************************************\n\nAdd Virt-X Repo? [y/N]: "
+    printf "\n********************************************************************\n\nAdd Virt-X Repo? [y/N]: "
     if [ "$u_virtx_repo" = "" ]; then
         read u_virtx_repo
+        printf "\n"
     fi
     
     if [ "$u_virtx_repo" = "y" ]; then
@@ -237,9 +238,10 @@ fi
 ###
 if [ ! -f "/etc/yum.repos.d/epel.repo" ]; then
     
-    printf "\n***********************************************\n\nAdd Epel Repo? [y/N]: "
+    printf "\n********************************************************************\n\nAdd Epel Repo? [y/N]: "
     if [ "$u_epel_repo" = "" ]; then
         read u_epel_repo
+        printf "\n"
     fi
     
     if [ "$u_epel_repo" = "y" ]; then
@@ -266,9 +268,10 @@ source $u_path/lib/lib_dnf.sh
 ###
 ###
 if [ ! -f "$dir001/rebooted" ]; then
-    printf "\n***********************************************\n\nReboot now - Strongly recommended if this is the initial run [y/N]: "
+    printf "\n********************************************************************\n\nReboot now - Strongly recommended if this is the initial run [y/N]: "
     if [ "$u_reboot1" = "" ]; then
         read u_reboot1
+        printf "\n"
     fi
     if [ "$u_reboot1" = "y" ]; then
         touch $dir001/rebooted
@@ -423,9 +426,10 @@ source $u_path/lib/lib_cron.sh
 ###
 ###
 if [ "$u_aws" = "n" ]; then
-    printf "\n***********************************************\n\nReboot your machine now [y/N]: "
+    printf "\n********************************************************************\n\nReboot your machine now [y/N]: "
     if [ "$u_reboot" = "" ]; then
         read u_reboot
+        printf "\n"
     fi
 fi
 

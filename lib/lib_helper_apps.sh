@@ -3,9 +3,10 @@
 ### /etc/bitworker/
 ###
 ###
-printf "\n***********************************************\n\nCopy helper apps to /etc/bitworker [y/N]: "
+printf "\n********************************************************************\n\nCopy helper apps to /etc/bitworker [y/N]: "
 if [ "$u_helper_apps" = "" ]; then
     read u_helper_apps
+    printf "\n"
 fi
 
 if [ "$u_helper_apps" = "y" ]; then

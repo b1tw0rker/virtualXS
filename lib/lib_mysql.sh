@@ -3,9 +3,10 @@
 ### /MySQL/
 ###
 ###
-printf "\n***********************************************\n\nConfigure MySQL (root-Passwort setzen, Backup-Script installieren) [y/N]: "
+printf "\n********************************************************************\n\nConfigure MySQL (set root password, install backup script) [y/N]: "
 if [ "$u_mysql" = "" ]; then
   read u_mysql
+  printf "\n"
 fi
 
 if [ "$u_mysql" = "y" ]; then

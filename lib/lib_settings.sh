@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#printf "\n\n***********************************************\n\nSet general settings like .exrc [y/N]: "
+#printf "\n\n********************************************************************\n\nSet general settings like .exrc [y/N]: "
 
 #if [ "$u_settings" = "" ]; then
 #    read u_settings

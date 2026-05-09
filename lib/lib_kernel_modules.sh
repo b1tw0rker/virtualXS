@@ -1,8 +1,9 @@
 #!/bin/bash
 
-printf "\n***********************************************\n\nKernel-Module deaktivieren (Drucker, USB-Storage, Bluetooth, ungenutzte Protokolle) [y/N]: "
+printf "\n********************************************************************\n\nDisable kernel modules (printer, USB storage, Bluetooth, unused protocols) [y/N]: "
 if [ "$u_module_blacklist" = "" ]; then
     read u_module_blacklist
+    printf "\n"
 fi
 
 if [ "$u_module_blacklist" = "y" ]; then

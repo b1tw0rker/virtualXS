@@ -8,9 +8,10 @@ file_php_003=/etc/php.d
 ### todo install php 8.2
 ###
 ###
-printf "\n***********************************************\n\nInstall php 8.1 instead using php 8.0 [y/N]: "
+printf "\n********************************************************************\n\nInstall php 8.1 instead using php 8.0 [y/N]: "
 if [ "$u_php81" = "" ]; then
     read u_php81
+    printf "\n"
 fi
 
 if [ "$u_php81" = "y" ]; then
@@ -24,9 +25,10 @@ fi
 ### Mofify php.ini to yor needs here
 ###
 ###
-printf "\n***********************************************\n\nFix php-fpm and garbage-collector [y/N]: "
+printf "\n********************************************************************\n\nFix php-fpm and garbage-collector [y/N]: "
 if [ "$u_phpfpmfix" = "" ]; then
     read u_phpfpmfix
+    printf "\n"
 fi
 
 if [ "$u_phpfpmfix" = "y" ]; then

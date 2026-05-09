@@ -1,8 +1,9 @@
 #!/bin/bash
 
-printf "\n***********************************************\n\nGIT Clone RSYNC BackupScript nach: /etc/bitworker [y/N]: "
+printf "\n********************************************************************\n\nGIT Clone RSYNC backup script to: /etc/bitworker [y/N]: "
 if [ "$u_backup" = "" ]; then
     read u_backup
+    printf "\n"
 fi
 
 if [ "$u_backup" = "y" ]; then

@@ -3,9 +3,10 @@
 ### /etc/fail2ban/
 ###
 ###
-printf "\n***********************************************\n\nInstall & Configure fail2ban [y/N]: "
+printf "\n********************************************************************\n\nInstall & Configure fail2ban [y/N]: "
 if [ "$u_fail2ban" = "" ]; then
         read u_fail2ban
+        printf "\n"
 fi
 
 if [ "$u_fail2ban" = "y" ]; then

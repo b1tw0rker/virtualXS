@@ -5,14 +5,17 @@
 
 file001=/etc/httpd/conf.d
 
-printf "\n***********************************************\n\nCreate Autoconfig and Autodiscover für Mailclients [y/N]: "
+printf "\n********************************************************************\n\nCreate Autoconfig and Autodiscover for mail clients [y/N]: "
 if [ "$u_autoconfig" = "" ]; then
     read u_autoconfig
+    printf "\n"
 fi
 
 if [ "$u_autoconfig" = "y" ]; then
 
-    if [ -d "$file001" ]; then
+    if [ "$u_certbot" != "y" ]; then
+        printf "\nAutoconfig kann nur erstellt werden, wenn zuvor ein initiales Let's Encrypt Zertifikat ausgestellt wurde.\n"
+    elif [ -d "$file001" ]; then
 
         cp $u_path/files/autoconfig/autoconfig.conf $file001/
 
@@ -75,6 +78,6 @@ if [ "$u_autoconfig" = "y" ]; then
         ###
         printf "TODO: The files: /home/httpd/autoconfig/htdocs/autodiscover.xml und config-v1.1.xml must be configured manually.\n"
 
-    fi
+    fi  # end if [ "$u_certbot" != "y" ] / elif
 
-fi
+fi  # end if [ "$u_autoconfig" = "y" ]
