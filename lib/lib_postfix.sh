@@ -50,7 +50,7 @@ if [ "$u_postfix" = "y" ]; then
     ######################
     ### UNTESTED START ###
     ######################
-    sed -i 's/^#header_checks = regexp:\/etc/postfix\/header_checks\/header_checks = regexp:\/etc\/postfix\/header_checks/' $file_postfix001
+    sed -i 's|^#header_checks = regexp:/etc/postfix/header_checks|header_checks = regexp:/etc/postfix/header_checks|' $file_postfix001
     echo "/^User-Agent:.*$/ REPLACE User-Agent: HOST-X Agent/1.3 " >>$file_postfix003
     ######################
     ###  UNTESTED END  ###
