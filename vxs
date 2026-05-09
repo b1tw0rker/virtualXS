@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-### Version: 1.1.112
+### Version: 1.1.114
 ### Build date: 01.10.2023
 ### (C) 2021 - 2023 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -33,7 +33,7 @@ done
 ###
 infocolor=$(tput setaf 6) # DEV
 tput setaf 6
-u_version=1.1.112
+u_version=1.1.114
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
 WEBHOSTER=host-x.de
@@ -97,7 +97,7 @@ fi
 ### get ip and servername
 ###
 ###
-read -p "1/10 • Server IP adress: " -ei $u_ip4 u_ip
+read -p "1/6 • Server IP adress: " -ei $u_ip4 u_ip
 
 ### get FQDN
 ###
@@ -106,7 +106,7 @@ u_hostname_short=$(echo "$u_hostname" | cut -d'.' -f 1)
 regex='^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?$'
 
 while true; do
-    read -p "2/10 • Servername (FQDN): " -ei "$u_hostname_short" u_srv_short
+    read -p "2/6 • Servername (FQDN): " -ei "$u_hostname_short" u_srv_short
     if [[ $u_srv_short =~ $regex ]]; then
         u_srv=$u_srv_short.$WEBHOSTER
         break
@@ -123,16 +123,16 @@ u_domain=$WEBHOSTER
 ###
 ###
 ###
-read -p "3/10 • Your IP (Client IP): " -ei $u_client_ip u_client_ip
+read -p "3/6 • Your IP (Client IP): " -ei $u_client_ip u_client_ip
 
 ### Detect and/or set eth
 ###
 ###
 if [ -f "$dir001/interface" ]; then
     INTERFACE=$(cat $dir001/interface)
-    read -p "4/10 • NetworkInterface: " -ei $INTERFACE u_iface
+    read -p "4/6 • NetworkInterface: " -ei $INTERFACE u_iface
 else
-    read -p "4/10 • NetworkInterface: " -ei $u_iface u_iface
+    read -p "4/6 • NetworkInterface: " -ei $u_iface u_iface
     printf "$u_iface" >$dir001/interface
 fi
 
@@ -141,11 +141,11 @@ fi
 ###
 while true; do
     # Erste Abfrage
-    read -s -p "5/10 • Upcoming MySQL root password: " u_mysql_pwd
+    read -s -p "5/6 • Upcoming MySQL root password: " u_mysql_pwd
     echo # Zeilenumbruch nach der Eingabe, da -s keinen Zeilenumbruch erzeugt
     
     # Zweite Abfrage zur Bestätigung
-    read -s -p "6/10 • Confirm MySQL root password: " u_mysql_pwd_confirm
+    read -s -p "6/6 • Confirm MySQL root password: " u_mysql_pwd_confirm
     echo # Zeilenumbruch
     
     # Vergleiche die beiden Eingaben
