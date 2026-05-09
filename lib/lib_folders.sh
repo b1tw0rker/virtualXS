@@ -39,4 +39,6 @@ if [ "$u_folders_create" = "y" ]; then
     mkdir $file006
   fi
 
+  printf "\e[32mSuccess\e[0m\n"
+
 fi
