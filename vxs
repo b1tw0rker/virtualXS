@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-### Version: 1.2.13
+### Version: 1.2.14
 ### Build date: 01.10.2023
 ### (C) 2021 - 2023 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -33,7 +33,7 @@ done
 ###
 infocolor=$(tput setaf 6) # DEV
 tput setaf 6
-u_version=1.2.13
+u_version=1.2.14
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
 WEBHOSTER=host-x.de
@@ -390,7 +390,7 @@ source $u_path/lib/lib_cron.sh
 printf "\n"
 print_center "********************************************************************\n"
 print_center "*                                                                  *\n"
-print_center "*                    S E C U R I T Y                              *\n"
+print_center "*                    S E C U R I T Y                               *\n"
 print_center "*                                                                  *\n"
 print_center "********************************************************************\n"
 printf "\n"
@@ -434,7 +434,7 @@ source $u_path/lib/lib_tripwire.sh
 printf "\n"
 print_center "********************************************************************\n"
 print_center "*                                                                  *\n"
-print_center "*                         A I                                      *\n"
+print_center "*                               A I                                *\n"
 print_center "*                                                                  *\n"
 print_center "********************************************************************\n"
 printf "\n"
