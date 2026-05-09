@@ -2,20 +2,6 @@
 
 file001=/etc/dnf/automatic.conf
 
-### q run upate
-###
-###
-printf "\n********************************************************************\n\n"
-confirm "Run dnf update" "$u_dnf_update"
-
-if [ "$u_dnf_update" = "y" ]; then
-    printf "\n"
-    date +%s >/tmp/time.log
-    dnf clean all
-    dnf -y update
-    date +%s >>/tmp/time.log
-fi
-
 ### install
 ###
 ###
@@ -25,6 +11,11 @@ if [ "$u_dnf" = "" ]; then
 fi
 
 if [ "$u_dnf" = "y" ]; then
+    printf "\n"
+    date +%s >/tmp/time.log
+    dnf clean all
+    dnf -y update
+    date +%s >>/tmp/time.log
     
     ### you need to activate unsupported packages first: dnf config-manager --set-enabled crb
     ### mod_fcgid - am 11.06.2025 entfernt. Mir ist noch nicht klar, ob es noch benötigt wird.
