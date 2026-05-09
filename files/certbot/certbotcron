@@ -2,20 +2,24 @@
 #!/bin/bash
 
 ### https://stackoverflow.com/questions/969407/determining-age-of-a-file-in-shell-script
-### version 1.0.0
-### modified 28.08.2024
+### version 1.0.2
+### modified 09.05.2026
 
 ### vars
 ###
 ###
 folder=/etc/letsencrypt/live
-file=/etc/letsencrypt/live/www.bitw0rker.de/privkey.pem
 
-### Check for Cert renew
+### Run Certbot renew
 ###
 ###
 certbot renew
 
+
+
+###
+###
+###
 if [ -f "/etc/systemd/system/multi-user.target.wants/httpd.service" ]; then
 
     if [ "$(find $folder -mmin -5)" != "" ]; then
@@ -24,25 +28,21 @@ if [ -f "/etc/systemd/system/multi-user.target.wants/httpd.service" ]; then
 
 fi
 
-if [ -f "/etc/systemd/system/multi-user.target.wants/chatO.service" ]; then
 
-    if [ "$(find $file -mmin -5)" == "" ]; then
-        systemctl restart chatO
+
+if [ -f "/etc/systemd/system/multi-user.target.wants/chatbot-x.service" ]; then
+
+    if [ "$(find $folder -mmin -5)" != "" ]; then
+        systemctl restart chatbot-x
     fi
 
 fi
 
-if [ -f "/etc/systemd/system/multi-user.target.wants/webmin.service" ]; then
 
-    if [ "$(find $file -mmin -5)" == "" ]; then
-        systemctl restart webmin
-    fi
-
-fi
 
 if [ -f "/etc/systemd/system/multi-user.target.wants/vsftpd.service" ]; then
-
-    if [ "$(find $file -mmin -5)" == "" ]; then
+    
+    if [ "$(find $folder -mmin -5)" != "" ]; then
         systemctl restart vsftpd
     fi
 
