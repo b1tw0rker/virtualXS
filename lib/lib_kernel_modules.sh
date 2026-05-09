@@ -3,7 +3,6 @@
 printf "\n********************************************************************\n\nDisable kernel modules (printer, USB storage, Bluetooth, unused protocols) [y/N]: "
 if [ "$u_module_blacklist" = "" ]; then
     read u_module_blacklist
-    printf "\n"
 fi
 
 if [ "$u_module_blacklist" = "y" ]; then

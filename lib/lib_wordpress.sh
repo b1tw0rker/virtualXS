@@ -7,7 +7,6 @@ if [ "$u_server" = "w" ]; then # Only for web servers
     printf "\n********************************************************************\n\nInstall Wordpress CLI (wp-cli)? [y/N]: "
     if [ -z "$u_wp_cli" ]; then
         read u_wp_cli
-        printf "\n"
     fi
     
     if [ "$u_wp_cli" = "y" ]; then

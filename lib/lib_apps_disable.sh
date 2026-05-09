@@ -6,7 +6,6 @@
 printf "\n********************************************************************\n\nDisable useless apps at startup [y/N]: "
 if [ "$u_disable_apps" = "" ]; then
     read u_disable
-    printf "\n"
 fi
 
 if [ "$u_disable_apps" = "y" ]; then

@@ -6,7 +6,6 @@
 printf "\n********************************************************************\n\nInstall & Configure Tripwire [y/N]: "
 if [ "$u_tripwire" = "" ]; then
     read u_tripwire
-    printf "\n"
 fi
 
 if [ "$u_tripwire" = "y" ]; then

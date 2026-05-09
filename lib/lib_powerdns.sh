@@ -21,7 +21,6 @@ file_powerdns001=/etc/pdns/pdns.conf
 printf "\n********************************************************************\n\nInstall Master PowerDNS [y/N]: "
 if [ "$u_powerdns_master" = "" ]; then
     read u_powerdns_master
-    printf "\n"
 fi
 
 if [ "$u_powerdns_master" = "y" ]; then
@@ -77,7 +76,6 @@ fi
 printf "\n********************************************************************\n\nInstall Slave PowerDNS [y/N]: "
 if [ "$u_powerdns_slave" = "" ]; then
     read u_powerdns_slave
-    printf "\n"
 fi
 
 if [ "$u_powerdns_slave" = "y" ]; then

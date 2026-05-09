@@ -22,7 +22,6 @@ fi
 printf "\n********************************************************************\n\nInstall apps via dnf [y/N]: "
 if [ "$u_dnf" = "" ]; then
     read u_dnf
-    printf "\n"
 fi
 
 if [ "$u_dnf" = "y" ]; then

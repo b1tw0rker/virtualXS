@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-### Version: 1.1.115
+### Version: 1.2.1
 ### Build date: 01.10.2023
 ### (C) 2021 - 2023 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -33,7 +33,7 @@ done
 ###
 infocolor=$(tput setaf 6) # DEV
 tput setaf 6
-u_version=1.1.115
+u_version=1.2.1
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
 WEBHOSTER=host-x.de
@@ -224,7 +224,6 @@ if [ ! -f "/etc/yum.repos.d/virtx.repo" ]; then
     printf "\n********************************************************************\n\nAdd Virt-X Repo? [y/N]: "
     if [ "$u_virtx_repo" = "" ]; then
         read u_virtx_repo
-        printf "\n"
     fi
     
     if [ "$u_virtx_repo" = "y" ]; then
@@ -241,7 +240,6 @@ if [ ! -f "/etc/yum.repos.d/epel.repo" ]; then
     printf "\n********************************************************************\n\nAdd Epel Repo? [y/N]: "
     if [ "$u_epel_repo" = "" ]; then
         read u_epel_repo
-        printf "\n"
     fi
     
     if [ "$u_epel_repo" = "y" ]; then
@@ -271,7 +269,6 @@ if [ ! -f "$dir001/rebooted" ]; then
     printf "\n********************************************************************\n\nReboot now - Strongly recommended if this is the initial run [y/N]: "
     if [ "$u_reboot1" = "" ]; then
         read u_reboot1
-        printf "\n"
     fi
     if [ "$u_reboot1" = "y" ]; then
         touch $dir001/rebooted
@@ -429,7 +426,6 @@ if [ "$u_aws" = "n" ]; then
     printf "\n********************************************************************\n\nReboot your machine now [y/N]: "
     if [ "$u_reboot" = "" ]; then
         read u_reboot
-        printf "\n"
     fi
 fi
 

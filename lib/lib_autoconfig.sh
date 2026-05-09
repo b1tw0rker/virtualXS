@@ -8,7 +8,6 @@ file001=/etc/httpd/conf.d
 printf "\n********************************************************************\n\nCreate Autoconfig and Autodiscover for mail clients [y/N]: "
 if [ "$u_autoconfig" = "" ]; then
     read u_autoconfig
-    printf "\n"
 fi
 
 if [ "$u_autoconfig" = "y" ]; then

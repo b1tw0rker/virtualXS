@@ -6,7 +6,6 @@
 printf "\n********************************************************************\n\nEnable apps at startup [y/N]: "
 if [ "$u_enable_apps" = "" ]; then
     read u_enable_apps
-    printf "\n"
 fi
 
 if [ "$u_enable_apps" = "y" ]; then
@@ -47,7 +46,6 @@ fi
 printf "\n********************************************************************\n\nStart apps now [y/N]: "
 if [ "$u_start_apps" = "" ]; then
     read u_start_apps
-    printf "\n"
 fi
 
 if [ "$u_start_apps" = "y" ]; then

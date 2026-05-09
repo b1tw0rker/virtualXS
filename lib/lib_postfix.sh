@@ -6,7 +6,6 @@
 printf "\n********************************************************************\n\nConfigure /etc/postfix/main.cf [y/N]: "
 if [ "$u_postfix" = "" ]; then
     read u_postfix
-    printf "\n"
 fi
 
 if [ "$u_postfix" = "y" ]; then

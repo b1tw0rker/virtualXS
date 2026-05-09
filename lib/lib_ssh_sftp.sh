@@ -6,7 +6,6 @@
 printf "\n********************************************************************\n\nEnable SFTP [y/N]: "
 if [ "$u_ssh_sftp" = "" ]; then
         read u_ssh_sftp
-        printf "\n"
 fi
 
 if [ "$u_ssh_sftp" = "y" ]; then

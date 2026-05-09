@@ -17,7 +17,6 @@ else
     printf "\n********************************************************************\n\nActivate Quota for /home [y/N]: "
     if [ "$u_quota" = "" ]; then
         read u_quota
-        printf "\n"
     fi
 fi
 

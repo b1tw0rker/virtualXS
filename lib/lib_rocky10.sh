@@ -6,7 +6,6 @@
 printf "\n********************************************************************\n\nSet Rocky 10 crypto-policies to LEGACY [y/N]: "
 if [ "$u_crypto" = "" ]; then
     read u_crypto
-    printf "\n"
 fi
 
 if [ "$u_crypto" = "y" ]; then
