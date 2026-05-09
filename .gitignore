@@ -2,3 +2,4 @@
 **/authorized_keys
 **/sources
 files/certbot/config/dns-config.conf
+files/claude/.claude.json
