@@ -176,15 +176,11 @@ done
 confirm "Create on AWS" "$u_aws"
 
 ### DNS Server presettings.
-### All with 'y' marked options will be executed autmatticly.
+### All with 'y' marked options will be executed automatticly.
 ### All with 'n' marked options will NOT executed.
 if [ "$u_server" = "d" ]; then
-    u_bitworker_repo=y
     u_epel_repo=y
-    u_dnf_update=y
-    u_sql_server=maria
     u_dnf=n
-    u_php74=n
     u_php81=n
     u_phpfpmfix=n
     u_disable_apps=y
@@ -193,19 +189,26 @@ if [ "$u_server" = "d" ]; then
     u_folders_create=y
     u_postfix=n
     u_ssh=y
+    u_ssh_sftp=n
     u_fail2ban=y
     u_tripwire=y
+    u_helper_apps=y
     u_httpd=n
+    u_wp_cli=n
     u_dovecot=n
     u_certbot=n
+    u_certbot_dovecot=n
     u_autoconfig=n
     u_vsftpd=n
     u_mysql=y
     u_ssl=n
     u_backup=n
     u_quota=n
-    u_firewall=
-    u_start_firewall=
+    u_firewall=y
+    u_activate_firewall=y
+    u_hardening=y
+    u_selinux=y
+    u_module_blacklist=y
 fi
 
 ### set hostname
