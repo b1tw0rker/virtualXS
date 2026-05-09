@@ -76,6 +76,17 @@ That's it folks!
 
 ## Changelog
 
+05/09/26 - **Security & Hardening Improvements**
+- `certbotcron` umbenannt in `certbot-renew` (klarere Benennung)
+- Kernel-Hardening: `99-bw-custom.conf` umbenannt in `99-bw-kernel-hardening.conf`
+- Kernel-Hardening erweitert: ASLR, kptr_restrict, ptrace_scope, protected_hardlinks/symlinks, TCP-Timestamps, log_martians
+- Neues Modul `lib_kernel_modules.sh`: Deaktivierung ungenutzter Kernel-Module (Drucker, USB-Storage, Bluetooth, ungenutzte Netzwerkprotokolle, exotische Dateisysteme)
+- SELinux: Deaktivierung jetzt optional per Setup-Frage (statt automatisch)
+- Setup-Fragenummern korrigiert: `x/10` → `x/6`
+- `lib_wordpress.sh` in Setup-Flow eingebunden (WP-CLI Installation)
+- Beschreibende Texte in Setup-Fragen verbessert (MySQL, Kernel-Hardening, Dovecot-Certbot)
+- Firewall: Trennlinie zwischen TODO-Hinweis und Kernel-Hardening-Frage ergänzt
+
 05/05/26 - added RHEL10, Rocky 10 Support
 
 05/24/25 - Some smaller bugfixes , improvment in dovecot
