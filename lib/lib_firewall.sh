@@ -109,6 +109,7 @@ fi
 
 printf "\nTODO: Don't forget to enable Firewall with: -systemctl enable firewall- after reboot\n"
 
+printf "\n***********************************************\n\n"
 
 ### https://www.cyberciti.biz/faq/linux-kernel-etcsysctl-conf-security-hardening/
 ###

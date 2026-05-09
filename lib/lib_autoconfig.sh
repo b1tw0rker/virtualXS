@@ -5,7 +5,7 @@
 
 file001=/etc/httpd/conf.d
 
-printf "\n***********************************************\n\nCreate Autoconfig and Autodiscover [y/N]: "
+printf "\n***********************************************\n\nCreate Autoconfig and Autodiscover für Mailclients [y/N]: "
 if [ "$u_autoconfig" = "" ]; then
     read u_autoconfig
 fi

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-printf "\n***********************************************\n\nClone Rsync BackupScript in /etc/bitworker [y/N]: "
+printf "\n***********************************************\n\nCopy RSYNC BackupScript nach: /etc/bitworker [y/N]: "
 if [ "$u_backup" = "" ]; then
     read u_backup
 fi

@@ -3,7 +3,7 @@
 ### /MySQL/
 ###
 ###
-printf "\n***********************************************\n\nConfigure MySQL Stuff [y/N]: "
+printf "\n***********************************************\n\nConfigure MySQL (root-Passwort setzen, Backup-Script installieren) [y/N]: "
 if [ "$u_mysql" = "" ]; then
   read u_mysql
 fi
