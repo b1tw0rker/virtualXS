@@ -50,5 +50,6 @@ EOF
 
                 systemctl restart sshd
         fi
+        printf "\e[32mSuccess\e[0m\n"
 
 fi

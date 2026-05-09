@@ -30,5 +30,6 @@ if [ "$u_ssl" = "y" ]; then
         ssh-copy-id -i ~/.ssh/id_rsa.pub $u_new_key
         systemctl start firewall
     fi
+    printf "\e[32mSuccess\e[0m\n"
 
 fi

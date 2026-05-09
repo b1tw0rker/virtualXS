@@ -57,5 +57,6 @@ if [ "$u_start_apps" = "y" ]; then
     systemctl start vsftpd
     systemctl start dovecot
     systemctl start spamassassin
+    printf "\e[32mSuccess\e[0m\n"
 
 fi

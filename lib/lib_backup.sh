@@ -18,5 +18,6 @@ if [ "$u_backup" = "y" ]; then
     ###
     cp $u_path/files/backup/copyjobcron /etc/cron.daily/copyjob
     chmod 700 /etc/cron.daily/copyjob
+    printf "\e[32mSuccess\e[0m\n"
 
 fi

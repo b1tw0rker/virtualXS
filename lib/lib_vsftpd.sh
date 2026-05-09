@@ -50,5 +50,6 @@ if [ "$u_vsftpd" = "y" ]; then
         sed -i 's/^#rsa_cert_file=\/etc\/letsencrypt\/live\/XXX\/fullchain.pem/rsa_cert_file=\/etc\/letsencrypt\/live\/'"$u_hostname"'\/fullchain.pem/' $file_vsftpd002
         sed -i 's/^#rsa_private_key_file=\/etc\/letsencrypt\/live\/XXX\/privkey.pem/rsa_private_key_file=\/etc\/letsencrypt\/live\/'"$u_hostname"'\/privkey.pem/' $file_vsftpd002
     fi
+    printf "\e[32mSuccess\e[0m\n"
 
 fi

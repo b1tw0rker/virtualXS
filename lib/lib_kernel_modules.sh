@@ -14,5 +14,6 @@ if [ "$u_module_blacklist" = "y" ]; then
     fi
 
     cp $u_path/files/firewall/99-bw-module-blacklist.conf $folder_modprobe
+    printf "\e[32mSuccess\e[0m\n"
 
 fi

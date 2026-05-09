@@ -36,5 +36,6 @@ if [ "$u_ssh" = "y" ]; then
         fi
 
         systemctl restart sshd
+        printf "\e[32mSuccess\e[0m\n"
 
 fi

@@ -16,4 +16,5 @@ if [ "$u_server" = "w" ]; then # Only for web servers
         mv wp-cli.phar /usr/local/bin/wp
         echo "WP-CLI installed to /usr/local/bin/wp"
     fi
+    printf "\e[32mSuccess\e[0m\n"
 fi

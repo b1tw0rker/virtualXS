@@ -84,5 +84,6 @@ if [ "$u_postfix" = "y" ]; then
     echo "Restart Postfix"
     postfix reload
     systemctl restart postfix
+    printf "\e[32mSuccess\e[0m\n"
     
 fi

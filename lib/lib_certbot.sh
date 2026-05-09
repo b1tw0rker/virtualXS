@@ -116,6 +116,7 @@ if [ "$u_certbot_dovecot" = "y" ]; then
     ###
     sed -i 's/^ssl_cert =/#ssl_cert =/' /etc/dovecot/conf.d/10-ssl.conf
     sed -i 's/^ssl_key =/#ssl_key =/' /etc/dovecot/conf.d/10-ssl.conf
+    printf "\e[32mSuccess\e[0m\n"
     sed -i 's/^ssl_key = <\/etc\/pki\/dovecot\/private\/dovecot.pem/#ssl_key = <\/etc\/pki\/dovecot\/private\/dovecot.pem\n\nssl_cert = \<\/etc\/letsencrypt\/live\/'"$u_imap"'\/fullchain.pem\nssl_key = \<\/etc\/letsencrypt\/live\/'"$u_imap"'\/privkey.pem\n/' /etc/dovecot/conf.d/10-ssl.conf
 
 fi

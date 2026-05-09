@@ -78,5 +78,6 @@ if [ "$u_autoconfig" = "y" ]; then
         printf "TODO: The files: /home/httpd/autoconfig/htdocs/autodiscover.xml und config-v1.1.xml must be configured manually.\n"
 
     fi  # end if [ "$u_certbot" != "y" ] / elif
+    printf "\e[32mSuccess\e[0m\n"
 
 fi  # end if [ "$u_autoconfig" = "y" ]
