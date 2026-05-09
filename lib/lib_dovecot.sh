@@ -47,6 +47,6 @@ if [ "$u_dovecot" = "y" ]; then
     ###
     sed -i 's/^!include auth-system.conf.ext/#!include auth-system.conf.ext/' /etc/dovecot/conf.d/10-auth.conf
     sed -i 's/^#!include auth-sql.conf.ext/!include auth-sql.conf.ext/' /etc/dovecot/conf.d/10-auth.conf
-    printf "\e[32mSuccess\e[0m\n"
+    printf "[\e[32mOK\e[0m]\n"
 
 fi

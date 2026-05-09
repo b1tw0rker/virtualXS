@@ -31,6 +31,6 @@ if [ "$u_fail2ban" = "y" ]; then
         echo "Restart fail2ban"
         systemctl restart fail2ban
 
-        printf "\e[32mSuccess\e[0m\n"
+        printf "[\e[32mOK\e[0m]\n"
 
 fi

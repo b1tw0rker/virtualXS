@@ -130,7 +130,7 @@ if [ "$u_hardening" = "y" ]; then
     ###
     ###
     sysctl -p
-    printf "\e[32mSuccess\e[0m\n"
+    printf "[\e[32mOK\e[0m]\n"
     
 fi
 

@@ -128,7 +128,7 @@ if [ "$u_powerdns_slave" = "y" ]; then
 
     printf "**********************************************************************************************************\n"
     printf "*** Don't forget to insert udp/tcp port 53 network traffic from master to slave in your iptables script ***\n"
-    printf "\e[32mSuccess\e[0m\n"
+    printf "[\e[32mOK\e[0m]\n"
     printf "**********************************************************************************************************\n"
 
 fi

@@ -10,6 +10,6 @@ if [ "$u_selinux" = "y" ]; then
         sed -i 's/^SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
 
     fi
-    printf "\e[32mSuccess\e[0m\n"
+    printf "[\e[32mOK\e[0m]\n"
 
 fi

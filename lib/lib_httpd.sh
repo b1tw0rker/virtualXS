@@ -75,6 +75,6 @@ if [ "$u_httpd" = "y" ]; then
         printf "Reload httpd failed:\n"
         apachectl -t
     fi
-    printf "\e[32mSuccess\e[0m\n"
+    printf "[\e[32mOK\e[0m]\n"
 
 fi

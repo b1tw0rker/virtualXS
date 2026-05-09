@@ -45,5 +45,5 @@ if [ "$u_helper_apps" = "y" ]; then
             ln -sf "$helper_file" "/bin/$helper_name"
         fi
     done
-    printf "\e[32mSuccess\e[0m\n"
+    printf "[\e[32mOK\e[0m]\n"
 fi

@@ -72,6 +72,6 @@ if [ "$u_tripwire" = "y" ]; then
     echo "  - Integrity check: tripwire --check"
     echo "  - Update database: tripwire --update"
     echo "  - Generate report: tripwire --check --interactive"
-    printf "\e[32mSuccess\e[0m\n"
+    printf "[\e[32mOK\e[0m]\n"
     
 fi

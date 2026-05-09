@@ -45,6 +45,6 @@ if [ "$u_dnf" = "y" ]; then
         
         systemctl enable --now dnf-automatic.timer
     fi
-    printf "\e[32mSuccess\e[0m\n"
+    printf "[\e[32mOK\e[0m]\n"
     
 fi
