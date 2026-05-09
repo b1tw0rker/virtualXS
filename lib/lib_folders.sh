@@ -1,6 +1,6 @@
 #!/bin/bash
 
-printf "\n***********************************************\n\nCreate standard folders [y/N]: "
+printf "\n***********************************************\n\nCreate standard folders (/home/httpd, /home/pop, /home/mysql, /etc/bitworker, /root/.ssh, /var/log/rsync) [y/N]: "
 if [ "$u_folders_create" = "" ]; then
   read u_folders_create
 fi
