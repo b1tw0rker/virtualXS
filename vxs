@@ -401,11 +401,6 @@ source $u_path/lib/lib_fail2ban.sh
 ###
 source $u_path/lib/lib_firewall.sh
 
-### /etc/selinux/config
-###
-###
-source $u_path/lib/lib_selinux.sh
-
 ### kernel module blacklist
 ###
 ###
@@ -415,16 +410,6 @@ source $u_path/lib/lib_kernel_modules.sh
 ###
 ###
 source $u_path/lib/lib_tripwire.sh
-
-### q Reboot
-###
-###
-if [ "$u_aws" = "n" ]; then
-    printf "\n********************************************************************\n\nReboot your machine now [y/N]: "
-    if [ "$u_reboot" = "" ]; then
-        read u_reboot
-    fi
-fi
 
 printf "\n\n"
 print_center "********************************************************************\n"
@@ -450,12 +435,6 @@ fi
 ###
 ###
 ###
-if [ "$u_aws" = "n" ]; then
-    if [ "$u_reboot" = "y" ]; then
-        reboot
-    fi
-fi
-
 ### post install cleanup
 ###
 ###
