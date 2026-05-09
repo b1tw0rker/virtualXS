@@ -116,3 +116,22 @@ kernel.panic = 10
 
 # Ignore bad ICMP errors
 net.ipv4.icmp_ignore_bogus_error_responses = 1
+
+# ASLR - Address Space Layout Randomization
+kernel.randomize_va_space = 2
+
+# Hide kernel pointer addresses (e.g. in /proc)
+kernel.kptr_restrict = 2
+
+# Restrict ptrace to child processes only
+kernel.yama.ptrace_scope = 1
+
+# Protect hardlinks and symlinks against TOCTOU attacks
+fs.protected_hardlinks = 1
+fs.protected_symlinks = 1
+
+# Disable TCP timestamps (prevents server uptime disclosure)
+net.ipv4.tcp_timestamps = 0
+
+# Log martian packets also for default interface
+net.ipv4.conf.default.log_martians = 1

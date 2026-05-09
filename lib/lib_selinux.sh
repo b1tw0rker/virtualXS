@@ -1,7 +1,14 @@
 #!/bin/bash
 
-if [ -f "/etc/selinux/config" ]; then
+printf "\n***********************************************\n\nSELinux deaktivieren (permissive) [y/N]: "
+read u_selinux
 
-    sed -i 's/^SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
+if [ "$u_selinux" = "y" ]; then
+
+    if [ -f "/etc/selinux/config" ]; then
+
+        sed -i 's/^SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
+
+    fi
 
 fi

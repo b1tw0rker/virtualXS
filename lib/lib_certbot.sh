@@ -77,7 +77,7 @@ certbot_dns_issue() {
 ### certbot
 ###
 ###
-printf "\n***********************************************\n\nCreate Let's Enycrypt Cert for Server: $u_srv [y/N]: "
+printf "\n***********************************************\n\nCreate Let's Enycrypt Cert: $u_srv [y/N]: "
 if [ "$u_certbot" = "" ]; then
     read u_certbot
 fi
@@ -93,7 +93,7 @@ if [ "$u_certbot" = "y" ]; then
 
 fi
 
-printf "\n***********************************************\n\nCreate Let's Enycrypt Cert for dovecot [y/N]: "
+printf "\n***********************************************\n\nCreate Let's Enycrypt Cert for dovecot (imap.$u_domain) [y/N]: "
 if [ "$u_certbot_dovecot" = "" ]; then
     read u_certbot_dovecot
 fi

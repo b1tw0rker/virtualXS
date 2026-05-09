@@ -109,15 +109,11 @@ fi
 
 printf "\nTODO: Don't forget to enable Firewall with: -systemctl enable firewall- after reboot\n"
 
-#printf "\n***********************************************\n\nServer Hardening [y/N]: "
-#if [ "$u_hardening" = "" ]; then
-#    read u_hardening
-#fi
 
 ### https://www.cyberciti.biz/faq/linux-kernel-etcsysctl-conf-security-hardening/
 ###
 ###
-confirm "Server Hardening" "$u_hardening"
+confirm "Kernel-Hardening (ASLR, SYN-Flood, Redirect-/Spoofing-Schutz, Kernel-Pointer, Symlink-Schutz)" "$u_hardening"
 
 if [ "$u_hardening" = "y" ]; then
     
@@ -130,6 +126,8 @@ if [ "$u_hardening" = "y" ]; then
     cp $u_path/files/firewall/99-bw-custom.conf $folder001
     
     ### activate kernel rules
+    ###
+    ###
     sysctl -p
     
 fi
