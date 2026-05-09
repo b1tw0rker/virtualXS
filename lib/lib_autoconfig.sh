@@ -13,7 +13,7 @@ fi
 if [ "$u_autoconfig" = "y" ]; then
 
     if [ "$u_certbot" != "y" ]; then
-        printf "\nAutoconfig kann nur erstellt werden, wenn zuvor ein initiales Let's Encrypt Zertifikat ausgestellt wurde.\n"
+        printf "\nAutoconfig can only be created if an initial Let's Encrypt certificate has been issued first.\n"
     elif [ -d "$file001" ]; then
 
         cp $u_path/files/autoconfig/autoconfig.conf $file001/
