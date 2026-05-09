@@ -123,7 +123,7 @@ if [ "$u_hardening" = "y" ]; then
         mkdir $folder001
     fi
     
-    cp $u_path/files/firewall/99-bw-custom.conf $folder001
+    cp $u_path/files/firewall/99-bw-kernel-hardening.conf $folder001
     
     ### activate kernel rules
     ###
