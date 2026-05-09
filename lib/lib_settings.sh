@@ -6,9 +6,7 @@
 #    read u_settings
 #fi
 
-confirm "Set general settings like .exrc" "$u_settings"
-
-if [ "$u_settings" = "y" ]; then
+if confirm "Set general settings like .exrc" "$u_settings"; then
 
     if [ -d "/root" ]; then
         cp $u_path/files/settings/.exrc /root/

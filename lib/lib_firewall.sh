@@ -112,9 +112,7 @@ printf "\n********************************************************************\n
 ### https://www.cyberciti.biz/faq/linux-kernel-etcsysctl-conf-security-hardening/
 ###
 ###
-confirm "Kernel-Hardening (ASLR, SYN-Flood, Redirect-/Spoofing-Schutz, Kernel-Pointer, Symlink-Schutz)" "$u_hardening"
-
-if [ "$u_hardening" = "y" ]; then
+if confirm "Kernel-Hardening (ASLR, SYN-Flood, Redirect-/Spoofing-Schutz, Kernel-Pointer, Symlink-Schutz)" "$u_hardening"; then
     
     folder001=/etc/sysctl.d
     
