@@ -34,16 +34,15 @@ if [ "$u_postfix" = "y" ]; then
     sed -i 's/^#myhostname = host.domain.tld/myhostname = '"$u_srv"'/' $file_postfix001
     sed -i 's/^#mydomain = domain.tld/mydomain = '"$u_domain"'/' $file_postfix001
     sed -i 's/^#myorigin = $myhostname/myorigin = $myhostname/' $file_postfix001
-    sed -i 's/^#inet_interfaces = $myhostname, localhost/inet_interfaces = $myhostname, localhost/' $file_postfix001
-    sed -i 's/^inet_interfaces = localhost/#inet_interfaces = localhost/' $file_postfix001
-    sed -i 's/^#mynetworks_style = class/mynetworks_style = class/' $file_postfix001
-    sed -i 's/^#mynetworks = 168.100.189.0\/28/mynetworks = '"$u_ip"'\/32/' $file_postfix001
-    
-    ### if internal/private IP: use inet_interfaces = all
+    ### inet_interfaces: internal/private IP → all; public IP → $myhostname, localhost
     ###
     if [[ "$u_ip" =~ ^(10\.|172\.(1[6-9]|2[0-9]|3[01])\.|192\.168\.) ]]; then
-        sed -i 's/^inet_interfaces = \$myhostname, localhost/inet_interfaces = all/' $file_postfix001
+        postconf -c /etc/postfix -e 'inet_interfaces = all'
+    else
+        postconf -c /etc/postfix -e 'inet_interfaces = $myhostname, localhost'
     fi
+    sed -i 's/^#mynetworks_style = class/mynetworks_style = class/' $file_postfix001
+    sed -i 's/^#mynetworks = 168.100.189.0\/28/mynetworks = '"$u_ip"'\/32/' $file_postfix001
     sed -i 's/^#relay_domains = $mydestination/relay_domains = $mydestination/' $file_postfix001
     sed -i 's/^#mail_spool_directory = \/var\/spool\/mail/mail_spool_directory = \/var\/spool\/mail/' $file_postfix001
     sed -i 's/^inet_protocols = all/smtp_address_preference = ipv4\ninet_protocols = ipv4/' $file_postfix001
