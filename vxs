@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-### Version: 1.2.14
+### Version: 1.2.15
 ### Build date: 01.10.2023
 ### (C) 2021 - 2023 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -33,7 +33,7 @@ done
 ###
 infocolor=$(tput setaf 6) # DEV
 tput setaf 6
-u_version=1.2.14
+u_version=1.2.15
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
 WEBHOSTER=host-x.de
@@ -46,7 +46,7 @@ u_path=/opt/virtualXS # no ending slash
 ###
 ###
 u_iface=$(ip route | grep default | awk '{print $5}' | head -n 1)
-#u_aws=n
+u_aws=n
 
 ### (After u_path defintion)
 ###
@@ -169,11 +169,6 @@ while true; do
         *) echo "Please enter only 'w' or 'd'." ;;
     esac
 done
-
-###
-###
-###
-confirm "Create on AWS" "$u_aws"
 
 ### DNS Server presettings.
 ### All with 'y' marked options will be executed automatticly.
