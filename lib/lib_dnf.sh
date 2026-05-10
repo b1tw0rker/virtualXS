@@ -17,11 +17,17 @@ if [ "$u_dnf" = "y" ]; then
     dnf -y update
     date +%s >>/tmp/time.log
     
-    ### you need to activate unsupported packages first: dnf config-manager --set-enabled crb
-    ### mod_fcgid - am 11.06.2025 entfernt. Mir ist noch nicht klar, ob es noch benötigt wird.
+    ###
+    ###
+    ###
     dnf -y install epel-release yum-utils
     dnf -y install at bind-utils bzip2 certbot chrony conntrack-tools createrepo dnf-automatic dovecot dovecot-mysql dovecot-pigeonhole fail2ban figlet gd gd-devel git glibc-langpack-de goaccess htop httpd iftop iptraf-ng jq lftp libidn libidn2 lsof lynis mlocate mod_http2 mod_proxy_fcgid mod_security mod_security_crs mysql ncftp net-tools nodejs perl perl-DBI perl-DBD-MySQL perl-Encode-Detect perl-JSON perl-Net-LibIDN2 perl-Net-SSLeay php php-bcmath php-gd php-gmp php-imap php-intl php-ldap php-mbstring php-mysqlnd php-pecl-zip php-process php-soap php-xml postfix postfix-mysql python3 python3-certbot-apache quota ripgrep rkhunter rsync rsyslog spamassassin tar tcp_wrappers tripwire unzip vsftpd wget which whois
     
+
+    ### dnf module ist seit rocky10 deprecated. Es gibt keine Module mehr, sondern nur noch Pakete.
+    ###
+    ###
+
     ### to newest nodejs version
     #dnf module enable nodejs:22
     #dnf -y install nodejs
