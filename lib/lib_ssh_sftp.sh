@@ -13,13 +13,10 @@ if [ "$u_ssh_sftp" = "y" ]; then
         file_ssh001=/etc/ssh/sshd_config
 
         if [ -f "$file_ssh001" ]; then
-                # Port 1122 für SFTP öffnen, falls noch nicht vorhanden
+                # #Port 22 aktivieren und Port 1122 darunter einfügen
+                sed -i 's/^#Port 22$/Port 22/' "$file_ssh001"
                 if ! grep -q '^Port 1122' "$file_ssh001"; then
                         sed -i '/^Port 22/a Port 1122' "$file_ssh001"
-                        # Fallback falls Port 22 nicht explizit gesetzt ist
-                        if ! grep -q '^Port 1122' "$file_ssh001"; then
-                                printf '\nPort 1122\n' >>"$file_ssh001"
-                        fi
                 fi
 
                 sed -i -E 's|^[#[:space:]]*Subsystem[[:space:]]+sftp[[:space:]]+.*$|Subsystem       sftp    internal-sftp|' "$file_ssh001"
