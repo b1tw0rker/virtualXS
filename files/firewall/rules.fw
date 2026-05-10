@@ -274,6 +274,8 @@ script_body() {
     # ================ Table 'filter', automatic rules
     # Drop INVALID packets early – covers Nmap stealth scans, broken fragments, sequence exploits
     $IPTABLES -A INPUT -m state --state INVALID -j DROP
+    # Drop TCP packets claiming NEW but without SYN flag – Nmap/spoofed packets
+    $IPTABLES -A INPUT -p tcp ! --syn -m state --state NEW -j DROP
     # accept established sessions
     $IPTABLES -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
     $IPTABLES -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
