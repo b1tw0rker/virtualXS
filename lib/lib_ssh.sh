@@ -11,7 +11,6 @@ fi
 if [ "$u_ssh" = "y" ]; then
 
         file_ssh001=/etc/ssh/sshd_config
-        file_ssh002=/etc/ssh/sshd_config.bak
 
         sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication no/' $file_ssh001
         sed -i 's/^PasswordAuthentication yes/PasswordAuthentication no/' $file_ssh001
@@ -24,8 +23,6 @@ if [ "$u_ssh" = "y" ]; then
         u_bitworker=$(grep -m 1 "### by BitWorker" /etc/ssh/sshd_config)
 
         if [ -f "$file_ssh001" ] && [ "$u_bitworker" != "### by BitWorker" ]; then
-                # make backup
-                cp $file_ssh001 $file_ssh002
                 cat $u_path/files/ssh/sshd_config >>$file_ssh001
                 # add backup remote client ssh connection
                 sed -i 's/^Match address XXX/Match address '"$u_client_ip"'/' $file_ssh001
