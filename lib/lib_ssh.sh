@@ -22,9 +22,14 @@ if [ "$u_ssh" = "y" ]; then
         ###
         u_bitworker=$(grep -m 1 "### by BitWorker" /etc/ssh/sshd_config)
 
+        ###
+        ###
+        ###
         if [ -f "$file_ssh001" ] && [ "$u_bitworker" != "### by BitWorker" ]; then
                 cat $u_path/files/ssh/sshd_config >>$file_ssh001
-                # add backup remote client ssh connection
+                ### add backup remote client ssh connection
+                ###
+                ###
                 sed -i 's/^Match User root Address XXX/Match User root Address '"$u_client_ip"'/' $file_ssh001
         fi
 
