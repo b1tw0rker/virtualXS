@@ -1,5 +1,5 @@
 [Unit]
-Description=BitWorker Firewall
+Description=HOST-X Firewall
 After=network.service
 
 [Service]

@@ -305,8 +305,8 @@ script_body() {
     $IPTABLES -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
     $IPTABLES -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
     # backup ssh access
-    $IPTABLES -A INPUT -p tcp -m tcp -s 195.90.208.180/255.255.255.255 --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
-    $IPTABLES -A OUTPUT -p tcp -m tcp -d 195.90.208.180/255.255.255.255 --sport 22 -m state --state ESTABLISHED,RELATED -j ACCEPT
+    #$IPTABLES -A INPUT -p tcp -m tcp -s 195.90.208.180/255.255.255.255 --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
+    #$IPTABLES -A OUTPUT -p tcp -m tcp -d 195.90.208.180/255.255.255.255 --sport 22 -m state --state ESTABLISHED,RELATED -j ACCEPT
     
     # ================ Table 'filter', rule set Policy
     #
@@ -372,7 +372,7 @@ script_body() {
     #
     echo "Rule 6 (global)"
     #
-    $IPTABLES -A INPUT -p tcp -m tcp -s 195.90.208.180 --dport 22 -m state --state NEW -j ACCEPT
+    $IPTABLES -A INPUT -p tcp -m tcp -s 192.168.0.1 --dport 22 -m state --state NEW -j ACCEPT
     #
     # Rule 7 (global)
     #
