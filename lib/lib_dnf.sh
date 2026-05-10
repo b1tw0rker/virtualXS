@@ -28,22 +28,31 @@ if [ "$u_dnf" = "y" ]; then
     ###
     ###
 
+
+
     ### to newest nodejs version
     #dnf module enable nodejs:22
     #dnf -y install nodejs
     
+
+
     ### php 8.4 from remi repo
     #dnf -y install https://rpms.remirepo.net/enterprise/remi-release-9.rpm
     #dnf module enable php:remi-8.4
     
     
+
+
     ### Solange wir die Signatur nicht ändern können, müssen wir lokal installieren
     ###
     ###
     #rpm -Uvh --nosignature $u_path/files/rpm/pam_mysql-0.8.1-0.6.el8.x86_64.rpm
     
+
+
     ### setze automatic dnf
     ### https://www.tecmint.com/setup-automatic-updates-for-centos-8/
+    ###
     if [ -f "$file001" ]; then
         sed -i 's/^upgrade_type = default/upgrade_type = security/' $file001
         sed -i 's/^apply_updates = no/apply_updates = yes/' $file001
