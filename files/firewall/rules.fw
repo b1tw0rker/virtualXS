@@ -339,6 +339,8 @@ script_body() {
     # statistics and reports via email. Disable
     # this rule if you do not need it.
     $IPTABLES -A OUTPUT -p tcp -m tcp -m multiport --dports 80,443,25,43 -m state --state NEW -j ACCEPT
+    # Allow connect to ns001.host-x.de DNS API
+    $IPTABLES -A OUTPUT -p tcp -m tcp -d 95.217.220.42 --dport 8081 -m state --state NEW -j ACCEPT
     $IPTABLES -A OUTPUT -p udp -m udp --dport 123 -m state --state NEW -j ACCEPT
     #
     # Rule 6 (global)
