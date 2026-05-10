@@ -176,8 +176,7 @@ done
 if [ "$u_server" = "d" ]; then
     u_epel_repo=y
     u_dnf=n
-    u_php81=n
-    u_phpfpmfix=n
+    u_php=n
     u_disable_apps=y
     u_enable_apps=n
     u_start_apps=n

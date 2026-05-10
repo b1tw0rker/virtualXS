@@ -7,12 +7,12 @@ file_php_003=/etc/php.d
 ### Mofify php.ini to yor needs here
 ###
 ###
-printf "\n********************************************************************\n\nFix php-fpm and garbage-collector [y/N]: "
-if [ "$u_phpfpmfix" = "" ]; then
-    read u_phpfpmfix
+printf "\n********************************************************************\n\nPHP Security patch [y/N]: "
+if [ "$u_php" = "" ]; then
+    read u_php
 fi
 
-if [ "$u_phpfpmfix" = "y" ]; then
+if [ "$u_php" = "y" ]; then
 
     if [ -f "$file_php_001" ]; then
 
