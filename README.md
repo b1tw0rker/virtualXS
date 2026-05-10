@@ -10,7 +10,6 @@ The following systems are supported:
 
 - RHEL10 (Minimal is recommended)
 - RHEL9 (Minimal is recommended)
-- RHEL8 (Minimal is recommended)
 - Rocky Linux 10.x (Minimal is recommended)
 - Rocky Linux 9.x (Minimal is recommended)
 - AWS and Azure machines.
