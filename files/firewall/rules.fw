@@ -358,15 +358,11 @@ script_body() {
     $IPTABLES -A SSH_RULE -m state --state NEW -m recent --set --name SSH_RATELIMIT
     $IPTABLES -A SSH_RULE -m state --state NEW -m recent --update --seconds 60 --hitcount 4 --rttl --name SSH_RATELIMIT -j LOG --log-level warning --log-prefix "SSH RATE-LIMIT -- DROP "
     $IPTABLES -A SSH_RULE -m state --state NEW -m recent --update --seconds 60 --hitcount 4 --rttl --name SSH_RATELIMIT -j DROP
-    # Allow whitelisted IP range after rate-limit check
-    $IPTABLES -A SSH_RULE -m iprange --src-range 88.70.196.1-88.71.159.254 -m state --state NEW -j ACCEPT
     # Log and drop all other SSH attempts
     $IPTABLES -A SSH_RULE -j LOG --log-level info --log-prefix "SSH -- DENY "
     $IPTABLES -A SSH_RULE -j DROP
     # Route all new SSH connections through the SSH_RULE chain
-    $IPTABLES -A INPUT -p tcp -m tcp --dport 22 -m state --state NEW -j SSH_RULE
-    # Port 1122 (User-SFTP) – gleiche Limits wie SSH
-    $IPTABLES -A INPUT -p tcp -m tcp --dport 1122 -m state --state NEW -j SSH_RULE
+    $IPTABLES -A INPUT -p tcp -m tcp -m multiport --dports 22,1122 -m state --state NEW -j SSH_RULE
     #
     # ALLOW INPUT: Auth-Ports (FTP, IMAPS, POP3S, Submission) mit Rate-Limiting (AUTH_RULE chain)
     #
@@ -409,7 +405,10 @@ script_body() {
     #
     $IPTABLES -N DEFAULT_DENY
     $IPTABLES -A INPUT -j DEFAULT_DENY
-    $IPTABLES -A DEFAULT_DENY -j LOG --log-level info --log-prefix "DEFAULT DENY -- DROP "
+    # OLD: kein Rate-Limit – flutet bei Portscan den Syslog
+    #$IPTABLES -A DEFAULT_DENY -j LOG --log-level info --log-prefix "DEFAULT DENY -- DROP "
+    # NEW: hashlimit – max. 3 Log-Einträge/min pro Quell-IP, Burst 5
+    $IPTABLES -A DEFAULT_DENY -m hashlimit --hashlimit-above 3/min --hashlimit-burst 5 --hashlimit-mode srcip --hashlimit-name DEFAULT_DENY -j LOG --log-level info --log-prefix "DEFAULT DENY -- DROP "
     $IPTABLES -A DEFAULT_DENY -j DROP
 }
 
