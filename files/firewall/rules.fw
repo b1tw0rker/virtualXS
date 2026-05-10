@@ -310,8 +310,14 @@ script_body() {
     $IPTABLES -A INPUT -p igmp -d 224.0.0.1 -j ACCEPT
     $IPTABLES -A INPUT -p icmp -m icmp --icmp-type 8/0 -m state --state NEW -j ACCEPT
     $IPTABLES -A INPUT -p tcp -m tcp --dport 10000:10255 -m state --state NEW -j ACCEPT
-    # Worldwide reachable - ftp,smtp,http,https,imaps,pop3s,submission,alt-http
-    $IPTABLES -A INPUT -p tcp -m tcp -m multiport --dports 21,25,80,443,993,995,587,1122 -m state --state NEW -j ACCEPT
+    # Port 25 (SMTP MX): plain accept – Fail2ban übernimmt Missbrauch-Handling
+    $IPTABLES -A INPUT -p tcp -m tcp --dport 25 -m state --state NEW -j ACCEPT
+    # HTTP/HTTPS: connlimit – max. 80 gleichzeitige Verbindungen pro Quell-IP
+    $MODPROBE xt_connlimit 2>/dev/null || true
+    $IPTABLES -A INPUT -p tcp -m tcp -m multiport --dports 80,443 -m state --state NEW -m connlimit --connlimit-above 80 --connlimit-mask 32 -j LOG --log-level warning --log-prefix "HTTP/S CONNLIMIT -- DROP "
+    $IPTABLES -A INPUT -p tcp -m tcp -m multiport --dports 80,443 -m state --state NEW -m connlimit --connlimit-above 80 --connlimit-mask 32 -j DROP
+    $IPTABLES -A INPUT -p tcp -m tcp -m multiport --dports 80,443 -m state --state NEW -j ACCEPT
+    # FTP/Submission/IMAPS/POP3S -> AUTH_RULE, SFTP(1122) -> SSH_RULE (Chains weiter unten definiert)
 
 
     #
@@ -359,6 +365,23 @@ script_body() {
     $IPTABLES -A SSH_RULE -j DROP
     # Route all new SSH connections through the SSH_RULE chain
     $IPTABLES -A INPUT -p tcp -m tcp --dport 22 -m state --state NEW -j SSH_RULE
+    # Port 1122 (User-SFTP) – gleiche Limits wie SSH
+    $IPTABLES -A INPUT -p tcp -m tcp --dport 1122 -m state --state NEW -j SSH_RULE
+    #
+    # ALLOW INPUT: Auth-Ports (FTP, IMAPS, POP3S, Submission) mit Rate-Limiting (AUTH_RULE chain)
+    #
+    echo "ALLOW INPUT: auth ports via AUTH_RULE chain"
+    #
+    $IPTABLES -N AUTH_RULE
+    # Management-Subnet ohne Rate-Limiting
+    $IPTABLES -A AUTH_RULE -s 192.168.0.0/24 -m state --state NEW -j ACCEPT
+    # Rate-Limit: max. 20 neue Verbindungen pro 60 s pro Quell-IP
+    $IPTABLES -A AUTH_RULE -m state --state NEW -m recent --set --name AUTH_RATELIMIT
+    $IPTABLES -A AUTH_RULE -m state --state NEW -m recent --update --seconds 60 --hitcount 20 --rttl --name AUTH_RATELIMIT -j LOG --log-level warning --log-prefix "AUTH RATE-LIMIT -- DROP "
+    $IPTABLES -A AUTH_RULE -m state --state NEW -m recent --update --seconds 60 --hitcount 20 --rttl --name AUTH_RATELIMIT -j DROP
+    $IPTABLES -A AUTH_RULE -m state --state NEW -j ACCEPT
+    # FTP, Submission, IMAPS, POP3S durch AUTH_RULE routen
+    $IPTABLES -A INPUT -p tcp -m tcp -m multiport --dports 21,587,993,995 -m state --state NEW -j AUTH_RULE
     #
     # BLOCK INPUT: known bad IPs
     #
