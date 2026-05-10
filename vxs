@@ -203,6 +203,7 @@ if [ "$u_server" = "d" ]; then
     u_hardening=y
     u_selinux=y
     u_module_blacklist=y
+    u_virtualx=n
 fi
 
 ### set hostname

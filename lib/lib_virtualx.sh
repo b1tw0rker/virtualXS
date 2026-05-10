@@ -12,6 +12,9 @@ if [ "$u_virtualx" = "y" ]; then
     ###
     if ! id "$u_srv" &>/dev/null; then
         useradd -d /home/httpd/$u_srv -s /sbin/nologin -M $u_srv
+        u_srv_pwd=$(tr -dc 'A-Za-z0-9!@#$%^&*()_+' < /dev/urandom | head -c 12)
+        echo "$u_srv:$u_srv_pwd" | chpasswd
+        printf "\n[\e[32mOK\e[0m] User \e[1m$u_srv\e[0m erstellt — Passwort: \e[1;33m$u_srv_pwd\e[0m\n"
     fi
 
     ### Create directories
@@ -44,7 +47,7 @@ if [ "$u_virtualx" = "y" ]; then
     ###
     if [ -f "/etc/httpd/conf/httpd.conf" ]; then
         if ! grep -q 'IncludeOptional virtualx.d/\*\.conf' /etc/httpd/conf/httpd.conf; then
-            printf '\n# VirtualX Hosts\nIncludeOptional virtualx.d/*.conf\n' >> /etc/httpd/conf/httpd.conf
+            printf '\n###\n###\n### VirtualX Hosts\nIncludeOptional virtualx.d/*.conf\n' >> /etc/httpd/conf/httpd.conf
         fi
     fi
 
