@@ -63,6 +63,13 @@ if [ "$u_httpd" = "y" ]; then
         cp -rf $u_path/files/httpd/index.html /usr/share/httpd/noindex/
     fi
 
+    ### if the apache server never has been started before, /etc/pki/certs/localhost.crt and /etc/pki/private/localhost.key are missing. Create self-signed certs for localhost.
+    ### start and stop httpd to create the certs if they are missing.
+    ###
+    if [ ! -f "/etc/pki/certs/localhost.crt" ] || [ ! -f "/etc/pki/private/localhost.key" ]; then
+         systemctl start httpd
+    fi
+
     ### Check Apache State
     ###
     ###

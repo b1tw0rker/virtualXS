@@ -8,55 +8,39 @@ if [ "$u_enable_apps" = "" ]; then
     read u_enable_apps
 fi
 
+services=(
+    httpd
+    php-fpm
+    mysqld
+    postfix
+    vsftpd
+    dovecot
+    spamassassin
+)
+
 if [ "$u_enable_apps" = "y" ]; then
 
-    if [ ! -f "/etc/systemd/system/multi-user.target.wants/httpd.service" ]; then
-        systemctl enable httpd
-    fi
-
-    if [ ! -f "/etc/systemd/system/multi-user.target.wants/php-fpm.service" ]; then
-        systemctl enable php-fpm
-    fi
-
-    if [ ! -f "/etc/systemd/system/multi-user.target.wants/mysqld.service" ]; then
-        systemctl enable mysqld
-    fi
-
-    if [ ! -f "/etc/systemd/system/multi-user.target.wants/postfix.service" ]; then
-        systemctl enable postfix
-    fi
-
-    if [ ! -f "/etc/systemd/system/multi-user.target.wants/vsftpd.service" ]; then
-        systemctl enable vsftpd
-    fi
-
-    if [ ! -f "/etc/systemd/system/multi-user.target.wants/dovecot.service" ]; then
-        systemctl enable dovecot
-    fi
-
-    if [ ! -f "/etc/systemd/system/multi-user.target.wants/spamassassin.service" ]; then
-        systemctl enable spamassassin
-    fi
+    for service in "${services[@]}"; do
+        if ! systemctl is-enabled --quiet "$service"; then
+            systemctl enable "$service"
+        fi
+    done
 
 fi
 
 ### q start apps
 ###
 ###
-printf "\n********************************************************************\n\nStart apps now [y/N]: "
+printf "\n********************************************************************\n\nSmoke-Start apps now [y/N]: "
 if [ "$u_start_apps" = "" ]; then
     read u_start_apps
 fi
 
 if [ "$u_start_apps" = "y" ]; then
 
-    systemctl start httpd
-    systemctl start php-fpm
-    systemctl start mysqld
-    systemctl start postfix
-    systemctl start vsftpd
-    systemctl start dovecot
-    systemctl start spamassassin
+    for service in "${services[@]}"; do
+        systemctl start "$service"
+    done
     printf "[\e[32mOK\e[0m]\n"
 
 fi
