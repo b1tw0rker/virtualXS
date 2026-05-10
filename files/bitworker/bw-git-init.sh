@@ -33,7 +33,7 @@ read -p "Projekt Directory (fullpath, no ending slash): " -e -i "/opt/$io_repo" 
 if [ ! -d "$io_project_dir" ]; then
     mkdir -p $io_project_dir
     echo "Inital Commit" > $io_project_dir/README.md
-    echo "**/sshd_config\n**/authorized_keys\n**/sources" > $io_project_dir/.gitignore
+    echo "**/sshd_config\n**/authorized_keys\n**/helper" > $io_project_dir/.gitignore
     new=true
 fi
 
