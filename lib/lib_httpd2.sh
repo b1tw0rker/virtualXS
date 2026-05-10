@@ -2,19 +2,14 @@
 
 file001=/etc/httpd/conf.d
 
-printf "\n********************************************************************\n\nActivate Protocol http/2 [y/N]: "
-if [ "$u_httpd2" = "" ]; then
-    read u_httpd2
-fi
-
-if [ "$u_httpd2" = "y" ]; then
+if [ "$u_httpd2" != "n" ]; then
 
     ### http/2
     ###
     ###
     if [ -d "$file001" ]; then
-        cp $u_path/files/httpd/http2.conf $file008/
-        cp $u_path/files/httpd/security.conf $file008/
+        cp $u_path/files/httpd/http2.conf $file001/
+        cp $u_path/files/httpd/security.conf $file001/
     fi
 
     ### Check Apache State

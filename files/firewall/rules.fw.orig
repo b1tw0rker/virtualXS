@@ -20,7 +20,9 @@ export PATH
 LSMOD="lsmod"
 MODPROBE="modprobe"
 IPTABLES="iptables"
+IP6TABLES="ip6tables"
 IPTABLES_RESTORE="iptables-restore"
+IP6TABLES_RESTORE="ip6tables-restore"
 IP="ip"
 IFCONFIG="ifconfig"
 VCONFIG="vconfig"
@@ -42,7 +44,7 @@ getaddr_internal() {
     dev=$1
     name=$2
     af=$3
-    L=$($IP $af addr show dev $dev | sed -n '/inet /{s!.*inet !!;s!/.*!!p}' | sed 's/peer.*//')
+    L=$($IP $af addr show dev $dev | sed -n '/inet/{s!.*inet6* !!;s!/.*!!p}' | sed 's/peer.*//')
     test -z "$L" && {
         eval "$name=''"
         return
@@ -66,8 +68,16 @@ getaddr() {
     getaddr_internal $1 $2 "-4"
 }
 
+getaddr6() {
+    getaddr_internal $1 $2 "-6"
+}
+
 getnet() {
     getnet_internal $1 $2 "-4"
+}
+
+getnet6() {
+    getnet_internal $1 $2 "-6"
 }
 
 # function getinterfaces is used to process wildcard interfaces
@@ -123,6 +133,21 @@ reset_iptables_v4() {
     done
 }
 
+reset_iptables_v6() {
+    $IP6TABLES -P OUTPUT DROP
+    $IP6TABLES -P INPUT DROP
+    $IP6TABLES -P FORWARD DROP
+    
+    cat /proc/net/ip6_tables_names | while read table; do
+        $IP6TABLES -t $table -L -n | while read c chain rest; do
+            if test "X$c" = "XChain"; then
+                $IP6TABLES -t $table -F $chain
+            fi
+        done
+        $IP6TABLES -t $table -X
+    done
+}
+
 P2P_INTERFACE_WARNING=""
 
 missing_address() {
@@ -169,7 +194,7 @@ list_addresses_by_scope() {
            split(IGNORED,ignored_arr);
            for (a in ignored_arr) {ignored_dict[ignored_arr[a]]=1;}
          }
-    (/inet / && $0 ~ SCOPE && !($2 in ignored_dict)) {print $2;}' |
+    (/inet |inet6 / && $0 ~ SCOPE && !($2 in ignored_dict)) {print $2;}' |
     while read addr; do
         echo "${addr}@$interface"
     done | sort
@@ -236,6 +261,9 @@ load_modules() {
     MODULES=$(find $MODULES_DIR -name '*conntrack*' \! -name '*ipv6*' | sed -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/')
     echo $OPTS | grep -q nat && {
         MODULES="$MODULES $(find $MODULES_DIR -name '*nat*' | sed -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/')"
+    }
+    echo $OPTS | grep -q ipv6 && {
+        MODULES="$MODULES $(find $MODULES_DIR -name nf_conntrack_ipv6 | sed -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/')"
     }
     for module in $MODULES; do
         if $LSMOD | grep ${module} >/dev/null; then continue; fi
@@ -365,8 +393,8 @@ script_body() {
     $IPTABLES -A INPUT -p udp -m udp --dport 137 -j REJECT
     $IPTABLES -A INPUT -p udp -m udp --dport 138 -j REJECT
     $IPTABLES -A INPUT -p udp -m udp --dport 67 -j REJECT
-    # Lokalen UDP-LAN-Verkehr still verwerfen, damit Broadcasts und Scans nicht Rule 9 zuspammen.
-    $IPTABLES -A INPUT -p udp -s 192.168.0.0/24 -j DROP
+    # UDP-Broadcasts (DST=255.255.255.255) still verwerfen - kein Log-Spam
+    $IPTABLES -A INPUT -p udp -d 255.255.255.255 -j DROP
     #
     # Rule 9 (global)
     #
@@ -381,6 +409,7 @@ script_body() {
 ip_forward() {
     :
     echo 0 >/proc/sys/net/ipv4/ip_forward
+    echo 0 >/proc/sys/net/ipv6/conf/all/forwarding
 }
 
 reset_all() {
@@ -409,11 +438,13 @@ check_iptables() {
 status_action() {
     check_iptables "/proc/net/ip_tables_names"
     ret_ipv4=$?
-    [ $ret_ipv4 -eq 0 ] && return 0
-    [ $ret_ipv4 -eq 151 ] && {
+    check_iptables "/proc/net/ip6_tables_names"
+    ret_ipv6=$?
+    [ $ret_ipv4 -eq 0 -o $ret_ipv6 -eq 0 ] && return 0
+    [ $ret_ipv4 -eq 151 -o $ret_ipv6 -eq 151 ] && {
         echo "iptables modules are not loaded"
     }
-    [ $ret_ipv4 -eq 152 ] && {
+    [ $ret_ipv4 -eq 152 -o $ret_ipv6 -eq 152 ] && {
         echo "Firewall is not configured"
     }
     exit 3
