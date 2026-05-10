@@ -11,7 +11,7 @@ if [ "$u_virtualx" = "y" ]; then
     ###
     ###
     if ! id "$u_srv" &>/dev/null; then
-        useradd -d /home/httpd/$u_srv -s /sbin/nologin -M $u_srv
+        useradd -g 100 -d /home/httpd/$u_srv -s /sbin/nologin -M $u_srv
     fi
     u_srv_pwd=$(tr -dc 'A-Za-z0-9!@#$%^&*()_+' < /dev/urandom | head -c 12)
     echo "$u_srv:$u_srv_pwd" | chpasswd

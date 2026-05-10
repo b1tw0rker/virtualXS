@@ -54,6 +54,7 @@ Match Group users LocalPort 1122
     PasswordAuthentication yes
 EOF
 
+                semanage port -a -t ssh_port_t -p tcp 1122
                 systemctl restart sshd
         fi
         printf "[\e[32mOK\e[0m]\n"
