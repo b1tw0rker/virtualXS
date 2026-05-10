@@ -309,7 +309,8 @@ script_body() {
     $IPTABLES -A INPUT -p igmp -d 224.0.0.1 -j ACCEPT
     $IPTABLES -A INPUT -p icmp -m icmp --icmp-type 8/0 -m state --state NEW -j ACCEPT
     $IPTABLES -A INPUT -p tcp -m tcp --dport 10000:10255 -m state --state NEW -j ACCEPT
-    $IPTABLES -A INPUT -p tcp -m tcp -m multiport --dports 88,21,25,80,443,993,995,587,1122 -m state --state NEW -j ACCEPT
+    # Worldwide reachable - 88,
+    $IPTABLES -A INPUT -p tcp -m tcp -m multiport --dports 21,25,80,443,993,995,587,1122 -m state --state NEW -j ACCEPT
     #
     # Rule 3 (global)
     #
