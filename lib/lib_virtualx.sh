@@ -33,6 +33,7 @@ if [ "$u_virtualx" = "y" ]; then
     fi
 
     chown -R $u_srv:users /home/httpd/$u_srv
+    chmod 755 /home/httpd/$u_srv
     chmod 750 /home/httpd/$u_srv/htdocs
 
     ### Create /etc/httpd/virtualx.d/ directory if not exists
