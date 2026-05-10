@@ -32,17 +32,26 @@ if [ "$u_virtualx" = "y" ]; then
     chown -R $u_srv:users /home/httpd/$u_srv
     chmod 750 /home/httpd/$u_srv/htdocs
 
-    ### Create /etc/httpd/conf/ directory if not exists
+    ### Create /etc/httpd/virtualx.d/ directory if not exists
     ###
     ###
-    if [ ! -d "/etc/httpd/conf" ]; then
-        mkdir -p /etc/httpd/conf
+    if [ ! -d "/etc/httpd/virtualx.d" ]; then
+        mkdir -p /etc/httpd/virtualx.d
+    fi
+
+    ### Ensure IncludeOptional for virtualx.d is in httpd.conf
+    ###
+    ###
+    if [ -f "/etc/httpd/conf/httpd.conf" ]; then
+        if ! grep -q 'IncludeOptional virtualx.d/\*\.conf' /etc/httpd/conf/httpd.conf; then
+            printf '\n# VirtualX Hosts\nIncludeOptional virtualx.d/*.conf\n' >> /etc/httpd/conf/httpd.conf
+        fi
     fi
 
     ### Write HTTP VirtualHost (Port 80)
     ###
     ###
-    cat > /etc/httpd/conf/$u_srv.conf <<EOF
+    cat > /etc/httpd/virtualx.d/$u_srv.conf <<EOF
 <VirtualHost $u_ip:80>
 DocumentRoot "/home/httpd/$u_srv/htdocs"
 ServerName $u_srv
@@ -79,7 +88,7 @@ EOF
     ### Write HTTPS VirtualHost (Port 443)
     ###
     ###
-    cat > /etc/httpd/conf/$u_srv-le-ssl.conf <<EOF
+    cat > /etc/httpd/virtualx.d/$u_srv-le-ssl.conf <<EOF
 <IfModule mod_ssl.c>
 <VirtualHost $u_ip:443>
 DocumentRoot "/home/httpd/$u_srv/htdocs"
