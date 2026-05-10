@@ -1,43 +1,29 @@
 #!/bin/bash
 
-printf "\n********************************************************************\n\nCreate standard folders (/home/httpd, /home/pop, /home/mysql, /etc/bitworker, /root/.ssh, /var/log/rsync) [y/N]: "
+printf "\n********************************************************************\n\nCreate virtualx standard folders (/home/httpd, /home/pop, /home/mysql, /etc/bitworker, /var/log/rsync) [y/N]: "
 if [ "$u_folders_create" = "" ]; then
   read u_folders_create
 fi
 
 if [ "$u_folders_create" = "y" ]; then
 
-  file001=/home/httpd
-  file002=/home/pop
-  file003=/home/mysql
-  file004=/etc/bitworker
-  file005=/root/.ssh
-  file006=/var/log/rsync
+  folders=(
+    /home/httpd
+    /home/pop
+    /home/mysql
+    /etc/bitworker
+    /var/log/rsync
+  )
 
-  if [ ! -d "$file001" ]; then
-    mkdir $file001
-  fi
+  for folder in "${folders[@]}"; do
+    if [ ! -d "$folder" ]; then
+      mkdir "$folder"
 
-  if [ ! -d "$file002" ]; then
-    mkdir $file002
-    chmod 777 $file002
-  fi
-
-  if [ ! -d "$file003" ]; then
-    mkdir $file003
-  fi
-
-  if [ ! -d "$file004" ]; then
-    mkdir $file004
-  fi
-
-  if [ ! -d "$file005" ]; then
-    mkdir $file005
-  fi
-
-  if [ ! -d "$file006" ]; then
-    mkdir $file006
-  fi
+      if [ "$folder" = "/home/pop" ]; then
+        chmod 777 "$folder"
+      fi
+    fi
+  done
 
   printf "[\e[32mOK\e[0m]\n"
 
