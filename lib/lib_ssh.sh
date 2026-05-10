@@ -31,9 +31,6 @@ if [ "$u_ssh" = "y" ]; then
                 sed -i 's/^Match address XXX/Match address '"$u_client_ip"'/' $file_ssh001
         fi
 
-        if [ ! -s "$u_path/files/ssh/authorized_keys" ]; then
-                cp "$u_path/files/ssh/authorized_keys" /root/.ssh/
-        fi
 
         systemctl restart sshd
         printf "[\e[32mOK\e[0m]\n"
