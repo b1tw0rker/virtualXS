@@ -277,9 +277,9 @@ script_body() {
     $IPTABLES -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
     $IPTABLES -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
     # backup ssh access
-    # Emergency remote access – hardcoded 195.90.208.180 always active; installer injects $u_client_ip below
-    $IPTABLES -A INPUT  -p tcp -m tcp -s 195.90.208.180/32 --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
-    $IPTABLES -A OUTPUT -p tcp -m tcp -d 195.90.208.180/32 --sport 22 -m state --state ESTABLISHED,RELATED -j ACCEPT
+    # Emergency remote access – hardcoded 192.168.0.1 always active; installer injects $u_client_ip below
+    $IPTABLES -A INPUT  -p tcp -m tcp -s 192.168.0.1/32 --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
+    $IPTABLES -A OUTPUT -p tcp -m tcp -d 192.168.0.1/32 --sport 22 -m state --state ESTABLISHED,RELATED -j ACCEPT
     
     # ================ Table 'filter', rule set Policy
     #
