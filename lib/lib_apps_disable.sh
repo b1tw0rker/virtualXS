@@ -5,7 +5,7 @@
 ###
 printf "\n********************************************************************\n\nDisable useless apps at startup [y/N]: "
 if [ "$u_disable_apps" = "" ]; then
-    read u_disable
+    read u_disable_apps
 fi
 
 if [ "$u_disable_apps" = "y" ]; then
@@ -16,8 +16,10 @@ if [ "$u_disable_apps" = "y" ]; then
     for service in "${services[@]}"; do
         if systemctl list-unit-files | grep -q "$service"; then
             systemctl disable "$service"
-systemctl stop "$service"
+            systemctl stop "$service"
         fi
     done
+
+    printf "[\e[32mOK\e[0m]\n"
 
 fi

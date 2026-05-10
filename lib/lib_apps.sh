@@ -26,6 +26,8 @@ if [ "$u_enable_apps" = "y" ]; then
         fi
     done
 
+    printf "[\e[32mOK\e[0m]\n"
+
 fi
 
 ### q start apps
