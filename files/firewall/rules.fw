@@ -277,46 +277,47 @@ script_body() {
     $IPTABLES -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
     $IPTABLES -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
     # backup ssh access
-    #$IPTABLES -A INPUT -p tcp -m tcp -s 195.90.208.180/255.255.255.255 --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
-    #$IPTABLES -A OUTPUT -p tcp -m tcp -d 195.90.208.180/255.255.255.255 --sport 22 -m state --state ESTABLISHED,RELATED -j ACCEPT
+    # Emergency remote access – hardcoded 195.90.208.180 always active; installer injects $u_client_ip below
+    $IPTABLES -A INPUT  -p tcp -m tcp -s 195.90.208.180/32 --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
+    $IPTABLES -A OUTPUT -p tcp -m tcp -d 195.90.208.180/32 --sport 22 -m state --state ESTABLISHED,RELATED -j ACCEPT
     
     # ================ Table 'filter', rule set Policy
     #
-    # Rule 0 (venet0:0)
+    # BLOCK: spoofed traffic on venet0:0 (own IPs as source)
     #
-    echo "Rule 0 (venet0:0)"
+    echo "BLOCK: spoofed own IPs on venet0:0"
     #
-    $IPTABLES -N Cid4533X20228.0
-    $IPTABLES -A INPUT -i venet0:0 -s 127.0.0.1 -j Cid4533X20228.0
-    $IPTABLES -A INPUT -i venet0:0 -s 195.90.209.193 -j Cid4533X20228.0
-    $IPTABLES -N In_RULE_0
-    $IPTABLES -A Cid4533X20228.0 -d 127.0.0.1 -j In_RULE_0
-    $IPTABLES -A Cid4533X20228.0 -d 195.90.209.193 -j In_RULE_0
-    $IPTABLES -A In_RULE_0 -j LOG --log-level info --log-prefix "RULE 0 -- DENY "
-    $IPTABLES -A In_RULE_0 -j DROP
+    $IPTABLES -N SPOOF_CHECK
+    $IPTABLES -A INPUT -i venet0:0 -s 127.0.0.1 -j SPOOF_CHECK
+    $IPTABLES -A INPUT -i venet0:0 -s 195.90.209.193 -j SPOOF_CHECK
+    $IPTABLES -N SPOOF_DENY
+    $IPTABLES -A SPOOF_CHECK -d 127.0.0.1 -j SPOOF_DENY
+    $IPTABLES -A SPOOF_CHECK -d 195.90.209.193 -j SPOOF_DENY
+    $IPTABLES -A SPOOF_DENY -j LOG --log-level info --log-prefix "SPOOF -- DENY "
+    $IPTABLES -A SPOOF_DENY -j DROP
     #
-    # Rule 1 (lo)
+    # ALLOW: loopback
     #
-    echo "Rule 1 (lo)"
+    echo "ALLOW: loopback"
     #
     $IPTABLES -A INPUT -i lo -j ACCEPT
     $IPTABLES -A OUTPUT -o lo -j ACCEPT
     #
-    # Rule 2 (global)
+    # ALLOW INPUT: igmp, icmp-ping, webmin, public services (ftp,smtp,http,https,imap,pop3,submission)
     #
-    echo "Rule 2 (global)"
+    echo "ALLOW INPUT: igmp, icmp, webmin, public services"
     #
     $IPTABLES -A INPUT -p igmp -d 224.0.0.1 -j ACCEPT
     $IPTABLES -A INPUT -p icmp -m icmp --icmp-type 8/0 -m state --state NEW -j ACCEPT
     $IPTABLES -A INPUT -p tcp -m tcp --dport 10000:10255 -m state --state NEW -j ACCEPT
-    # Worldwide reachable - 88,
+    # Worldwide reachable - ftp,smtp,http,https,imaps,pop3s,submission,alt-http
     $IPTABLES -A INPUT -p tcp -m tcp -m multiport --dports 21,25,80,443,993,995,587,1122 -m state --state NEW -j ACCEPT
 
 
     #
-    # Rule 4 (global)
+    # ALLOW OUTPUT: dns (resolver)
     #
-    echo "Rule 4 (global)"
+    echo "ALLOW OUTPUT: dns"
     #
     # server needs DNS to back-resolve clients IPs.
     # Even if it does not log host names during its
@@ -325,9 +326,9 @@ script_body() {
     $IPTABLES -A OUTPUT -p tcp -m tcp --dport 53 -m state --state NEW -j ACCEPT
     $IPTABLES -A OUTPUT -p udp -m udp --dport 53 -m state --state NEW -j ACCEPT
     #
-    # Rule 5 (global)
+    # ALLOW OUTPUT: http/s, smtp, ntp, dns-api
     #
-    echo "Rule 5 (global)"
+    echo "ALLOW OUTPUT: http/s, smtp, ntp, dns-api"
     #
     # this rule allows the server to send
     # statistics and reports via email. Disable
@@ -337,41 +338,56 @@ script_body() {
     $IPTABLES -A OUTPUT -p tcp -m tcp -d 95.217.220.42 --dport 8081 -m state --state NEW -j ACCEPT
     $IPTABLES -A OUTPUT -p udp -m udp --dport 123 -m state --state NEW -j ACCEPT
     #
-    # Rule 6 (global)
+    # ALLOW INPUT: ssh with rate limiting (SSH_RULE chain)
     #
-    echo "Rule 6 (global)"
+    echo "ALLOW INPUT: ssh via SSH_RULE chain"
     #
-    $IPTABLES -A INPUT -p tcp -m tcp -s 192.168.0.1 --dport 22 -m state --state NEW -j ACCEPT
+    # Ensure xt_recent module is available for rate limiting
+    $MODPROBE xt_recent 2>/dev/null || true
     #
-    # Rule 7 (global)
+    $IPTABLES -N SSH_RULE
+    # Allow management subnet without rate limiting
+    $IPTABLES -A SSH_RULE -s 192.168.0.0/24 -m state --state NEW -j ACCEPT
+    # Rate limit: max 4 new connections per 60 s per source IP
+    $IPTABLES -A SSH_RULE -m state --state NEW -m recent --set --name SSH_RATELIMIT
+    $IPTABLES -A SSH_RULE -m state --state NEW -m recent --update --seconds 60 --hitcount 4 --rttl --name SSH_RATELIMIT -j LOG --log-level warning --log-prefix "SSH RATE-LIMIT -- DROP "
+    $IPTABLES -A SSH_RULE -m state --state NEW -m recent --update --seconds 60 --hitcount 4 --rttl --name SSH_RATELIMIT -j DROP
+    # Allow whitelisted IP range after rate-limit check
+    $IPTABLES -A SSH_RULE -m iprange --src-range 88.70.196.1-88.71.159.254 -m state --state NEW -j ACCEPT
+    # Log and drop all other SSH attempts
+    $IPTABLES -A SSH_RULE -j LOG --log-level info --log-prefix "SSH -- DENY "
+    $IPTABLES -A SSH_RULE -j DROP
+    # Route all new SSH connections through the SSH_RULE chain
+    $IPTABLES -A INPUT -p tcp -m tcp --dport 22 -m state --state NEW -j SSH_RULE
     #
-    echo "Rule 7 (global)"
+    # BLOCK INPUT: known bad IPs
+    #
+    echo "BLOCK INPUT: known bad IPs"
     #
     $IPTABLES -A INPUT -s 218.92.0.199 -j DROP
     #
-    # Rule 8 (global)
+    # REJECT INPUT: ident, smb, netbios, dhcp, local udp broadcasts
     #
-    echo "Rule 8 (global)"
+    echo "REJECT INPUT: ident, smb, netbios, dhcp, local udp broadcasts"
     #
-    # this rejects auth (ident) queries that remote
-    # mail relays may send to this server when it
-    # tries to send email out.
+    # Reject ident (auth) queries that remote mail relays may send,
+    # and SMB/NetBIOS/DHCP to avoid spamming the default-deny log.
     $IPTABLES -A INPUT -p tcp -m tcp --dport 113 -j REJECT
     $IPTABLES -A INPUT -p tcp -m tcp --dport 445 -j REJECT
     $IPTABLES -A INPUT -p udp -m udp --dport 137 -j REJECT
     $IPTABLES -A INPUT -p udp -m udp --dport 138 -j REJECT
     $IPTABLES -A INPUT -p udp -m udp --dport 67 -j REJECT
-    # Lokalen UDP-LAN-Verkehr still verwerfen, damit Broadcasts und Scans nicht Rule 9 zuspammen.
+    # Lokalen UDP-LAN-Verkehr verwerfen, damit Broadcasts und Scans nicht DEFAULT_DENY-Log zuspammen.
     $IPTABLES -A INPUT -p udp -s 192.168.0.0/24 -j DROP
     #
-    # Rule 9 (global)
+    # DEFAULT DENY: log and drop everything else
     #
-    echo "Rule 9 (global)"
+    echo "DEFAULT DENY: log and drop all remaining input"
     #
-    $IPTABLES -N RULE_9
-    $IPTABLES -A INPUT -j RULE_9
-    $IPTABLES -A RULE_9 -j LOG --log-level info --log-prefix "RULE 9 -- DENY "
-    $IPTABLES -A RULE_9 -j DROP
+    $IPTABLES -N DEFAULT_DENY
+    $IPTABLES -A INPUT -j DEFAULT_DENY
+    $IPTABLES -A DEFAULT_DENY -j LOG --log-level info --log-prefix "DEFAULT DENY -- DROP "
+    $IPTABLES -A DEFAULT_DENY -j DROP
 }
 
 ip_forward() {
@@ -430,7 +446,7 @@ case "$cmd" in
         prolog_commands
         check_run_time_address_table_files
         
-        load_modules " "
+        #load_modules " "  # kernel auto-loads netfilter modules; xt_recent loaded inline in SSH_RULE
         configure_interfaces
         verify_interfaces
         

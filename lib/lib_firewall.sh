@@ -20,9 +20,8 @@ if [ "$u_firewall" = "y" ]; then
         chmod 700 $file004/stop.sh
         chmod 700 $file004/rules.fw
         
-        sed -i 's/$IPTABLES -A INPUT -i venet0:0   -s 195.90.209.193   -j Cid4533X20228.0/$IPTABLES -A INPUT -i venet0:0   -s '"$u_ip"'   -j Cid4533X20228.0 #by BitWorker/' $file004/rules.fw
-        sed -i 's/$IPTABLES -A Cid4533X20228.0  -d 195.90.209.193   -j In_RULE_0/$IPTABLES -A Cid4533X20228.0  -d '"$u_ip"'   -j In_RULE_0 #by BitWorker/' $file004/rules.fw
-        sed -i 's/^        load_modules " "/        #load_modules " "/' $file004/rules.fw
+        sed -i 's/-s 195.90.209.193 -j SPOOF_CHECK/-s '"$u_ip"' -j SPOOF_CHECK #by BitWorker/' $file004/rules.fw
+        sed -i 's/-d 195.90.209.193 -j SPOOF_DENY/-d '"$u_ip"' -j SPOOF_DENY #by BitWorker/' $file004/rules.fw
         
         ### muss nach der rule kommen, die noch nach venet0:0 sucht! (see 3 lines above)
         ###
@@ -32,10 +31,10 @@ if [ "$u_firewall" = "y" ]; then
         ### place client ip in firewall script
         ### $u_client_ip is defined install.sh on top
         ###
-        iptables001="    \$IPTABLES -A INPUT  -p tcp -m tcp  -s $u_client_ip\/255.255.255.255  --dport 22  -m state --state NEW,ESTABLISHED -j  ACCEPT"
-        iptables002="    \$IPTABLES -A OUTPUT  -p tcp -m tcp  -d $u_client_ip\/255.255.255.255  --sport 22  -m state --state ESTABLISHED,RELATED -j ACCEPT"
+        iptables001="    \$IPTABLES -A INPUT  -p tcp -m tcp -s $u_client_ip\/32 --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT"
+        iptables002="    \$IPTABLES -A OUTPUT -p tcp -m tcp -d $u_client_ip\/32 --sport 22 -m state --state ESTABLISHED,RELATED -j ACCEPT"
         
-        sed -i 's/# backup ssh access/# backup ssh access\n'"$iptables001"'\n'"$iptables002"'/' $file004/rules.fw
+        sed -i 's/# backup ssh access$/# backup ssh access\n'"$iptables001"'\n'"$iptables002"'/' $file004/rules.fw
         
         ### DNS Server Special Settings
         ###
