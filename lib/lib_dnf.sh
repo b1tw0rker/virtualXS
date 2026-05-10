@@ -28,13 +28,9 @@ if [ "$u_dnf" = "y" ]; then
     ###
     ###
 
-
-
     ### to newest nodejs version
     #dnf module enable nodejs:22
     #dnf -y install nodejs
-    
-
 
     ### php 8.4 from remi repo
     #dnf -y install https://rpms.remirepo.net/enterprise/remi-release-9.rpm
