@@ -276,6 +276,9 @@ script_body() {
     $IPTABLES -A INPUT -m state --state INVALID -j DROP
     # Drop TCP packets claiming NEW but without SYN flag – Nmap/spoofed packets
     $IPTABLES -A INPUT -p tcp ! --syn -m state --state NEW -j DROP
+    # SYN-Flood protection: max 20 new TCP connections/s per source IP, burst 30
+    # ESTABLISHED/RELATED traffic is unaffected (matched earlier) – no impact on HTTP/S performance
+    $IPTABLES -A INPUT -p tcp --syn -m hashlimit --hashlimit-above 20/s --hashlimit-burst 30 --hashlimit-mode srcip --hashlimit-name SYN_FLOOD -j DROP
     # accept established sessions
     $IPTABLES -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
     $IPTABLES -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
