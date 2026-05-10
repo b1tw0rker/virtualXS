@@ -30,7 +30,7 @@ if [ "$u_ssh" = "y" ]; then
                 ### add backup remote client ssh connection
                 ###
                 ###
-                sed -i 's/^Match User root Address XXX/Match User root Address '"$u_client_ip"'/' $file_ssh001
+                #sed -i 's/^Match User root Address XXX/Match User root Address '"$u_client_ip"'/' $file_ssh001
         fi
 
 
