@@ -8,6 +8,9 @@ if [ "$u_postfix" = "" ]; then
     read u_postfix
 fi
 
+
+
+
 if [ "$u_postfix" = "y" ]; then
     
     postfix_config_dir=/etc/postfix
