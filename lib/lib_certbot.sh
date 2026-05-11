@@ -30,6 +30,7 @@ certbot_dns_prepare() {
 
 certbot_dns_issue() {
     certbot_domain=$1
+    certbot_dry_run=$2
     certbot_email=""
     certbot_agree_tos="--agree-tos"
     certbot_staging_flag=""
@@ -67,9 +68,17 @@ certbot_dns_issue() {
         certbot_cmd+=("$certbot_staging_flag")
     fi
 
+    if [ "$certbot_dry_run" = "true" ]; then
+        certbot_cmd+=("--dry-run")
+    fi
+
     certbot_cmd+=(-d "$certbot_domain")
 
-    printf "\nRequesting a certificate via DNS-Challenge for: %s\n\n" "$certbot_domain"
+    if [ "$certbot_dry_run" = "true" ]; then
+        printf "\n[DRY-RUN] Requesting a certificate via DNS-Challenge for: %s\n\n" "$certbot_domain"
+    else
+        printf "\nRequesting a certificate via DNS-Challenge for: %s\n\n" "$certbot_domain"
+    fi
 
     "${certbot_cmd[@]}"
 }
@@ -77,28 +86,32 @@ certbot_dns_issue() {
 ### certbot
 ###
 ###
-printf "\n********************************************************************\n\nCreate initiales Let's Enycrypt Cert: $u_srv [y/N]: "
+printf "\n********************************************************************\n\nCreate initiales Let's Enycrypt Cert: $u_srv [y/N/d (dry-run)]: "
 if [ "$u_certbot" = "" ]; then
     read u_certbot
 fi
 
-if [ "$u_certbot" = "y" ]; then
+if [ "$u_certbot" = "y" ] || [ "$u_certbot" = "d" ]; then
 
     certbot_dns_prepare
 
     ### get cert from Let's Encrypt
     ###
     ###
-    certbot_dns_issue "$u_srv"
+    if [ "$u_certbot" = "d" ]; then
+        certbot_dns_issue "$u_srv" "true"
+    else
+        certbot_dns_issue "$u_srv"
+    fi
 
 fi
 
-printf "\n********************************************************************\n\nCreate Let's Enycrypt Cert for dovecot (imap.$u_domain) [y/N]: "
+printf "\n********************************************************************\n\nCreate Let's Enycrypt Cert for dovecot (imap.$u_domain) [y/N/d (dry-run)]: "
 if [ "$u_certbot_dovecot" = "" ]; then
     read u_certbot_dovecot
 fi
 
-if [ "$u_certbot_dovecot" = "y" ]; then
+if [ "$u_certbot_dovecot" = "y" ] || [ "$u_certbot_dovecot" = "d" ]; then
 
     ### ask for servername
     u_tmp_imap=imap.$u_domain
@@ -109,7 +122,11 @@ if [ "$u_certbot_dovecot" = "y" ]; then
     ### get cert from Let's Encrypt
     ###
     ###
-    certbot_dns_issue "$u_imap"
+    if [ "$u_certbot_dovecot" = "d" ]; then
+        certbot_dns_issue "$u_imap" "true"
+    else
+        certbot_dns_issue "$u_imap"
+    fi
 
     ### update dovecot to new cert
     ###
