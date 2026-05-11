@@ -103,6 +103,7 @@ if [ "$u_certbot" = "y" ] || [ "$u_certbot" = "d" ]; then
     else
         certbot_dns_issue "$u_srv"
     fi
+    printf "[\e[32mOK\e[0m]\n"
 
 fi
 
