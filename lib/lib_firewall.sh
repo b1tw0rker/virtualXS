@@ -57,6 +57,8 @@ if [ "$u_firewall" = "y" ]; then
         cp $u_path/files/firewall/firewall-test /etc/cron.hourly/
         chmod 700 /etc/cron.hourly/firewall-test
     fi
+
+    printf "[\e[32mOK\e[0m]\n"
     
 fi
 
@@ -101,6 +103,8 @@ if [ "$u_activate_firewall" = "y" ]; then
         /etc/firewall/rules.fw
         systemctl start fail2ban
     fi
+
+    printf "[\e[32mOK\e[0m]\n"
     
 fi
 

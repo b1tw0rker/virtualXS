@@ -33,5 +33,6 @@ if [ "$u_php" = "y" ]; then
         cp $u_path/files/php/90-bw-security.ini $file_php_003
     fi
 
+    printf "[\e[32mOK\e[0m]\n"
 
 fi
