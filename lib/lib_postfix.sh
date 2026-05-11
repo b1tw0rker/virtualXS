@@ -75,9 +75,8 @@ if [ "$u_postfix" = "y" ]; then
         postmap /etc/postfix/access
     fi
     
-    echo "Restart Postfix"
+    echo "Reload Postfix"
     postfix reload
-    systemctl restart postfix
     printf "[\e[32mOK\e[0m]\n"
     
 fi
