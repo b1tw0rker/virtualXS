@@ -18,8 +18,10 @@ print_virtualx_access_summary() {
     printf "User: \e[1m%s\e[0m\n" "$u_srv"
     printf "Password: \e[1;33m%s\e[0m\n" "$u_srv_pwd"
 
-    printf -- "---\n"
-    printf "Connection checks for %s\n" "$u_ip"
+    if [ "$u_ssh_sftp" = "y" ] || [ "$u_vsftpd" = "y" ]; then
+        printf -- "---\n"
+        printf "Connection checks for %s\n" "$u_ip"
+    fi
 }
 
 print_virtualx_check_result() {
@@ -246,7 +248,12 @@ EOF
 
     print_virtualx_access_summary
 
-    run_virtualx_sftp_check
-    run_virtualx_ftps_check
+    if [ "$u_ssh_sftp" = "y" ]; then
+        run_virtualx_sftp_check
+    fi
+
+    if [ "$u_vsftpd" = "y" ]; then
+        run_virtualx_ftps_check
+    fi
 
 fi
