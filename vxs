@@ -361,7 +361,7 @@ source $u_path/lib/lib_cron.sh
 ### *** SECURITY ***
 ###
 printf "\n********************************************************************\n"
-printf "*                      S E C U R I T Y                               *\n"
+printf "*                      S E C U R I T Y                             *\n"
 printf "********************************************************************\n\n"
 
 ### q install php 8.1
@@ -401,7 +401,7 @@ source $u_path/lib/lib_tripwire.sh
 ### *** VIRTUALX ***
 ###
 printf "\n********************************************************************\n"
-printf "*                         V I R T U A L X                            *\n"
+printf "*                         V I R T U A L X                          *\n"
 printf "********************************************************************\n\n"
 
 ### q virtualx first vhost
