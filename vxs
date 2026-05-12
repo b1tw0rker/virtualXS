@@ -53,6 +53,16 @@ u_aws=n
 ###
 source $u_path/lib/functions.sh
 
+cleanup_terminal() {
+    if command -v tput >/dev/null 2>&1; then
+        tput sgr0
+    else
+        printf '\033[0m'
+    fi
+}
+
+trap cleanup_terminal EXIT INT TERM
+
 ### correct time rules first
 ###
 ###
