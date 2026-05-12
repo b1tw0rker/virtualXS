@@ -74,7 +74,7 @@ run_virtualx_ftps_check() {
     output=$(printf 'QUIT\r\n' | timeout 10 openssl s_client -quiet -starttls ftp -connect "${u_ip}:21" -servername "$u_srv" 2>&1)
     status=$?
 
-    if printf '%s\n' "$output" | grep -Eq 'Protocol *:|Verify return code:|^220 |^221 '; then
+    if [ "$status" -eq 0 ] && printf '%s\n' "$output" | grep -Eq 'Protocol *:|Verify return code:|^220 |^221 '; then
         print_virtualx_check_result "FTPS" "$address" 0 "$output"
         return
     fi
