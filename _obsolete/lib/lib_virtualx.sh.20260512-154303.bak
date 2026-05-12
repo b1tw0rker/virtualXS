@@ -12,18 +12,6 @@ compact_virtualx_check_error() {
     printf '%.220s' "$message"
 }
 
-print_virtualx_access_summary() {
-    printf "\n----------------------------\n"
-    printf "[\e[32mOK\e[0m] VirtualX access ready\n"
-    printf "User: \e[1m%s\e[0m\n" "$u_srv"
-    printf "Password: \e[1;33m%s\e[0m\n" "$u_srv_pwd"
-
-    if [ "$u_ssh_sftp" = "y" ] || [ "$u_vsftpd" = "y" ]; then
-        printf -- "---\n"
-        printf "Connection checks for %s\n" "$u_ip"
-    fi
-}
-
 print_virtualx_check_result() {
     local label="$1"
     local address="$2"
@@ -31,11 +19,11 @@ print_virtualx_check_result() {
     local detail="$4"
 
     if [ "$status" -eq 0 ]; then
-        printf "%s connection: [\e[32mOK\e[0m]\n" "$label"
+        printf "[\e[32mOK\e[0m] %s connection to %s\n" "$label" "$address"
         return
     fi
 
-    printf "%s connection: [\e[31mFAILED\e[0m] %s (%s)\n" "$label" "$(compact_virtualx_check_error "$detail")" "$address"
+    printf "[\e[31mFAILED\e[0m] %s connection to %s: %s\n" "$label" "$address" "$(compact_virtualx_check_error "$detail")"
 }
 
 run_virtualx_sftp_check() {
@@ -105,7 +93,7 @@ if [ "$u_virtualx" = "y" ]; then
     fi
     u_srv_pwd=$(tr -dc 'A-Za-z0-9!@#$%^&*()_+' < /dev/urandom | head -c 12)
     echo "$u_srv:$u_srv_pwd" | chpasswd
-    printf "\n[\e[32mOK\e[0m] User \e[1m%s\e[0m created\n" "$u_srv"
+    printf "\n[\e[32mOK\e[0m] User \e[1m$u_srv\e[0m\nPasswort: \e[1;33m$u_srv_pwd\e[0m\n"
 
     ### Create directories
     ###
@@ -246,7 +234,9 @@ php_admin_value[upload_tmp_dir] = /home/httpd/$u_srv/tmp
 php_admin_value[sys_temp_dir] = /home/httpd/$u_srv/tmp
 EOF
 
-    print_virtualx_access_summary
+    printf "[\e[32mOK\e[0m]\n"
+
+    printf "[INFO] Connectivity checks against %s\n" "$u_ip"
 
     if [ "$u_ssh_sftp" = "y" ]; then
         run_virtualx_sftp_check

@@ -20,6 +20,8 @@
     "git.autofetch": true,
     
     "editor.acceptSuggestionOnCommitCharacter": true,
-    "editor.trimAutoWhitespace": true
+    "editor.trimAutoWhitespace": true,
+
+    "chat.permissions.default": "autopilot"
 
 }
