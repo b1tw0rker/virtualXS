@@ -5,6 +5,11 @@ letsencrypt_dns_config_dir=/etc/letsencrypt/config
 letsencrypt_dns_auth_hook=$letsencrypt_dns_hook_dir/auto-hook.sh
 letsencrypt_dns_cleanup_hook=$letsencrypt_dns_hook_dir/cleanup-hook.sh
 letsencrypt_dns_config_file=$letsencrypt_dns_config_dir/dns-config.conf
+letsencrypt_prompt_prefix=""
+
+case "${LC_ALL:-${LC_CTYPE:-${LANG:-}}}" in
+    *UTF-8*|*utf8*) letsencrypt_prompt_prefix=$'\U0001F512 ' ;;
+esac
 
 letsencrypt_dns_prepare() {
 
@@ -31,8 +36,10 @@ letsencrypt_dns_prepare() {
 letsencrypt_dns_issue() {
     letsencrypt_domain=$1
     letsencrypt_dry_run=$2
+    letsencrypt_force_staging=$3
     letsencrypt_email=""
     letsencrypt_agree_tos="--agree-tos"
+    letsencrypt_staging_flag=""
     letsencrypt_mode_label=""
     letsencrypt_cmd=()
 
@@ -41,6 +48,14 @@ letsencrypt_dns_issue() {
         source "$letsencrypt_dns_config_file"
         letsencrypt_email="$EMAIL"
         letsencrypt_agree_tos="$AGREE_TOS"
+
+        if [ "$STAGING_MODE" = "true" ]; then
+            letsencrypt_staging_flag="--staging"
+        fi
+    fi
+
+    if [ "$letsencrypt_force_staging" = "true" ]; then
+        letsencrypt_staging_flag="--staging"
     fi
 
     letsencrypt_cmd=(
@@ -60,6 +75,10 @@ letsencrypt_dns_issue() {
         letsencrypt_cmd+=(--email "$letsencrypt_email")
     fi
 
+    if [ "$letsencrypt_staging_flag" != "" ]; then
+        letsencrypt_cmd+=("$letsencrypt_staging_flag")
+    fi
+
     if [ "$letsencrypt_dry_run" = "true" ]; then
         letsencrypt_cmd+=("--dry-run")
     fi
@@ -68,6 +87,10 @@ letsencrypt_dns_issue() {
 
     if [ "$letsencrypt_dry_run" = "true" ]; then
         letsencrypt_mode_label="[DRY-RUN]"
+    fi
+
+    if [ "$letsencrypt_staging_flag" != "" ]; then
+        letsencrypt_mode_label="$letsencrypt_mode_label[STAGING]"
     fi
 
     if [ "$letsencrypt_mode_label" != "" ]; then
@@ -82,12 +105,12 @@ letsencrypt_dns_issue() {
 ### letsencrypt
 ###
 ###
-printf "\n********************************************************************\n\nCreate initial Let's Encrypt Cert: $u_srv [y/N/d (dry-run)]: "
+printf "\n********************************************************************\n\n%sCreate initial Let's Encrypt Cert: %s [y/N/d (dry-run)/s (staging)]: " "$letsencrypt_prompt_prefix" "$u_srv"
 if [ "$u_letsencrypt" = "" ]; then
     read u_letsencrypt
 fi
 
-if [ "$u_letsencrypt" = "y" ] || [ "$u_letsencrypt" = "d" ]; then
+if [ "$u_letsencrypt" = "y" ] || [ "$u_letsencrypt" = "d" ] || [ "$u_letsencrypt" = "s" ]; then
 
     letsencrypt_dns_prepare
 
@@ -96,6 +119,8 @@ if [ "$u_letsencrypt" = "y" ] || [ "$u_letsencrypt" = "d" ]; then
     ###
     if [ "$u_letsencrypt" = "d" ]; then
         letsencrypt_dns_issue "$u_srv" "true"
+    elif [ "$u_letsencrypt" = "s" ]; then
+        letsencrypt_dns_issue "$u_srv" "false" "true"
     else
         letsencrypt_dns_issue "$u_srv"
     fi
@@ -103,12 +128,12 @@ if [ "$u_letsencrypt" = "y" ] || [ "$u_letsencrypt" = "d" ]; then
 
 fi
 
-printf "\n********************************************************************\n\nCreate Let's Encrypt Cert for dovecot (imap.$u_domain) [y/N/d (dry-run)]: "
+printf "\n********************************************************************\n\n%sCreate Let's Encrypt Cert for dovecot (imap.%s) [y/N/d (dry-run)/s (staging)]: " "$letsencrypt_prompt_prefix" "$u_domain"
 if [ "$u_letsencrypt_dovecot" = "" ]; then
     read u_letsencrypt_dovecot
 fi
 
-if [ "$u_letsencrypt_dovecot" = "y" ] || [ "$u_letsencrypt_dovecot" = "d" ]; then
+if [ "$u_letsencrypt_dovecot" = "y" ] || [ "$u_letsencrypt_dovecot" = "d" ] || [ "$u_letsencrypt_dovecot" = "s" ]; then
 
     ### ask for servername
     u_tmp_imap=imap.$u_domain
@@ -121,6 +146,8 @@ if [ "$u_letsencrypt_dovecot" = "y" ] || [ "$u_letsencrypt_dovecot" = "d" ]; the
     ###
     if [ "$u_letsencrypt_dovecot" = "d" ]; then
         letsencrypt_dns_issue "$u_imap" "true"
+    elif [ "$u_letsencrypt_dovecot" = "s" ]; then
+        letsencrypt_dns_issue "$u_imap" "false" "true"
     else
         letsencrypt_dns_issue "$u_imap"
     fi

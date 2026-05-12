@@ -1,7 +1,7 @@
 #!/bin/bash
 ### Certbot DNS Challenge Konfiguration
 ### Version 1.0.0
-### last-modified: 12.05.2026
+### last-modified: 08.05.2026
 ###
 
 ### DNS Provider Settings
@@ -13,6 +13,7 @@ API_KEY="replace-with-your-api-key"
 ### Let's Encrypt Settings
 ###
 EMAIL="admin@example.com"
+STAGING_MODE="false"
 AGREE_TOS="--agree-tos"
 
 ### Logging Settings
