@@ -24,6 +24,18 @@ confirm() {
     done
 }
 
+### Abort VirtualXS on Ctrl+C
+###
+### Beendet den laufenden Installer sauber nach SIGINT.
+### Exit-Code 130 entspricht einem durch den Benutzer abgebrochenen Prozess.
+### version 1.0.0
+### last-modified: 12.05.26
+###
+abort_vxs() {
+    printf "\nAborted by user.\n"
+    exit 130
+}
+
 ### print centered some lines and write some infos
 ### https://superuser.com/questions/823883/how-to-justify-and-center-text-in-bash/829870
 ### version 1.0.0

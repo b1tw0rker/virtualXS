@@ -52,6 +52,8 @@ u_aws=n
 ###
 source $u_path/lib/functions.sh
 
+trap abort_vxs INT
+
 ### correct time rules first
 ###
 ###
