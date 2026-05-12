@@ -5,11 +5,6 @@ letsencrypt_dns_config_dir=/etc/letsencrypt/config
 letsencrypt_dns_auth_hook=$letsencrypt_dns_hook_dir/auto-hook.sh
 letsencrypt_dns_cleanup_hook=$letsencrypt_dns_hook_dir/cleanup-hook.sh
 letsencrypt_dns_config_file=$letsencrypt_dns_config_dir/dns-config.conf
-letsencrypt_prompt_prefix=""
-
-case "${LC_ALL:-${LC_CTYPE:-${LANG:-}}}" in
-    *UTF-8*|*utf8*) letsencrypt_prompt_prefix=$'\U0001F512 ' ;;
-esac
 
 letsencrypt_dns_prepare() {
 
@@ -105,7 +100,7 @@ letsencrypt_dns_issue() {
 ### letsencrypt
 ###
 ###
-printf "\n********************************************************************\n\n%sCreate initial Let's Encrypt Cert: %s [y/N/d (dry-run)/s (staging)]: " "$letsencrypt_prompt_prefix" "$u_srv"
+printf "\n********************************************************************\n\nCreate initial Let's Encrypt Cert: $u_srv [y/N/d (dry-run)/s (staging)]: "
 if [ "$u_letsencrypt" = "" ]; then
     read u_letsencrypt
 fi
@@ -128,7 +123,7 @@ if [ "$u_letsencrypt" = "y" ] || [ "$u_letsencrypt" = "d" ] || [ "$u_letsencrypt
 
 fi
 
-printf "\n********************************************************************\n\n%sCreate Let's Encrypt Cert for dovecot (imap.%s) [y/N/d (dry-run)/s (staging)]: " "$letsencrypt_prompt_prefix" "$u_domain"
+printf "\n********************************************************************\n\nCreate Let's Encrypt Cert for dovecot (imap.$u_domain) [y/N/d (dry-run)/s (staging)]: "
 if [ "$u_letsencrypt_dovecot" = "" ]; then
     read u_letsencrypt_dovecot
 fi

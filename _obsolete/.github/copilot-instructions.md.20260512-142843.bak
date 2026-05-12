@@ -10,7 +10,6 @@
 
 ## Allgemeine Arbeitsweise
 
-- Standardsprache fuer Antworten, Kommentare und vorgeschlagene Texte ist Englisch, sofern der Nutzer nicht ausdruecklich etwas anderes verlangt.
 - Bevor du etwas aenderst, lies den betroffenen Modulpfad und den direkten Aufrufer. Bei Installer-Verhalten ist das oft `vxs` plus das passende Skript unter `lib/`.
 - Bevorzuge kleine, lokale Aenderungen statt breiter Refactorings ueber mehrere Module.
 - Erhalte bestehende Interaktivitaet, Prompt-Reihenfolge und Default-Werte, sofern die Aufgabe nicht explizit etwas anderes verlangt.

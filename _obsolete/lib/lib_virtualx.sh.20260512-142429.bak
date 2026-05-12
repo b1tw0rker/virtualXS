@@ -1,83 +1,5 @@
 #!/bin/bash
 
-compact_virtualx_check_error() {
-    local message="$1"
-
-    message=$(printf '%s' "$message" | tr '\r\n' ' ' | sed 's/[[:space:]]\+/ /g; s/^ //; s/ $//')
-
-    if [ -z "$message" ]; then
-        message="unknown error"
-    fi
-
-    printf '%.220s' "$message"
-}
-
-print_virtualx_check_result() {
-    local label="$1"
-    local address="$2"
-    local status="$3"
-    local detail="$4"
-
-    if [ "$status" -eq 0 ]; then
-        printf "[\e[32mOK\e[0m] %s connection to %s\n" "$label" "$address"
-        return
-    fi
-
-    printf "[\e[31mFAILED\e[0m] %s connection to %s: %s\n" "$label" "$address" "$(compact_virtualx_check_error "$detail")"
-}
-
-run_virtualx_sftp_check() {
-    local output
-    local status
-    local address="${u_ip}:1122"
-
-    if ! command -v ssh-keyscan >/dev/null 2>&1; then
-        print_virtualx_check_result "SFTP" "$address" 1 "ssh-keyscan not installed"
-        return
-    fi
-
-    output=$(ssh-keyscan -T 5 -p 1122 "$u_ip" 2>&1)
-    status=$?
-
-    if [ "$status" -eq 0 ] && [ -n "$output" ]; then
-        print_virtualx_check_result "SFTP" "$address" 0 "$output"
-        return
-    fi
-
-    if [ -z "$output" ]; then
-        output="no SSH host key received"
-    fi
-
-    print_virtualx_check_result "SFTP" "$address" 1 "$output"
-}
-
-run_virtualx_ftps_check() {
-    local output
-    local status
-    local address="${u_ip}:21"
-
-    if ! command -v openssl >/dev/null 2>&1; then
-        print_virtualx_check_result "FTPS" "$address" 1 "openssl not installed"
-        return
-    fi
-
-    output=$(printf 'QUIT\r\n' | timeout 10 openssl s_client -quiet -starttls ftp -connect "${u_ip}:21" -servername "$u_srv" 2>&1)
-    status=$?
-
-    if [ "$status" -eq 0 ] && printf '%s\n' "$output" | grep -Eq 'Protocol *:|Verify return code:|^220 |^221 '; then
-        print_virtualx_check_result "FTPS" "$address" 0 "$output"
-        return
-    fi
-
-    if [ "$status" -eq 124 ]; then
-        output="connection timed out"
-    elif [ -z "$output" ]; then
-        output="TLS handshake failed"
-    fi
-
-    print_virtualx_check_result "FTPS" "$address" 1 "$output"
-}
-
 printf "\n********************************************************************\n\nErsten VirtualX Server installieren [y/N]: "
 if [ "$u_virtualx" = "" ]; then
     read u_virtualx
@@ -235,15 +157,5 @@ php_admin_value[sys_temp_dir] = /home/httpd/$u_srv/tmp
 EOF
 
     printf "[\e[32mOK\e[0m]\n"
-
-    printf "[INFO] Connectivity checks against %s\n" "$u_ip"
-
-    if [ "$u_ssh_sftp" = "y" ]; then
-        run_virtualx_sftp_check
-    fi
-
-    if [ "$u_vsftpd" = "y" ]; then
-        run_virtualx_ftps_check
-    fi
 
 fi
