@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-### Version: 1.2.60
+### Version: 1.2.61
 ### Build date: 12.05.2026
 ### (C) 2021 - 2026 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -32,7 +32,7 @@ done
 ###
 ###
 infocolor=$(tput setaf 6) # DEV
-u_version=1.2.60
+u_version=1.2.61
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
 WEBHOSTER=host-x.de
@@ -51,7 +51,30 @@ u_aws=n
 ###
 ### Set DEV_START_AT=virtualx to skip directly to lib_virtualx.sh.
 ### Leave DEV_START_AT empty for the normal installer flow.
-DEV_START_AT=
+###
+### Folgende Werte können für DEV_START_AT gesetzt werden, um direkt zu einem bestimmten Abschnitt zu springen:
+### - repo: Springt zum Abschnitt, in dem die Repositories konfiguriert werden
+### - dnf: Springt zum Abschnitt, in dem DNF und Pakete installiert werden
+### - apps: Springt zum Abschnitt, in dem Anwendungen aktiviert oder deaktiviert werden werden
+### - folders: Springt zum Abschnitt, in dem Standardordner erstellt werden werden
+### - postfix: Springt zum Abschnitt, in dem Postfix konfiguriert wird
+### - helper_apps: Springt zum Abschnitt, in dem Hilfsanwendungen konfiguriert werden
+### - httpd: Springt zum Abschnitt, in dem der HTTP-Server konfiguriert wird
+### - wordpress: Springt zum Abschnitt, in dem WP-CLI installiert wird
+### - dovecot: Springt zum Abschnitt, in dem Dovecot konfiguriert wird
+### - letsencrypt: Springt zum Abschnitt, in dem Let's Encrypt konfiguriert wird
+### - autoconfig: Springt zum Abschnitt, in dem Autoconfig konfiguriert wird
+### - vsftpd: Springt zum Abschnitt, in dem vsftpd konfiguriert wird
+### - mysql: Springt zum Abschnitt, in dem MySQL konfiguriert wird
+### - backup: Springt zum Abschnitt, in dem Backup konfiguriert wird
+### - quota: Springt zum Abschnitt, in dem Quota konfiguriert wird
+### - powerdns: Springt zum Abschnitt, in dem PowerDNS konfiguriert wird
+### - logrotate: Springt zum Abschnitt, in dem Logrotate konfiguriert wird
+### - cron: Springt zum Abschnitt, in dem Cron konfiguriert wird
+### - tripwire: Springt zum Abschnitt, in dem Tripwire konfiguriert wird
+### - kernel_modules: Springt zum Abschnitt, in dem Kernel-Module konfiguriert werden
+### - virtualx: Springt zum Abschnitt, in dem die erste virtuelle Hostkonfiguration für VirtualX erstellt wird
+DEV_START_AT=virtualx
 
 ### (After u_path defintion)
 ###
