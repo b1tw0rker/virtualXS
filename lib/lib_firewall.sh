@@ -41,7 +41,7 @@ if [ "$u_firewall" = "y" ]; then
         ###
         if [ "$u_server" = "d" ]; then
             sed -i 's/$IPTABLES -A INPUT -p tcp -m tcp  --dport 10000:10255  -m state --state NEW  -j ACCEPT/$IPTABLES -A INPUT -p udp -m udp  --dport 53  -m state --state NEW  -j ACCEPT #by BitWorker/' $file004/rules.fw
-            sed -i 's/$IPTABLES -A INPUT -p tcp -m tcp  -m multiport  --dports 88,21,25,80,443,993,995,587  -m state --state NEW  -j ACCEPT/$IPTABLES -A INPUT -p tcp -m tcp  --dport 53  -m state --state NEW  -j ACCEPT #by BitWorker/' $file004/rules.fw
+            sed -i 's/$IPTABLES -A INPUT -p tcp -m tcp  -m multiport  --dports 21,25,80,443,993,995,587  -m state --state NEW  -j ACCEPT/$IPTABLES -A INPUT -p tcp -m tcp  --dport 53  -m state --state NEW  -j ACCEPT #by BitWorker/' $file004/rules.fw
         fi
         
     fi

@@ -310,9 +310,9 @@ script_body() {
     $IPTABLES -A INPUT -i lo -j ACCEPT
     $IPTABLES -A OUTPUT -o lo -j ACCEPT
     #
-    # ALLOW INPUT: igmp, icmp-ping, webmin, public services (ftp,smtp,http,https,imap,pop3,submission)
+    # ALLOW INPUT: igmp, icmp-ping, passive ftp, public services (ftp,smtp,http,https,imap,pop3,submission)
     #
-    echo "ALLOW INPUT: igmp, icmp, webmin, public services"
+    echo "ALLOW INPUT: igmp, icmp, passive ftp, public services"
     #
     $IPTABLES -A INPUT -p igmp -d 224.0.0.1 -j ACCEPT
     # OLD: kein Rate-Limit – anfällig für Ping-Flood

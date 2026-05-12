@@ -27,5 +27,5 @@ TTL=60
 
 ### Hook Settings
 ###
-WEBMIN_RESTART="true"
+#WEBMIN_RESTART="true"
 NOTIFICATION_ENABLED="false"

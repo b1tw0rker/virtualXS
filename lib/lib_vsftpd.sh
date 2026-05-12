@@ -21,6 +21,14 @@ if [ "$u_vsftpd" = "y" ]; then
     file_vsftpd003=/etc/pam.d/vsftpd
     file_vsftpd004=/etc/letsencrypt/live/$u_hostname/fullchain.pem
 
+    set_vsftpd_option() {
+        local key="$1"
+        local value="$2"
+
+        sed -i '/^#\?'"$key"'=.*/d' "$file_vsftpd002"
+        printf '%s=%s\n' "$key" "$value" >>"$file_vsftpd002"
+    }
+
     sed -i 's/^#ftpd_banner=Welcome to blah FTP service./ftpd_banner=Welcome to HOST-X FTP service./' $file_vsftpd002
     sed -i 's/^#chroot_local_user=YES/chroot_local_user=YES/' $file_vsftpd002
 
@@ -35,6 +43,32 @@ if [ "$u_vsftpd" = "y" ]; then
         cat $u_path/files/vsftpd/vsftpd.conf >>$file_vsftpd002
     fi
 
+    set_vsftpd_option anonymous_enable NO
+    set_vsftpd_option local_enable YES
+    set_vsftpd_option write_enable YES
+    set_vsftpd_option userlist_enable YES
+    set_vsftpd_option pam_service_name vsftpd
+    set_vsftpd_option ssl_enable YES
+    set_vsftpd_option allow_anon_ssl NO
+    set_vsftpd_option force_local_data_ssl YES
+    set_vsftpd_option force_local_logins_ssl YES
+    set_vsftpd_option ssl_tlsv1_1 YES
+    set_vsftpd_option ssl_tlsv1_2 YES
+    set_vsftpd_option ssl_tlsv1 NO
+    set_vsftpd_option ssl_sslv2 NO
+    set_vsftpd_option ssl_sslv3 NO
+    set_vsftpd_option require_ssl_reuse NO
+    set_vsftpd_option ssl_ciphers HIGH
+    set_vsftpd_option allow_writeable_chroot YES
+    set_vsftpd_option nopriv_user vsftpd
+    set_vsftpd_option userlist_deny YES
+    set_vsftpd_option guest_enable YES
+    set_vsftpd_option guest_username vsftpd
+    set_vsftpd_option local_root '/home/vsftpd/$USER'
+    set_vsftpd_option user_sub_token '$USER'
+    set_vsftpd_option virtual_use_local_privs YES
+    set_vsftpd_option user_config_dir /etc/vsftpd/vsftpd_user_conf
+
     ### pam stuff
     ###
     ###
@@ -47,8 +81,8 @@ if [ "$u_vsftpd" = "y" ]; then
     ###
     ###
     if [ -f "$file_vsftpd004" ]; then
-        sed -i 's/^#rsa_cert_file=\/etc\/letsencrypt\/live\/XXX\/fullchain.pem/rsa_cert_file=\/etc\/letsencrypt\/live\/'"$u_hostname"'\/fullchain.pem/' $file_vsftpd002
-        sed -i 's/^#rsa_private_key_file=\/etc\/letsencrypt\/live\/XXX\/privkey.pem/rsa_private_key_file=\/etc\/letsencrypt\/live\/'"$u_hostname"'\/privkey.pem/' $file_vsftpd002
+        set_vsftpd_option rsa_cert_file /etc/letsencrypt/live/$u_hostname/fullchain.pem
+        set_vsftpd_option rsa_private_key_file /etc/letsencrypt/live/$u_hostname/privkey.pem
     fi
     printf "[\e[32mOK\e[0m]\n"
 

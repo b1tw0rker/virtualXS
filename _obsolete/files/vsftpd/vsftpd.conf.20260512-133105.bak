@@ -1,11 +1,6 @@
 ### by BitWorker
 ###
 ###
-anonymous_enable=NO
-local_enable=YES
-write_enable=YES
-userlist_enable=YES
-pam_service_name=vsftpd
 chroot_local_user=YES
 hide_file={*.virtualx,.bash_logout,.bash_profile,.bashrc,WEBSTATS,.virtualx.*}
 force_dot_files=YES

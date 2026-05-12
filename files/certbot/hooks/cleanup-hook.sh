@@ -70,10 +70,10 @@ else
     log_message "WARN" "PowerDNS returned HTTP $HTTP_CODE while deleting TXT record: $RESPONSE_BODY"
 fi
 
-if [ "$WEBMIN_RESTART" = "true" ]; then
-    if systemctl list-unit-files | grep -q '^webmin.service'; then
-        systemctl restart webmin >/dev/null 2>&1 || true
-    fi
-fi
+#if [ "$WEBMIN_RESTART" = "true" ]; then
+#    if systemctl list-unit-files | grep -q '^webmin.service'; then
+#        systemctl restart webmin >/dev/null 2>&1 || true
+#    fi
+#fi
 
 exit 0

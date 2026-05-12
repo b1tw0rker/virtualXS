@@ -1,0 +1,86 @@
+# Copilot Instructions For virtualXS
+
+## Projektkontext
+
+- virtualXS ist ein Bash-basiertes Server-Setup- und Hardening-Projekt fuer RHEL/Rocky Linux.
+- Der Einstiegspunkt ist `vxs`; die eigentliche Logik ist auf viele modulare Skripte unter `lib/` verteilt.
+- Dateien unter `files/` sind Vorlagen, Konfigurationsfragmente, Hooks und Assets, die auf Zielsysteme kopiert oder dort verarbeitet werden.
+- `helper/build.sh`, `helper/deploy.sh` und `helper/virtualXS.spec` bilden den RPM-Build- und Deploy-Workflow.
+- Das Projekt arbeitet haeufig an produktionsnahen Systempfaden wie `/etc`, `/usr/lib/systemd/system`, `/etc/httpd`, `/etc/postfix`, `/etc/dovecot`, `/etc/vsftpd` und Firewall-Regeln. Aenderungen muessen deshalb konservativ und nachvollziehbar sein.
+
+## Allgemeine Arbeitsweise
+
+- Bevor du etwas aenderst, lies den betroffenen Modulpfad und den direkten Aufrufer. Bei Installer-Verhalten ist das oft `vxs` plus das passende Skript unter `lib/`.
+- Bevorzuge kleine, lokale Aenderungen statt breiter Refactorings ueber mehrere Module.
+- Erhalte bestehende Interaktivitaet, Prompt-Reihenfolge und Default-Werte, sofern die Aufgabe nicht explizit etwas anderes verlangt.
+- Veraendere keine Benennung, Reihenfolge oder Semantik der `u_*`-Variablen ohne klaren Grund; viele Module verlassen sich implizit darauf.
+- Passe bestehende deutsche und englische Texte nur dann an, wenn es fuer Korrektheit oder Konsistenz noetig ist.
+
+## Bash- und Skriptkonventionen
+
+- Verwende Bash, nicht POSIX-sh, wenn du bestehende Skripte in `vxs`, `lib/`, `helper/` oder `files/certbot/hooks/` aenderst.
+- Bleibe beim vorhandenen Stil des jeweiligen Skripts. Das Repo mischt aeltere einfache Bash-Muster mit neueren defensiveren Abschnitten.
+- Quote neue Variablenexpansionen standardmaessig, besonders bei Pfaden, Curl-Daten, `sed`-Ersatzwerten und Shell-Argumenten.
+- Fuehre neue Hilfsfunktionen moeglichst lokal im betroffenen Skript ein, statt globale Utility-Funktionen ohne Bedarf in `lib/functions.sh` zu verschieben.
+- Ersetze bestehende Muster nur dann durch modernere Varianten, wenn dadurch ein konkreter Fehler, eine Sicherheitsluecke oder ein Wartungsproblem geloest wird.
+- Fuehre keine grossflaechigen Stilbereinigungen durch.
+
+## Kritische Aenderungen Und Backups
+
+- Bei kritischen Aenderungen muessen vor der eigentlichen Bearbeitung immer Backups unter `_obsolete/` erstellt werden.
+- Kritisch sind insbesondere Aenderungen an Installer-Logik, sicherheitsrelevanten Skripten, Service-Konfigurationen, Firewall-Regeln, Certbot-Hooks, RPM-Build-Dateien und Templates unter `files/`, die spaeter nach `/etc` oder andere Systempfade ausgerollt werden.
+- Verwende fuer Backups immer dieses Namensschema: `_obsolete/<relativer-originalpfad>.<YYYYMMDD-HHMMSS>.bak`.
+- Lege Backups mit nachvollziehbarem Zeitstempel an, zum Beispiel im Stil `_obsolete/lib/lib_vsftpd.sh.20260512-133105.bak` oder `_obsolete/files/vsftpd/vsftpd.conf.20260512-133105.bak`.
+- Erhalte dabei die relative Herkunft des Originals soweit sinnvoll, damit klar bleibt, woher die Sicherung stammt.
+- Ueberschreibe vorhandene Backups nicht. Erzeuge fuer jede kritische Aenderung eine neue Sicherung.
+- Wenn eine Aenderung nicht klar kritisch ist, entscheide konservativ und erstelle das Backup trotzdem.
+- Beispiel fuer ein erwartetes Backup-Kommando vor einer kritischen Aenderung an `lib/lib_vsftpd.sh`:
+
+```bash
+timestamp=$(date +%Y%m%d-%H%M%S)
+mkdir -p /opt/virtualXS/_obsolete/lib
+cp /opt/virtualXS/lib/lib_vsftpd.sh "/opt/virtualXS/_obsolete/lib/lib_vsftpd.sh.${timestamp}.bak"
+```
+
+- Wenn die Quelldatei aus einem Unterordner wie `files/` stammt, spiegele diesen Pfad auch unter `_obsolete/`.
+
+## Validierung
+
+- Nach Aenderungen an Bash-Skripten mindestens `bash -n` fuer die betroffenen Dateien ausfuehren.
+- Wenn moeglich zusaetzlich `shellcheck` fuer die geaenderten Skripte verwenden. Warnungen mit bewusstem Projektkontext abwaegen, nicht blind alles umschreiben.
+- Bei Aenderungen am RPM-Workflow den betroffenen Schritt gezielt pruefen, zum Beispiel Versionssync, Spec-Konsistenz oder Build-Skript-Logik, statt nur Diff zu lesen.
+- Bei Aenderungen an generierten Konfigurationsdateien oder Templates pruefen, wie sie im Zielskript verwendet oder kopiert werden.
+
+## Sicherheits- und Betriebsregeln
+
+- Fuehre keine destruktiven Aenderungen an Firewall-, SSH-, Postfix-, Dovecot-, PowerDNS- oder VSFTPD-Konfigurationen durch, ohne die bestehende Logik exakt nachzuvollziehen.
+- Achte bei Netzwerk- und Security-Aenderungen auf Seiteneffekte fuer DNS-Server- und Webserver-Modus; `vxs` setzt unterschiedliche Presets je nach Serverrolle.
+- Entferne oder aendere bestehende Sicherheitsmassnahmen nicht ohne ausdruecklichen Grund.
+- Beruecksichtige, dass Portbereiche fachlich belegt sein koennen; im Repo ist etwa der Bereich `10000:10255` fuer passives FTP relevant und nicht pauschal Webmin.
+- Belasse auskommentierte Altlasten nur dann, wenn sie fuer Historie oder Rueckbau bewusst behalten werden; sonst bei konkreten Aufgaben gezielt bereinigen.
+
+## Secrets Und Lokale Konfiguration
+
+- Committe niemals Secrets, API-Keys, Passwoerter oder lokal erzeugte Konfigurationsdateien.
+- `files/certbot/config/dns-config.conf` ist lokal und sensitiv; arbeite gegen Templates oder dokumentierte Platzhalter, nicht gegen echte Werte.
+- Achte darauf, dass Beispiele, Logs und Fehlermeldungen keine geheimen Werte ausgeben.
+
+## Build, Packaging Und Deployment
+
+- Wenn Versionsnummern geaendert werden, muessen `helper/virtualXS.spec`, `vxs` und gegebenenfalls die README-Version konsistent bleiben.
+- Nutze die vorhandenen Build- und Deploy-Skripte als Referenz fuer erwartetes Verhalten, statt eigene parallele Workflows zu erfinden.
+- Aendere den RPM-Inhalt oder Dateirechte in `helper/virtualXS.spec` nur bewusst und mit Blick auf die installierten Zielpfade.
+
+## Dateien Nach Bereichen
+
+- `vxs`: interaktiver Hauptablauf, Reihenfolge und Defaults sind relevant.
+- `lib/`: modulare Installations- und Konfigurationsschritte; Aenderungen lokal halten.
+- `files/`: ausgelieferte Konfigurationsdateien, Cronjobs, Firewall-Regeln, Certbot-Hooks und Service-Assets.
+- `helper/`: Build, Deploy und Git-Release-Helfer.
+- `_obsolete/`: Sicherungen und historische Stände; bei kritischen Aenderungen aktiv als Backup-Ziel nutzen.
+
+## Bevorzugte Antworten Und Aenderungen
+
+- Wenn du Code aenderst, erklaere kurz, welches Modul das Verhalten kontrolliert und wie du es validiert hast.
+- Wenn eine Aufgabe riskant ist, schlage die kleinste sichere Aenderung vor, die das Problem loest.
+- Wenn du auf veraltete oder inkonsistente Muster triffst, verbessere nur den beruehrten Bereich und starte keinen repo-weiten Cleanup.
