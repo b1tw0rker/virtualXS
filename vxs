@@ -32,7 +32,6 @@ done
 ###
 ###
 infocolor=$(tput setaf 6) # DEV
-tput setaf 6
 u_version=1.2.52
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
@@ -63,7 +62,7 @@ timedatectl set-timezone Europe/Berlin
 ###
 hostnamectl set-hostname $u_hostname
 
-echo -ne "\\033[2J\033[30;1f\e[94m"
+echo -ne "\\033[2J\033[30;1f"
 _BOX_W=68
 _BOX_I=$(( _BOX_W - 2 ))
 _BOX_BORDER=$(printf '%*s' $_BOX_W '' | tr ' ' '*')
