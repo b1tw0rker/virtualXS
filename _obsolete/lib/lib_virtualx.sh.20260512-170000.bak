@@ -66,16 +66,15 @@ run_virtualx_ftps_check() {
     local status
     local address="${u_ip}:21"
 
-    if ! command -v curl >/dev/null 2>&1; then
-        print_virtualx_check_result "FTPS" "$address" 1 "curl not installed"
+    if ! command -v openssl >/dev/null 2>&1; then
+        print_virtualx_check_result "FTPS" "$address" 1 "openssl not installed"
         return
     fi
 
-    output=$(timeout 15 curl --ftp-ssl -k --connect-timeout 10 \
-        -u "${u_srv}:${u_srv_pwd}" "ftp://${u_ip}/" 2>&1)
+    output=$(printf 'QUIT\r\n' | timeout 10 openssl s_client -quiet -starttls ftp -connect "${u_ip}:21" -servername "$u_srv" 2>&1)
     status=$?
 
-    if [ "$status" -eq 0 ]; then
+    if printf '%s\n' "$output" | grep -Eq 'Protocol *:|Verify return code:|^220 |^221 '; then
         print_virtualx_check_result "FTPS" "$address" 0 "$output"
         return
     fi
@@ -83,7 +82,7 @@ run_virtualx_ftps_check() {
     if [ "$status" -eq 124 ]; then
         output="connection timed out"
     elif [ -z "$output" ]; then
-        output="unknown error"
+        output="TLS handshake failed"
     fi
 
     print_virtualx_check_result "FTPS" "$address" 1 "$output"
