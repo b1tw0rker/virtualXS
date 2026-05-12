@@ -29,11 +29,8 @@ if [ "$u_vsftpd" = "y" ]; then
         printf '%s=%s\n' "$key" "$value" >>"$file_vsftpd002"
     }
 
-    sed -i 's/^#ftpd_banner=Welcome to blah FTP service./ftpd_banner=Welcome to HOST-X FTP service./' "$file_vsftpd002"
-    sed -i 's/^#chroot_local_user=YES/chroot_local_user=YES/' "$file_vsftpd002"
-    sed -i '/^#\?listen=.*/d' "$file_vsftpd002"
-    sed -i '/^#\?listen_ipv6=.*/d' "$file_vsftpd002"
-    printf 'listen=YES\nlisten_ipv6=NO\n' >>"$file_vsftpd002"
+    sed -i 's/^#ftpd_banner=Welcome to blah FTP service./ftpd_banner=Welcome to HOST-X FTP service./' $file_vsftpd002
+    sed -i 's/^#chroot_local_user=YES/chroot_local_user=YES/' $file_vsftpd002
 
     if [ ! -d "$file_vsftpd001" ]; then
         mkdir $file_vsftpd001
