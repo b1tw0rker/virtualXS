@@ -12,7 +12,7 @@ fi
 
 if [ "$u_autoconfig" = "y" ]; then
 
-    if [ "$u_certbot" != "y" ]; then
+    if [ "$u_letsencrypt" != "y" ] && [ "$u_letsencrypt" != "s" ]; then
         printf "\nAutoconfig can only be created if an initial Let's Encrypt certificate has been issued first.\n"
     elif [ -d "$file001" ]; then
 
@@ -77,7 +77,7 @@ if [ "$u_autoconfig" = "y" ]; then
         ###
         printf "TODO: The files: /home/httpd/autoconfig/htdocs/autodiscover.xml und config-v1.1.xml must be configured manually.\n"
 
-    fi  # end if [ "$u_certbot" != "y" ] / elif
+    fi  # end if initial Let's Encrypt certificate is unavailable / elif
     printf "[\e[32mOK\e[0m]\n"
 
 fi  # end if [ "$u_autoconfig" = "y" ]

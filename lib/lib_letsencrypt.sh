@@ -1,0 +1,158 @@
+#!/bin/bash
+
+letsencrypt_dns_hook_dir=/etc/letsencrypt/hooks
+letsencrypt_dns_config_dir=/etc/letsencrypt/config
+letsencrypt_dns_auth_hook=$letsencrypt_dns_hook_dir/auto-hook.sh
+letsencrypt_dns_cleanup_hook=$letsencrypt_dns_hook_dir/cleanup-hook.sh
+letsencrypt_dns_config_file=$letsencrypt_dns_config_dir/dns-config.conf
+
+letsencrypt_dns_prepare() {
+
+    if [ ! -d "$letsencrypt_dns_hook_dir" ]; then
+        mkdir -p "$letsencrypt_dns_hook_dir"
+    fi
+
+    if [ ! -d "$letsencrypt_dns_config_dir" ]; then
+        mkdir -p "$letsencrypt_dns_config_dir"
+    fi
+
+    cp "$u_path/files/certbot/certbot-renew" /etc/cron.weekly/certbot-renew
+    chmod 700 /etc/cron.weekly/certbot-renew
+
+    cp "$u_path/files/certbot/hooks/auto-hook.sh" "$letsencrypt_dns_auth_hook"
+    cp "$u_path/files/certbot/hooks/cleanup-hook.sh" "$letsencrypt_dns_cleanup_hook"
+    cp "$u_path/files/certbot/config/dns-config.conf" "$letsencrypt_dns_config_file"
+
+    chmod 700 "$letsencrypt_dns_auth_hook"
+    chmod 700 "$letsencrypt_dns_cleanup_hook"
+    chmod 600 "$letsencrypt_dns_config_file"
+}
+
+letsencrypt_dns_issue() {
+    letsencrypt_domain=$1
+    letsencrypt_dry_run=$2
+    letsencrypt_force_staging=$3
+    letsencrypt_email=""
+    letsencrypt_agree_tos="--agree-tos"
+    letsencrypt_staging_flag=""
+    letsencrypt_mode_label=""
+    letsencrypt_cmd=()
+
+    if [ -f "$letsencrypt_dns_config_file" ]; then
+        # shellcheck disable=SC1090
+        source "$letsencrypt_dns_config_file"
+        letsencrypt_email="$EMAIL"
+        letsencrypt_agree_tos="$AGREE_TOS"
+
+        if [ "$STAGING_MODE" = "true" ]; then
+            letsencrypt_staging_flag="--staging"
+        fi
+    fi
+
+    if [ "$letsencrypt_force_staging" = "true" ]; then
+        letsencrypt_staging_flag="--staging"
+    fi
+
+    letsencrypt_cmd=(
+        certbot certonly
+        --manual
+        --preferred-challenges dns
+        --manual-auth-hook "$letsencrypt_dns_auth_hook"
+        --manual-cleanup-hook "$letsencrypt_dns_cleanup_hook"
+        --non-interactive
+    )
+
+    if [ "$letsencrypt_agree_tos" != "" ]; then
+        letsencrypt_cmd+=("$letsencrypt_agree_tos")
+    fi
+
+    if [ "$letsencrypt_email" != "" ]; then
+        letsencrypt_cmd+=(--email "$letsencrypt_email")
+    fi
+
+    if [ "$letsencrypt_staging_flag" != "" ]; then
+        letsencrypt_cmd+=("$letsencrypt_staging_flag")
+    fi
+
+    if [ "$letsencrypt_dry_run" = "true" ]; then
+        letsencrypt_cmd+=("--dry-run")
+    fi
+
+    letsencrypt_cmd+=(-d "$letsencrypt_domain")
+
+    if [ "$letsencrypt_dry_run" = "true" ]; then
+        letsencrypt_mode_label="[DRY-RUN]"
+    fi
+
+    if [ "$letsencrypt_staging_flag" != "" ]; then
+        letsencrypt_mode_label="$letsencrypt_mode_label[STAGING]"
+    fi
+
+    if [ "$letsencrypt_mode_label" != "" ]; then
+        printf "\n%s Requesting a certificate via DNS-Challenge for: %s\n\n" "$letsencrypt_mode_label" "$letsencrypt_domain"
+    else
+        printf "\nRequesting a certificate via DNS-Challenge for: %s\n\n" "$letsencrypt_domain"
+    fi
+
+    "${letsencrypt_cmd[@]}"
+}
+
+### letsencrypt
+###
+###
+printf "\n********************************************************************\n\nCreate initial Let's Encrypt Cert: $u_srv [y/N/d (dry-run)/s (staging)]: "
+if [ "$u_letsencrypt" = "" ]; then
+    read u_letsencrypt
+fi
+
+if [ "$u_letsencrypt" = "y" ] || [ "$u_letsencrypt" = "d" ] || [ "$u_letsencrypt" = "s" ]; then
+
+    letsencrypt_dns_prepare
+
+    ### get cert from Let's Encrypt
+    ###
+    ###
+    if [ "$u_letsencrypt" = "d" ]; then
+        letsencrypt_dns_issue "$u_srv" "true"
+    elif [ "$u_letsencrypt" = "s" ]; then
+        letsencrypt_dns_issue "$u_srv" "false" "true"
+    else
+        letsencrypt_dns_issue "$u_srv"
+    fi
+    printf "[\e[32mOK\e[0m]\n"
+
+fi
+
+printf "\n********************************************************************\n\nCreate Let's Encrypt Cert for dovecot (imap.$u_domain) [y/N/d (dry-run)/s (staging)]: "
+if [ "$u_letsencrypt_dovecot" = "" ]; then
+    read u_letsencrypt_dovecot
+fi
+
+if [ "$u_letsencrypt_dovecot" = "y" ] || [ "$u_letsencrypt_dovecot" = "d" ] || [ "$u_letsencrypt_dovecot" = "s" ]; then
+
+    ### ask for servername
+    u_tmp_imap=imap.$u_domain
+    read -p "Servername for Dovecot (mostly imap.$u_domain): " -ei $u_tmp_imap u_imap
+
+    letsencrypt_dns_prepare
+
+    ### get cert from Let's Encrypt
+    ###
+    ###
+    if [ "$u_letsencrypt_dovecot" = "d" ]; then
+        letsencrypt_dns_issue "$u_imap" "true"
+    elif [ "$u_letsencrypt_dovecot" = "s" ]; then
+        letsencrypt_dns_issue "$u_imap" "false" "true"
+    else
+        letsencrypt_dns_issue "$u_imap"
+    fi
+
+    ### update dovecot to new cert
+    ###
+    ###
+    sed -i 's/^ssl_cert =/#ssl_cert =/' /etc/dovecot/conf.d/10-ssl.conf
+    sed -i 's/^ssl_key =/#ssl_key =/' /etc/dovecot/conf.d/10-ssl.conf
+    printf "[\e[32mOK\e[0m]\n"
+    sed -i 's/^ssl_key = <\/etc\/pki\/dovecot\/private\/dovecot.pem/#ssl_key = <\/etc\/pki\/dovecot\/private\/dovecot.pem\n\nssl_cert = \<\/etc\/letsencrypt\/live\/'"$u_imap"'\/fullchain.pem\nssl_key = \<\/etc\/letsencrypt\/live\/'"$u_imap"'\/privkey.pem\n/' /etc/dovecot/conf.d/10-ssl.conf
+
+fi
