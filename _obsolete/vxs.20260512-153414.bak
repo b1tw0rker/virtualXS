@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-### Version: 1.2.60
+### Version: 1.2.59
 ### Build date: 12.05.2026
 ### (C) 2021 - 2026 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -32,7 +32,7 @@ done
 ###
 ###
 infocolor=$(tput setaf 6) # DEV
-u_version=1.2.60
+u_version=1.2.59
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
 WEBHOSTER=host-x.de
@@ -52,6 +52,14 @@ u_aws=n
 ### Set DEV_START_AT=virtualx to skip directly to lib_virtualx.sh.
 ### Leave DEV_START_AT empty for the normal installer flow.
 DEV_START_AT=
+DEV_SERVER_IP=
+DEV_SERVER_NAME=
+DEV_DOMAIN=
+DEV_CLIENT_IP=
+DEV_INTERFACE=
+DEV_MYSQL_PWD=
+DEV_SERVER_ROLE=w
+DEV_VIRTUALX_ANSWER=
 
 ### (After u_path defintion)
 ###
@@ -89,15 +97,17 @@ vxs_apply_dev_start() {
     u_disclaimer=install
 
     if [ -z "$u_ip" ]; then
-        u_ip=$u_ip4
+        u_ip=${DEV_SERVER_IP:-$u_ip4}
     fi
 
     if [ -z "$u_srv" ]; then
-        u_srv=${u_hostname%%.*}.$WEBHOSTER
+        u_srv=${DEV_SERVER_NAME:-${u_hostname%%.*}.$WEBHOSTER}
     fi
 
     if [ -z "$u_domain" ]; then
-        if [[ "$u_srv" == *.* ]]; then
+        if [ -n "$DEV_DOMAIN" ]; then
+            u_domain=$DEV_DOMAIN
+        elif [[ "$u_srv" == *.* ]]; then
             u_domain=${u_srv#*.}
         else
             u_domain=$WEBHOSTER
@@ -105,15 +115,28 @@ vxs_apply_dev_start() {
     fi
 
     if [ -z "$u_client_ip" ]; then
-        u_client_ip=$u_ip4
+        u_client_ip=${DEV_CLIENT_IP:-$u_ip4}
+    elif [ -n "$DEV_CLIENT_IP" ]; then
+        u_client_ip=$DEV_CLIENT_IP
     fi
 
     if [ -z "$u_iface" ]; then
-        u_iface=eth0
+        u_iface=${DEV_INTERFACE:-eth0}
+    elif [ -n "$DEV_INTERFACE" ]; then
+        u_iface=$DEV_INTERFACE
+    fi
+
+    if [ -n "$DEV_MYSQL_PWD" ] && [ -z "$u_mysql_pwd" ]; then
+        u_mysql_pwd=$DEV_MYSQL_PWD
+        u_mysql_pwd_confirm=$DEV_MYSQL_PWD
     fi
 
     if [ -z "$u_server" ]; then
-        u_server=w
+        u_server=${DEV_SERVER_ROLE:-w}
+    fi
+
+    if [ -n "$DEV_VIRTUALX_ANSWER" ] && [ -z "$u_virtualx" ]; then
+        u_virtualx=$DEV_VIRTUALX_ANSWER
     fi
 }
 
