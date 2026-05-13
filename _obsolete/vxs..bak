@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-### Version: 1.2.65
+### Version: 1.2.64
 ### Build date: 12.05.2026
 ### (C) 2021 - 2026 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -32,7 +32,7 @@ done
 ###
 ###
 infocolor=$(tput setaf 6) # DEV
-u_version=1.2.65
+u_version=1.2.64
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
 WEBHOSTER=host-x.de
@@ -599,23 +599,6 @@ if vxs_should_run_from virtualx; then
     printf "\n********************************************************************\n"
     printf "*                         V I R T U A L X                          *\n"
     printf "********************************************************************\n\n"
-
-    ### q virtualx mysql schema
-    ###
-    ###
-    printf "\n********************************************************************\n\nvirtualX MySQL Schema installieren [y/N]: "
-    if [ "$u_virtualx_schema" = "" ]; then
-        read u_virtualx_schema
-    fi
-
-    if [ "$u_virtualx_schema" = "y" ]; then
-        if ! systemctl is-active --quiet mysqld; then
-            printf "[\e[31mERROR\e[0m] MySQL läuft nicht – Schema-Import übersprungen\n"
-        else
-            MYSQL_PWD=$u_mysql_pwd mysql -u root <$u_path/files/virtualx/virtualx-mysql-schema.sql
-            printf "[\e[32mOK\e[0m] virtualX MySQL Schema installiert\n"
-        fi
-    fi
 
     ### q virtualx first vhost
     ###
