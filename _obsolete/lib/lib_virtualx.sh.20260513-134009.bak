@@ -245,19 +245,6 @@ php_admin_value[upload_tmp_dir] = /home/httpd/$u_srv/tmp
 php_admin_value[sys_temp_dir] = /home/httpd/$u_srv/tmp
 EOF
 
-    ### Create vsftpd virtual user config
-    ###
-    ###
-    vsftpd_user_conf_dir=/etc/vsftpd/vsftpd_user_conf
-    if [ -d "$vsftpd_user_conf_dir" ]; then
-        cat > "$vsftpd_user_conf_dir/$u_srv" <<EOF
-guest_username=$u_srv
-write_enable=YES
-local_root=/home/httpd/$u_srv
-EOF
-        printf "[\e[32mOK\e[0m] vsftpd user config created: %s\n" "$vsftpd_user_conf_dir/$u_srv"
-    fi
-
     print_virtualx_access_summary
 
     run_virtualx_sftp_check

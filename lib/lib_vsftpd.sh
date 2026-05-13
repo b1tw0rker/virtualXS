@@ -67,7 +67,7 @@ if [ "$u_vsftpd" = "y" ]; then
     set_vsftpd_option userlist_deny YES
     set_vsftpd_option guest_enable YES
     set_vsftpd_option guest_username vsftpd
-    set_vsftpd_option local_root '/home/vsftpd/$USER'
+    set_vsftpd_option local_root '/home/httpd/$USER'
     set_vsftpd_option user_sub_token '$USER'
     set_vsftpd_option virtual_use_local_privs YES
     set_vsftpd_option user_config_dir /etc/vsftpd/vsftpd_user_conf
