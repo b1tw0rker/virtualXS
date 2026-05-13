@@ -603,7 +603,7 @@ if vxs_should_run_from virtualx; then
     ### q virtualx mysql schema
     ###
     ###
-    printf "\n********************************************************************\n\nvirtualX MySQL Schema installieren [y/N]: "
+    printf "virtualX MySQL Schema installieren [y/N]: "
     if [ "$u_virtualx_schema" = "" ]; then
         read u_virtualx_schema
     fi
