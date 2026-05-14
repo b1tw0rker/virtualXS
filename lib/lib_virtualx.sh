@@ -14,7 +14,7 @@ compact_virtualx_check_error() {
 
 print_virtualx_access_summary() {
     printf "\n----------------------------\n"
-    printf "[\e[32mOK\e[0m] VirtualX access ready\n"
+    printf "[\e[32mOK\e[0m] VirtualX API ready\n"
     printf "User: \e[1m%s\e[0m\n" "$u_srv"
     printf "Password: \e[1;33m%s\e[0m\n" "$u_srv_pwd"
 
@@ -265,8 +265,7 @@ EOF
     ### Create virtualx DB entry
     ###
     ###
-    if systemctl is-active --quiet mysqld; then
-        MYSQL_PWD=$u_mysql_pwd mysql -u root virtualx <<EOF
+    MYSQL_PWD=$u_mysql_pwd mysql -u root virtualx <<EOF
 INSERT IGNORE INTO domains (domainname, user, real_dom)
   VALUES ('$u_srv', '$u_srv', '$u_domain');
 SET @web_id = LAST_INSERT_ID();
@@ -275,10 +274,7 @@ INSERT IGNORE INTO domaininfos (web_id, virtualx_usr, apache, virtuelle_ftp, sta
 INSERT IGNORE INTO passwd (dom_id, username, passwd, rootdir, status)
   VALUES (@web_id, '$u_srv', '$u_srv_pwd', '/home/httpd/$u_srv', 'A');
 EOF
-        printf "[\e[32mOK\e[0m] virtualX DB entry created for %s\n" "$u_srv"
-    else
-        printf "[\e[33mWARN\e[0m] MySQL nicht aktiv – virtualX DB-Eintrag übersprungen\n"
-    fi
+    printf "[\e[32mOK\e[0m] virtualX DB entry created for %s\n" "$u_srv"
 
     print_virtualx_access_summary
 
