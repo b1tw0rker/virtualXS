@@ -86,7 +86,6 @@ if [ "$u_vsftpd" = "y" ]; then
             /usr/local/sbin/vsftpd-pam-check.sh
 
         ### MySQL credentials file for PAM script (etc_t context, readable by ftpd_t)
-        local mysql_pwd
         mysql_pwd=$(grep '^password=' /root/.my.cnf 2>/dev/null | cut -d= -f2-)
         printf '[client]\nuser=root\npassword=%s\nhost=localhost\n' "$mysql_pwd" \
             > /etc/vsftpd/mysql-pam.cnf
@@ -98,8 +97,10 @@ if [ "$u_vsftpd" = "y" ]; then
     ###
     ###
     if [ -f "$file_vsftpd004" ]; then
-        set_vsftpd_option rsa_cert_file /etc/letsencrypt/live/$u_hostname/fullchain.pem
-        set_vsftpd_option rsa_private_key_file /etc/letsencrypt/live/$u_hostname/privkey.pem
+        sed -i \
+            -e "s|^#\?rsa_cert_file=.*|rsa_cert_file=/etc/letsencrypt/live/${u_hostname}/fullchain.pem|" \
+            -e "s|^#\?rsa_private_key_file=.*|rsa_private_key_file=/etc/letsencrypt/live/${u_hostname}/privkey.pem|" \
+            "$file_vsftpd002"
     fi
     printf "[\e[32mOK\e[0m]\n"
 
