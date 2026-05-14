@@ -96,10 +96,6 @@ fi
 
 if [ "$u_virtualx" = "y" ]; then
 
-    if ! systemctl is-active --quiet mysqld; then
-        printf "[\e[31mERROR\e[0m] MySQL läuft nicht – VirtualX-Installation übersprungen\n"
-    else
-
     ### Create user for vhost
     ###
     ###
@@ -284,7 +280,5 @@ EOF
 
     run_virtualx_sftp_check
     run_virtualx_ftps_check
-
-    fi # end: mysqld is-active check
 
 fi
