@@ -106,7 +106,7 @@ if [ "$u_virtualx" = "y" ]; then
     if ! id "$u_srv" &>/dev/null; then
         useradd -g 100 -d /home/httpd/$u_srv -s /sbin/nologin -M $u_srv
     fi
-    u_srv_pwd=$(tr -dc 'A-Za-z0-9!@#$%^&*()_+' < /dev/urandom | head -c 12)
+    u_srv_pwd=$(tr -dc 'A-Za-z0-9@_-' < /dev/urandom | head -c 14)
     echo "$u_srv:$u_srv_pwd" | chpasswd
     printf "\n[\e[32mOK\e[0m] User \e[1m%s\e[0m created\n" "$u_srv"
 
