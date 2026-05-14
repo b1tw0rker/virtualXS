@@ -11,7 +11,7 @@ file_fstab002=/etc/fstab.bak
 ###
 u_quota_check=$(grep -m 1 "uquota" /etc/fstab)
 if [ "$u_quota_check" != "" ]; then
-    printf "\n********************************************************************\n\nActivate Quota for /home [y/N]: (already active - skipping) \n"
+    printf "\n********************************************************************\n\nActivate Quota for /home [y/N]:\n[\e[32mOK\e[0m] (already active - skipping)\n"
     u_quota=n
 else
     printf "\n********************************************************************\n\nActivate Quota for /home [y/N]: "
