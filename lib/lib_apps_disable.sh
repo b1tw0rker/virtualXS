@@ -11,7 +11,7 @@ fi
 if [ "$u_disable_apps" = "y" ]; then
 
     ### do not disable sssd.service for various reasons
-    services=("atd" "certbot-renew.timer" "dnf-automatic.timer" "dnf-makecache.timer" "firewalld" "saslauthd" "sendmail")
+    services=("atd" "certbot-renew.timer" "dnf-makecache.timer" "firewalld" "saslauthd" "sendmail")
 
     for service in "${services[@]}"; do
         if systemctl list-unit-files | grep -q "$service"; then

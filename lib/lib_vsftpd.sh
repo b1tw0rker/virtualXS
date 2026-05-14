@@ -23,7 +23,7 @@ if [ "$u_vsftpd" = "y" ]; then
     file_vsftpd001=/etc/vsftpd/vsftpd_user_conf
     file_vsftpd002=/etc/vsftpd/vsftpd.conf
     file_vsftpd003=/etc/pam.d/vsftpd
-    file_vsftpd004=/etc/letsencrypt/live/$u_hostname/fullchain.pem
+    file_vsftpd004=/etc/letsencrypt/live/$u_srv/fullchain.pem
 
     set_vsftpd_option() {
         local key="$1"
@@ -97,21 +97,27 @@ if [ "$u_vsftpd" = "y" ]; then
     ###
     if [ -f "$file_vsftpd004" ]; then
         sed -i \
-            -e "s|^#\?rsa_cert_file=.*|rsa_cert_file=/etc/letsencrypt/live/${u_hostname}/fullchain.pem|" \
-            -e "s|^#\?rsa_private_key_file=.*|rsa_private_key_file=/etc/letsencrypt/live/${u_hostname}/privkey.pem|" \
+            -e "s|^#\?rsa_cert_file=.*|rsa_cert_file=/etc/letsencrypt/live/${u_srv}/fullchain.pem|" \
+            -e "s|^#\?rsa_private_key_file=.*|rsa_private_key_file=/etc/letsencrypt/live/${u_srv}/privkey.pem|" \
             "$file_vsftpd002"
-        printf "[\e[32mOK\e[0m] SSL cert aktiviert: /etc/letsencrypt/live/${u_hostname}/\n"
+        printf "[\e[32mOK\e[0m] SSL cert aktiviert: /etc/letsencrypt/live/${u_srv}/\n"
     else
         printf "[\e[33mWARN\e[0m] SSL cert nicht gefunden – rsa_cert_file bleibt auskommentiert\n"
     fi
 
     ### Start or restart vsftpd
     if systemctl is-active --quiet vsftpd; then
-        systemctl restart vsftpd
-        printf "[\e[32mOK\e[0m] Vsftpd restarted\n"
+        if systemctl restart vsftpd; then
+            printf "[\e[32mOK\e[0m] Vsftpd restarted\n"
+        else
+            printf "[\e[31mERROR\e[0m] Vsftpd restart failed – check: journalctl -xeu vsftpd.service\n"
+        fi
     else
-        systemctl enable --now vsftpd
-        printf "[\e[32mOK\e[0m] Vsftpd gestartet\n"
+        if systemctl enable --now vsftpd; then
+            printf "[\e[32mOK\e[0m] Vsftpd gestartet\n"
+        else
+            printf "[\e[31mERROR\e[0m] Vsftpd start failed – check: journalctl -xeu vsftpd.service\n"
+        fi
     fi
 
 fi
