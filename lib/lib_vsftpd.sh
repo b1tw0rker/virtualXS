@@ -35,9 +35,6 @@ if [ "$u_vsftpd" = "y" ]; then
 
     sed -i 's/^#ftpd_banner=Welcome to blah FTP service./ftpd_banner=Welcome to HOST-X FTP service./' "$file_vsftpd002"
     sed -i 's/^#chroot_local_user=YES/chroot_local_user=YES/' "$file_vsftpd002"
-    sed -i '/^#\?listen=.*/d' "$file_vsftpd002"
-    sed -i '/^#\?listen_ipv6=.*/d' "$file_vsftpd002"
-    printf 'listen=YES\nlisten_ipv6=NO\n' >>"$file_vsftpd002"
 
     if [ ! -d "$file_vsftpd001" ]; then
         mkdir $file_vsftpd001
@@ -50,6 +47,8 @@ if [ "$u_vsftpd" = "y" ]; then
         cat $u_path/files/vsftpd/vsftpd.conf >>$file_vsftpd002
     fi
 
+    set_vsftpd_option listen YES
+    set_vsftpd_option listen_ipv6 NO
     set_vsftpd_option anonymous_enable NO
     set_vsftpd_option local_enable YES
     set_vsftpd_option write_enable YES
@@ -101,8 +100,10 @@ if [ "$u_vsftpd" = "y" ]; then
             -e "s|^#\?rsa_cert_file=.*|rsa_cert_file=/etc/letsencrypt/live/${u_hostname}/fullchain.pem|" \
             -e "s|^#\?rsa_private_key_file=.*|rsa_private_key_file=/etc/letsencrypt/live/${u_hostname}/privkey.pem|" \
             "$file_vsftpd002"
+        printf "[\e[32mOK\e[0m] SSL cert aktiviert: /etc/letsencrypt/live/${u_hostname}/\n"
+    else
+        printf "[\e[33mWARN\e[0m] SSL cert nicht gefunden – rsa_cert_file bleibt auskommentiert\n"
     fi
-    printf "[\e[32mOK\e[0m]\n"
 
     ### Start or restart vsftpd
     if systemctl is-active --quiet vsftpd; then
