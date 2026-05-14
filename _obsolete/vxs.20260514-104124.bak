@@ -244,8 +244,6 @@ if vxs_should_run_from repo; then
         # Vergleiche die beiden Eingaben
         if [ "$u_mysql_pwd" == "$u_mysql_pwd_confirm" ]; then
             echo "Passwords match."
-            printf '[client]\npassword=%s\n' "$u_mysql_pwd" > /root/.my.cnf
-            chmod 600 /root/.my.cnf
             break # Schleife verlassen
         else
             echo "Passwords do not match. Please try again."
@@ -614,7 +612,7 @@ if vxs_should_run_from virtualx; then
         if ! systemctl is-active --quiet mysqld; then
             printf "[\e[31mERROR\e[0m] MySQL läuft nicht – Schema-Import übersprungen\n"
         else
-            mysql -u root <$u_path/files/virtualx/virtualx-mysql-schema.sql
+            MYSQL_PWD=$u_mysql_pwd mysql -u root <$u_path/files/virtualx/virtualx-mysql-schema.sql
             printf "[\e[32mOK\e[0m] virtualX MySQL Schema installiert\n"
         fi
     fi

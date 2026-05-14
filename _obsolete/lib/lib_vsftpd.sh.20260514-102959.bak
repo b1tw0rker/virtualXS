@@ -72,14 +72,12 @@ if [ "$u_vsftpd" = "y" ]; then
     set_vsftpd_option virtual_use_local_privs YES
     set_vsftpd_option user_config_dir /etc/vsftpd/vsftpd_user_conf
 
-    ### pam_exec script + PAM config
+    ### pam stuff
     ###
     ###
     if [ -f "$file_vsftpd003" ]; then
-        cat "$u_path/files/vsftpd/pam_vsftpd" >"$file_vsftpd003"
-        install -m 700 -o root -g root \
-            "$u_path/files/vsftpd/vsftpd-pam-check.sh" \
-            /usr/local/sbin/vsftpd-pam-check.sh
+        cat $u_path/files/vsftpd/pam_vsftpd >$file_vsftpd003
+        sed -i 's/passwd=XXX/passwd='"$u_mysql_pwd"'/' $file_vsftpd003
     fi
 
     ### Cert stuff

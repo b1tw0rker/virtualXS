@@ -265,7 +265,7 @@ EOF
     ### Create virtualx DB entry
     ###
     ###
-    mysql -u root virtualx <<EOF
+    MYSQL_PWD=$u_mysql_pwd mysql -u root virtualx <<EOF
 INSERT IGNORE INTO domains (domainname, user, real_dom)
   VALUES ('$u_srv', '$u_srv', '$u_domain');
 SET @web_id = LAST_INSERT_ID();

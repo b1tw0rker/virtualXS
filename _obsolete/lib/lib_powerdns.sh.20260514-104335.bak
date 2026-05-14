@@ -42,7 +42,7 @@ if [ "$u_powerdns_master" = "y" ]; then
     ### install powerdns mysql scheme
     ###
     ###
-    mysql -u root <$u_path/files/powerdns/schema-4.7.mysql.sql
+    MYSQL_PWD=$u_mysql_pwd mysql -u root <$u_path/files/powerdns/schema-4.7.mysql.sql
 
     sed -i 's/^# local-address=0.0.0.0, ::/local-address='"$u_ip4"', ::/' $file_powerdns001
     sed -i 's/^# master=no/master=yes/' $file_powerdns001
@@ -93,7 +93,7 @@ if [ "$u_powerdns_slave" = "y" ]; then
     ###
     systemctl start mysqld
 
-    mysql -u root <$u_path/files/powerdns/schema-4.7.mysql.sql
+    MYSQL_PWD=$u_mysql_pwd mysql -u root <$u_path/files/powerdns/schema-4.7.mysql.sql
 
     sed -i 's/^# local-address=0.0.0.0, ::/local-address='"$u_ip4"', ::/' $file_powerdns001
     sed -i 's/^# slave=no/slave=yes/' $file_powerdns001
@@ -113,7 +113,7 @@ if [ "$u_powerdns_slave" = "y" ]; then
     fi
 
     if [ "$u_master_server_ip" != "" ] && [ "$u_slave_server_fqdn" != "" ]; then
-        mysql -u root -e "INSERT INTO powerdns.supermasters (ip, nameserver, account) VALUES ('$u_master_server_ip', '$u_slave_server_fqdn', 'admin');"
+        MYSQL_PWD=$u_mysql_pwd mysql -u root -e "INSERT INTO powerdns.supermasters (ip, nameserver, account) VALUES ('$u_master_server_ip', '$u_slave_server_fqdn', 'admin');"
     fi
 
     if [ ! -f "/etc/systemd/system/multi-user.target.wants/mysqld.service" ]; then

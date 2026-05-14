@@ -1,0 +1,48 @@
+#!/bin/bash
+#
+# vsftpd-pam-check.sh
+# PAM exec authentication script for vsftpd against virtualx MySQL db.
+#
+# Called by pam_exec with expose_authtok; password arrives on stdin.
+# PAM_USER is set as environment variable by PAM.
+#
+# Deployed to: /usr/local/sbin/vsftpd-pam-check.sh (chmod 700, root:root)
+# Password hash in DB: SHA2(password, 256) – 64 hex chars
+
+MYSQL_HOST="localhost"
+MYSQL_DB="virtualx"
+MYSQL_USER="root"
+# MySQL credentials are read from /root/.my.cnf (created during vxs setup)
+
+# Read password from stdin (provided by pam_exec expose_authtok)
+read -r password
+
+# Reject empty credentials
+if [[ -z "$PAM_USER" || -z "$password" ]]; then
+    exit 1
+fi
+
+# Validate username: only allow hostname-safe characters (a-z A-Z 0-9 . _ -)
+# This prevents SQL injection via PAM_USER
+if [[ ! "$PAM_USER" =~ ^[a-zA-Z0-9._-]+$ ]]; then
+    exit 1
+fi
+
+# Hash the password with SHA-256
+hash=$(printf '%s' "$password" | sha256sum | awk '{print $1}')
+
+# Guard: ensure hash is exactly 64 lowercase hex characters
+if [[ ! "$hash" =~ ^[0-9a-f]{64}$ ]]; then
+    exit 1
+fi
+
+# Query MySQL – PAM_USER is regex-validated, hash is hex-only: no injection possible
+result=$(mysql \
+    -u "$MYSQL_USER" \
+    -h "$MYSQL_HOST" \
+    --skip-column-names \
+    --silent \
+    "$MYSQL_DB" \
+    -e "SELECT COUNT(*) FROM passwd WHERE username='${PAM_USER}' AND passwd='${hash}' AND status='A';")
+
+[[ "$result" == "1" ]] && exit 0 || exit 1

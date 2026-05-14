@@ -614,7 +614,7 @@ if vxs_should_run_from virtualx; then
         if ! systemctl is-active --quiet mysqld; then
             printf "[\e[31mERROR\e[0m] MySQL läuft nicht – Schema-Import übersprungen\n"
         else
-            mysql -u root <$u_path/files/virtualx/virtualx-mysql-schema.sql
+            MYSQL_PWD=$u_mysql_pwd mysql -u root <$u_path/files/virtualx/virtualx-mysql-schema.sql
             printf "[\e[32mOK\e[0m] virtualX MySQL Schema installiert\n"
         fi
     fi
