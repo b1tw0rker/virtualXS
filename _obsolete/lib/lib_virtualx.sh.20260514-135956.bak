@@ -71,7 +71,7 @@ run_virtualx_ftps_check() {
         return
     fi
 
-    output=$(timeout 15 curl --ssl-reqd -k -s -S --connect-timeout 10 \
+    output=$(timeout 15 curl --ftp-ssl -k --connect-timeout 10 \
         -u "${u_srv}:${u_srv_pwd}" "ftp://${u_ip}/" 2>&1)
     status=$?
 
