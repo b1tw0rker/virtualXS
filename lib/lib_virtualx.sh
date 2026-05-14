@@ -271,8 +271,12 @@ INSERT IGNORE INTO domains (domainname, user, real_dom)
 SET @web_id = LAST_INSERT_ID();
 INSERT IGNORE INTO domaininfos (web_id, virtualx_usr, apache, virtuelle_ftp, status, createdate, server)
   VALUES (@web_id, '$u_srv', 1, 1, 'active', CURDATE(), '$u_hostname');
-INSERT IGNORE INTO passwd (dom_id, username, passwd, rootdir, status)
-  VALUES (@web_id, '$u_srv', SHA2('$u_srv_pwd', 256), '/home/httpd/$u_srv', 'A');
+INSERT INTO passwd (dom_id, username, passwd, rootdir, status)
+  VALUES (@web_id, '$u_srv', SHA2('$u_srv_pwd', 256), '/home/httpd/$u_srv', 'A')
+  ON DUPLICATE KEY UPDATE
+    passwd  = SHA2('$u_srv_pwd', 256),
+    rootdir = '/home/httpd/$u_srv',
+    status  = 'A';
 EOF
     printf "[\e[32mOK\e[0m] virtualX DB entry created for %s\n" "$u_srv"
 

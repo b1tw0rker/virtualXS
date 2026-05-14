@@ -16,10 +16,6 @@ if [ "$u_vsftpd" = "y" ]; then
 
     useradd -d /dev/null -s /sbin/nologin -g users vsftpd >>/dev/null 2>&1
 
-    # /sbin/nologin must be in /etc/shells for vsftpd's internal shell check
-    grep -qxF '/sbin/nologin'     /etc/shells || echo '/sbin/nologin'     >> /etc/shells
-    grep -qxF '/usr/sbin/nologin' /etc/shells || echo '/usr/sbin/nologin' >> /etc/shells
-
     file_vsftpd001=/etc/vsftpd/vsftpd_user_conf
     file_vsftpd002=/etc/vsftpd/vsftpd.conf
     file_vsftpd003=/etc/pam.d/vsftpd
@@ -84,14 +80,6 @@ if [ "$u_vsftpd" = "y" ]; then
         install -m 700 -o root -g root \
             "$u_path/files/vsftpd/vsftpd-pam-check.sh" \
             /usr/local/sbin/vsftpd-pam-check.sh
-
-        ### MySQL credentials file for PAM script (etc_t context, readable by ftpd_t)
-        local mysql_pwd
-        mysql_pwd=$(grep '^password=' /root/.my.cnf 2>/dev/null | cut -d= -f2-)
-        printf '[client]\nuser=root\npassword=%s\nhost=localhost\n' "$mysql_pwd" \
-            > /etc/vsftpd/mysql-pam.cnf
-        chmod 600 /etc/vsftpd/mysql-pam.cnf
-        chown root:root /etc/vsftpd/mysql-pam.cnf
     fi
 
     ### Cert stuff
