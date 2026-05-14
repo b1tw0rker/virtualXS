@@ -24,10 +24,8 @@ if [ "$u_mysql" = "y" ]; then
     ### Set root Pass ( https://www.dogado.de/faq/artikel/mysql-root-passwort-neu-setzen/ )
     ###
     ###
-    mysql_pwd=$(grep '^password=' /root/.my.cnf | cut -d'=' -f2-)
-    mysqladmin -u root password "$mysql_pwd" >>/dev/null 2>&1
-    sed -i 's/^MYSQL_PASSWORD=XXX/MYSQL_PASSWORD='"$mysql_pwd"'/' $file_mysql001/bw-mysql-dump.sh
-    unset mysql_pwd
+    mysqladmin -u root password $u_mysql_pwd >>/dev/null 2>&1
+    sed -i 's/^MYSQL_PASSWORD=XXX/MYSQL_PASSWORD='"$u_mysql_pwd"'/' $file_mysql001/bw-mysql-dump.sh
     printf "[\e[32mOK\e[0m]\n"
   fi
 

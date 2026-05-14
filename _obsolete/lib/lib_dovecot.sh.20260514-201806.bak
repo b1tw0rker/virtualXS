@@ -21,9 +21,7 @@ if [ "$u_dovecot" = "y" ]; then
     touch /etc/dovecot/master-users
     cp $u_path/files/dovecot/dovecot-sql.conf.ext /etc/dovecot/
 
-    mysql_pwd=$(grep '^password=' /root/.my.cnf | cut -d'=' -f2-)
-    sed -i 's/password=XXX/password='"$mysql_pwd"'/' $file_dovecot001
-    unset mysql_pwd
+    sed -i 's/password=XXX/password='"$u_mysql_pwd"'/' $file_dovecot001
     sed -i 's/^#protocols = imap pop3 lmtp submission/protocols = imap ### pop3 lmtp submission/' $file_dovecot002
 
     ###sed -i 's/^#mail_location =/mail_location = maildir:\/home\/pop\/%u/' /etc/dovecot/conf.d/10-mail.conf

@@ -31,10 +31,8 @@ if [ "$u_postfix" = "y" ]; then
     cp $u_path/files/postfix/mysql-domains.cf /etc/postfix/
     cp $u_path/files/postfix/mysql-virtual.cf /etc/postfix/
     
-    mysql_pwd=$(grep '^password=' /root/.my.cnf | cut -d'=' -f2-)
-    sed -i 's/^password = XXX/password = '"$mysql_pwd"'/' /etc/postfix/mysql-virtual.cf
-    sed -i 's/^password = XXX/password = '"$mysql_pwd"'/' /etc/postfix/mysql-domains.cf
-    unset mysql_pwd
+    sed -i 's/^password = XXX/password = '"$u_mysql_pwd"'/' /etc/postfix/mysql-virtual.cf
+    sed -i 's/^password = XXX/password = '"$u_mysql_pwd"'/' /etc/postfix/mysql-domains.cf
     
     postconf -c "$postfix_config_dir" -e 'soft_bounce = no'
     postconf -c "$postfix_config_dir" -e "myhostname = $u_srv"
