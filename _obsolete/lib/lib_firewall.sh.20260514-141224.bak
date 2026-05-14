@@ -123,15 +123,13 @@ if confirm "Kernel-Hardening (ASLR, SYN-Flood, Redirect-/Spoofing-Schutz, Kernel
         mkdir $folder001
     fi
     
-    if ! cp $u_path/files/firewall/99-bw-kernel-hardening.conf $folder001; then
-        printf "[\e[31mERROR\e[0m] cp 99-bw-kernel-hardening.conf failed\n"
-    else
-        ### activate kernel rules
-        ###
-        ###
-        sysctl -p "$folder001/99-bw-kernel-hardening.conf"
-        printf "[\e[32mOK\e[0m]\n"
-    fi
+    cp $u_path/files/firewall/99-bw-kernel-hardening.conf $folder001
+    
+    ### activate kernel rules
+    ###
+    ###
+    sysctl -p
+    printf "[\e[32mOK\e[0m]\n"
     
 fi
 

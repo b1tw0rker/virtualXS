@@ -19,31 +19,34 @@ if [ "$u_helper_apps" = "y" ]; then
     ###
     ###
     ###
-    cp $u_path/files/bitworker/bw-* $file004/
+    if ! cp $u_path/files/bitworker/bw-* $file004/; then
+        printf "[\e[31mERROR\e[0m] cp failed: %s → %s\n" "$u_path/files/bitworker/bw-*" "$file004/"
+    else
 
-    ###
-    ###
-    ###
-    for helper_file in $file004/bw-*.sh; do
-        if [ -f "$helper_file" ]; then
-            chmod 700 "$helper_file"
-        fi
-    done
+        ###
+        ###
+        ###
+        for helper_file in $file004/bw-*.sh; do
+            if [ -f "$helper_file" ]; then
+                chmod 700 "$helper_file"
+            fi
+        done
 
-    for helper_file in $file004/bw-*.cfg; do
-        if [ -f "$helper_file" ]; then
-            chmod 644 "$helper_file"
-        fi
-    done
+        for helper_file in $file004/bw-*.cfg; do
+            if [ -f "$helper_file" ]; then
+                chmod 644 "$helper_file"
+            fi
+        done
 
-    ###
-    ###
-    ###
-    for helper_file in $file004/bw-*.sh; do
-        if [ -f "$helper_file" ]; then
-            helper_name=$(basename "$helper_file" .sh)
-            ln -sf "$helper_file" "/bin/$helper_name"
-        fi
-    done
-    printf "[\e[32mOK\e[0m]\n"
+        ###
+        ###
+        ###
+        for helper_file in $file004/bw-*.sh; do
+            if [ -f "$helper_file" ]; then
+                helper_name=$(basename "$helper_file" .sh)
+                ln -sf "$helper_file" "/bin/$helper_name"
+            fi
+        done
+        printf "[\e[32mOK\e[0m]\n"
+    fi
 fi

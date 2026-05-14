@@ -30,13 +30,9 @@ if [ "$u_php" = "y" ]; then
     #fi
 
     if [ -d "$file_php_003" ]; then
-        if ! cp $u_path/files/php/90-bw-security.ini $file_php_003; then
-            printf "[\e[31mERROR\e[0m] cp 90-bw-security.ini failed\n"
-        else
-            printf "[\e[32mOK\e[0m]\n"
-        fi
-    else
-        printf "[\e[32mOK\e[0m]\n"
+        cp $u_path/files/php/90-bw-security.ini $file_php_003
     fi
+
+    printf "[\e[32mOK\e[0m]\n"
 
 fi

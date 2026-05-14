@@ -20,9 +20,7 @@ if [ "$u_fail2ban" = "y" ]; then
         file_fail2ban002=/etc/fail2ban/jail.d/00-firewalld.conf
 
         if [ -f "$file_fail2ban001" ]; then
-            if ! cp $u_path/files/fail2ban/jail.d/* /etc/fail2ban/jail.d/; then
-                printf "[\e[31mERROR\e[0m] cp fail2ban jail.d config failed\n"
-            fi
+                cp $u_path/files/fail2ban/jail.d/* /etc/fail2ban/jail.d/
         fi
 
         if [ -f "$file_fail2ban002" ]; then
@@ -31,10 +29,8 @@ if [ "$u_fail2ban" = "y" ]; then
         fi
 
         echo "Restart fail2ban"
-        if ! systemctl restart fail2ban; then
-            printf "[\e[31mERROR\e[0m] fail2ban restart failed\n"
-        else
-            printf "[\e[32mOK\e[0m]\n"
-        fi
+        systemctl restart fail2ban
+
+        printf "[\e[32mOK\e[0m]\n"
 
 fi

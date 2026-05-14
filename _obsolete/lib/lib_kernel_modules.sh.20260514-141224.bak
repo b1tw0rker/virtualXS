@@ -13,10 +13,7 @@ if [ "$u_module_blacklist" = "y" ]; then
         mkdir -p "$folder_modprobe"
     fi
 
-    if ! cp $u_path/files/firewall/99-bw-module-blacklist.conf $folder_modprobe; then
-        printf "[\e[31mERROR\e[0m] cp 99-bw-module-blacklist.conf failed\n"
-    else
-        printf "[\e[32mOK\e[0m]\n"
-    fi
+    cp $u_path/files/firewall/99-bw-module-blacklist.conf $folder_modprobe
+    printf "[\e[32mOK\e[0m]\n"
 
 fi

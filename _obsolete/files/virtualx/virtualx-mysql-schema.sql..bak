@@ -33,7 +33,7 @@ USE `virtualx`;
 -- Tabellenstruktur für Tabelle `actions`
 --
 
-CREATE TABLE IF NOT EXISTS `actions` (
+CREATE TABLE `actions` (
   `id` int NOT NULL,
   `web_id` int DEFAULT NULL,
   `virtualx_usr` varchar(255) DEFAULT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `actions` (
 -- Tabellenstruktur für Tabelle `clients`
 --
 
-CREATE TABLE IF NOT EXISTS `clients` (
+CREATE TABLE `clients` (
   `id` int NOT NULL,
   `domain_id` int DEFAULT NULL,
   `virtualx_usr` varchar(255) DEFAULT NULL,
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `clients` (
 -- Tabellenstruktur für Tabelle `domaininfos`
 --
 
-CREATE TABLE IF NOT EXISTS `domaininfos` (
+CREATE TABLE `domaininfos` (
   `id` int NOT NULL,
   `web_id` int DEFAULT NULL,
   `virtualx_usr` varchar(255) DEFAULT NULL,
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `domaininfos` (
 -- Tabellenstruktur für Tabelle `domains`
 --
 
-CREATE TABLE IF NOT EXISTS `domains` (
+CREATE TABLE `domains` (
   `id` int NOT NULL,
   `domainname` varchar(255) DEFAULT NULL,
   `user` varchar(255) DEFAULT NULL,
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `domains` (
 -- Tabellenstruktur für Tabelle `dovecot`
 --
 
-CREATE TABLE IF NOT EXISTS `dovecot` (
+CREATE TABLE `dovecot` (
   `id` int NOT NULL,
   `userid` varchar(255) DEFAULT NULL,
   `domain` varchar(255) DEFAULT NULL,
@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS `dovecot` (
 -- Tabellenstruktur für Tabelle `mailtext`
 --
 
-CREATE TABLE IF NOT EXISTS `mailtext` (
+CREATE TABLE `mailtext` (
   `id` int NOT NULL,
   `virtualx_usr` varchar(255) DEFAULT NULL,
   `mailheader` blob,
@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `mailtext` (
 -- Tabellenstruktur für Tabelle `packages`
 --
 
-CREATE TABLE IF NOT EXISTS `packages` (
+CREATE TABLE `packages` (
   `id` int NOT NULL,
   `packagename` varchar(255) DEFAULT NULL,
   `apache` varchar(255) DEFAULT NULL,
@@ -164,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `packages` (
 -- Tabellenstruktur für Tabelle `passwd`
 --
 
-CREATE TABLE IF NOT EXISTS `passwd` (
+CREATE TABLE `passwd` (
   `id` int NOT NULL,
   `dom_id` int DEFAULT NULL,
   `username` varchar(255) DEFAULT NULL,
@@ -179,7 +179,7 @@ CREATE TABLE IF NOT EXISTS `passwd` (
 -- Tabellenstruktur für Tabelle `passwd_logs`
 --
 
-CREATE TABLE IF NOT EXISTS `passwd_logs` (
+CREATE TABLE `passwd_logs` (
   `id` int NOT NULL,
   `msg` varchar(255) DEFAULT NULL,
   `user` varchar(255) DEFAULT NULL,
@@ -195,7 +195,7 @@ CREATE TABLE IF NOT EXISTS `passwd_logs` (
 -- Tabellenstruktur für Tabelle `reseller`
 --
 
-CREATE TABLE IF NOT EXISTS `reseller` (
+CREATE TABLE `reseller` (
   `id` int NOT NULL,
   `usrname` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
@@ -209,7 +209,7 @@ CREATE TABLE IF NOT EXISTS `reseller` (
 -- Tabellenstruktur für Tabelle `serveraliase`
 --
 
-CREATE TABLE IF NOT EXISTS `serveraliase` (
+CREATE TABLE `serveraliase` (
   `id` int NOT NULL,
   `web_id` int DEFAULT NULL,
   `virtualx_usr` varchar(255) DEFAULT NULL,
@@ -222,7 +222,7 @@ CREATE TABLE IF NOT EXISTS `serveraliase` (
 -- Tabellenstruktur für Tabelle `virtualmails`
 --
 
-CREATE TABLE IF NOT EXISTS `virtualmails` (
+CREATE TABLE `virtualmails` (
   `id` int NOT NULL,
   `web_id` varchar(255) DEFAULT NULL,
   `virtualx_usr` varchar(255) DEFAULT NULL,
@@ -238,7 +238,7 @@ CREATE TABLE IF NOT EXISTS `virtualmails` (
 -- Tabellenstruktur für Tabelle `vsftpd_logs`
 --
 
-CREATE TABLE IF NOT EXISTS `vsftpd_logs` (
+CREATE TABLE `vsftpd_logs` (
   `id` int NOT NULL,
   `msg` text,
   `user` varchar(50) DEFAULT NULL,

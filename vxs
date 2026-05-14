@@ -376,6 +376,15 @@ if vxs_should_run_from dnf; then
 
 fi
 
+if vxs_should_run_from folders; then
+
+    ### q create standard folders
+    ###
+    ###
+    source $u_path/lib/lib_folders.sh
+
+fi
+
 if vxs_should_run_from apps; then
 
     ### q apps
@@ -383,15 +392,6 @@ if vxs_should_run_from apps; then
     ###
     source $u_path/lib/lib_apps_disable.sh
     source $u_path/lib/lib_apps.sh
-
-fi
-
-if vxs_should_run_from folders; then
-
-    ### q create standard folders
-    ###
-    ###
-    source $u_path/lib/lib_folders.sh
 
 fi
 
@@ -605,17 +605,45 @@ if vxs_should_run_from virtualx; then
     ### q virtualx mysql schema
     ###
     ###
-    printf "virtualX MySQL Schema installieren [y/N]: "
-    if [ "$u_virtualx_schema" = "" ]; then
-        read u_virtualx_schema
-    fi
+    if ! systemctl is-active --quiet mysqld; then
+        printf "[\e[33mWARN\e[0m] MySQL läuft nicht – Schema-Abschnitt übersprungen\n"
+    else
+        # Detect existing virtualx database
+        _vx_db_exists=$(mysql -u root -e "SHOW DATABASES LIKE 'virtualx';" 2>/dev/null | grep -c "virtualx" || true)
 
-    if [ "$u_virtualx_schema" = "y" ]; then
-        if ! systemctl is-active --quiet mysqld; then
-            printf "[\e[31mERROR\e[0m] MySQL läuft nicht – Schema-Import übersprungen\n"
+        if [ "$_vx_db_exists" -gt 0 ]; then
+            printf "[\e[33mINFO\e[0m] virtualX-Datenbank ist bereits vorhanden.\n"
+            printf "  [1] Schema-Update durchführen  (neue Tabellen anlegen, vorhandene behalten)\n"
+            printf "  [2] Datenbank löschen und neu installieren  (DROP DATABASE virtualx)\n"
+            printf "  [3] Überspringen\n"
+            printf "Wähle eine Option (1-3) [3]: "
+            if [ "$u_virtualx_schema" = "" ]; then
+                read u_virtualx_schema
+            fi
+            case "$u_virtualx_schema" in
+                1)
+                    mysql -u root <"$u_path/files/virtualx/virtualx-mysql-schema.sql"
+                    printf "[\e[32mOK\e[0m] virtualX Schema-Update abgeschlossen\n"
+                    ;;
+                2)
+                    printf "[\e[33mWARN\e[0m] Datenbank 'virtualx' wird gelöscht...\n"
+                    mysql -u root -e "DROP DATABASE virtualx;"
+                    mysql -u root <"$u_path/files/virtualx/virtualx-mysql-schema.sql"
+                    printf "[\e[32mOK\e[0m] virtualX Datenbank neu installiert\n"
+                    ;;
+                *)
+                    printf "[\e[32mOK\e[0m] Schema-Installation übersprungen\n"
+                    ;;
+            esac
         else
-            mysql -u root <$u_path/files/virtualx/virtualx-mysql-schema.sql
-            printf "[\e[32mOK\e[0m] virtualX MySQL Schema installiert\n"
+            printf "virtualX MySQL Schema installieren [y/N]: "
+            if [ "$u_virtualx_schema" = "" ]; then
+                read u_virtualx_schema
+            fi
+            if [ "$u_virtualx_schema" = "y" ]; then
+                mysql -u root <"$u_path/files/virtualx/virtualx-mysql-schema.sql"
+                printf "[\e[32mOK\e[0m] virtualX MySQL Schema installiert\n"
+            fi
         fi
     fi
 
