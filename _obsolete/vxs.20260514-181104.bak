@@ -74,27 +74,15 @@ u_aws=n
 ### - tripwire: Springt zum Abschnitt, in dem Tripwire konfiguriert wird
 ### - kernel_modules: Springt zum Abschnitt, in dem Kernel-Module konfiguriert werden
 ### - virtualx: Springt zum Abschnitt, in dem die erste virtuelle Hostkonfiguration für VirtualX erstellt wird
-###
-### Can also be passed as the first argument: vxs <section>
-### Example: vxs virtualx
-DEV_START_AT=${1:-}
+DEV_START_AT=virtualx
 
 ### (After u_path defintion)
 ###
 ###
 source $u_path/lib/functions.sh
 
-_VXS_SECTIONS=(repo dnf folders apps postfix helper_apps httpd wordpress dovecot letsencrypt autoconfig vsftpd mysql backup quota powerdns logrotate cron tripwire php ssh fail2ban firewall kernel_modules virtualx)
-
-_vxs_section_index() {
-    local section="$1" i
-    for i in "${!_VXS_SECTIONS[@]}"; do
-        if [ "${_VXS_SECTIONS[$i]}" = "$section" ]; then
-            printf '%s' "$i"
-            return 0
-        fi
-    done
-    return 1
+vxs_start_at_virtualx() {
+    [ "$DEV_START_AT" = "virtualx" ]
 }
 
 vxs_should_run_from() {
@@ -102,10 +90,13 @@ vxs_should_run_from() {
         return 0
     fi
 
-    local start_idx current_idx
-    start_idx=$(_vxs_section_index "$DEV_START_AT") || { printf "[DEV] Unknown DEV_START_AT=%s\n" "$DEV_START_AT"; exit 1; }
-    current_idx=$(_vxs_section_index "$1") || return 1
-    [ "$current_idx" -ge "$start_idx" ]
+    if vxs_start_at_virtualx; then
+        [ "$1" = "virtualx" ]
+        return
+    fi
+
+    printf "[DEV] Unknown DEV_START_AT=%s\n" "$DEV_START_AT"
+    exit 1
 }
 
 vxs_apply_dev_start() {
@@ -113,7 +104,7 @@ vxs_apply_dev_start() {
         return
     fi
 
-    if ! _vxs_section_index "$DEV_START_AT" > /dev/null; then
+    if ! vxs_start_at_virtualx; then
         printf "[DEV] Unknown DEV_START_AT=%s\n" "$DEV_START_AT"
         exit 1
     fi

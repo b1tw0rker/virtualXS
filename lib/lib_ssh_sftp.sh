@@ -47,7 +47,8 @@ if [ "$u_ssh_sftp" = "y" ]; then
                 cat <<'EOF' >>"$file_ssh001"
 
 Match Group users LocalPort 1122
-    ChrootDirectory /home/httpd/www.%u
+    #ChrootDirectory /home/httpd/www.%u
+    ChrootDirectory /home/httpd/%u
     ForceCommand internal-sftp
     AllowTcpForwarding no
     X11Forwarding no

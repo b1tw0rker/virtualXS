@@ -104,4 +104,13 @@ if [ "$u_vsftpd" = "y" ]; then
     fi
     printf "[\e[32mOK\e[0m]\n"
 
+    ### Start or restart vsftpd
+    if systemctl is-active --quiet vsftpd; then
+        systemctl restart vsftpd
+        printf "[\e[32mOK\e[0m] Vsftpd restarted\n"
+    else
+        systemctl enable --now vsftpd
+        printf "[\e[32mOK\e[0m] Vsftpd gestartet\n"
+    fi
+
 fi
