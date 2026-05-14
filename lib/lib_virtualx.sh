@@ -126,7 +126,6 @@ if [ "$u_virtualx" = "y" ]; then
     fi
 
     u_srv_group=$(id -gn "$u_srv")
-    #chown root:root /home/httpd/$u_srv
     chown "$u_srv:$u_srv_group" /home/httpd/$u_srv/htdocs /home/httpd/$u_srv/logs /home/httpd/$u_srv/tmp
 
     chmod 755 /home/httpd/$u_srv
