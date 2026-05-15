@@ -50,25 +50,3 @@ if [ "$u_helper_apps" = "y" ]; then
         printf "[\e[32mOK\e[0m]\n"
     fi
 fi
-
-### Install chk-service (/opt/chk-service)
-###
-### Required for the .bashrc entry: /opt/chk-service/bw-chk-service.sh dev
-###
-if confirm "Install chk-service from GitHub" "$u_chk_service"; then
-
-    if [ -d "/opt/chk-service" ]; then
-        printf "[\e[33mINFO\e[0m] /opt/chk-service already exists – pulling latest changes\n"
-        git -C /opt/chk-service pull
-    else
-        git clone https://github.com/b1tw0rker/chk-service /opt/chk-service
-    fi
-
-    if [ -f "/opt/chk-service/bw-chk-service.sh" ]; then
-        chmod 700 /opt/chk-service/bw-chk-service.sh
-        printf "[\e[32mOK\e[0m] chk-service installed at /opt/chk-service\n"
-    else
-        printf "[\e[31mERROR\e[0m] bw-chk-service.sh not found after clone\n"
-    fi
-
-fi
