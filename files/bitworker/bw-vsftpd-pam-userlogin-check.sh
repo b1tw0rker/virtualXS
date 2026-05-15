@@ -42,7 +42,7 @@ fi
 
 # Query MySQL - PAM_USER is regex-validated, hash is hex-only: no injection possible
 result=$(MYSQL_PWD="$mysql_root_pwd" mysql \
-    --host=localhost \
+    --host=127.0.0.1 \
     --user=root \
     --skip-column-names \
     --silent \
