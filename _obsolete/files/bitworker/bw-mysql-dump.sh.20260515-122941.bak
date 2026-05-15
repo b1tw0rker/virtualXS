@@ -6,9 +6,10 @@
 ###
 TIMESTAMP=$(date +"%F")
 BACKUP_DIR="/home/mysql/$TIMESTAMP"
+MYSQL_USER=root
 MYSQL=/usr/bin/mysql
+MYSQL_PASSWORD=XXX
 MYSQLDUMP=/usr/bin/mysqldump
-MYSQL_DEFAULTS="--defaults-file=/root/.my.cnf"
 
 ### Alte Backup-Ordner loeschen, wenn das Datum im Ordnernamen aelter als 30 Tage ist
 ###
@@ -37,13 +38,13 @@ mkdir -p "$BACKUP_DIR"
 ### Verfuegbare Datenbanken ermitteln und als gzip-Dumps sichern
 ###
 ###
-databases=`$MYSQL $MYSQL_DEFAULTS -e "SHOW DATABASES;" | grep -Ev "(Database|information_schema|performance_schema)"`
+databases=`$MYSQL --user=$MYSQL_USER -p$MYSQL_PASSWORD -e "SHOW DATABASES;" | grep -Ev "(Database|information_schema|performance_schema)"`
 
 for db in $databases; do
-  $MYSQLDUMP $MYSQL_DEFAULTS --force --opt --databases $db | gzip > "$BACKUP_DIR/$db.sql.gz"
+  $MYSQLDUMP --force --opt --user=$MYSQL_USER -p$MYSQL_PASSWORD --databases $db | gzip > "$BACKUP_DIR/$db.sql.gz"
 done
 
 ### Alle Tabellen optimieren und reparieren
 ###
 ###
-mysqlcheck $MYSQL_DEFAULTS --auto-repair --optimize --all-databases
+mysqlcheck -p$MYSQL_PASSWORD --auto-repair --optimize --all-databases
