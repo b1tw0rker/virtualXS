@@ -266,6 +266,7 @@ if vxs_should_run_from repo; then
     ###
     ###
     ###
+    printf "\n********************************************************************\n\n"
     while true; do
         read -p "Create Web or DNS Server [W/d]: " u_server
         u_server=${u_server:-w}
