@@ -16,7 +16,7 @@ if [[ $- == *i* ]]; then
      /opt/chk-service/bw-chk-service.sh dev
 fi
 
-### claude
+### claude code
 ###
 ###
 alias claude='claude --allowedTools "Bash,Edit,Write,Read,WebSearch"'
