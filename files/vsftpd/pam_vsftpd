@@ -1,4 +1,21 @@
 #%PAM-1.0
+# Original file: /etc/pam.d/vsftpd
+# Modified to use pam_exec with a custom script for MySQL authentication
+# The original content is commented out for reference.
+
+#session    optional     pam_keyinit.so    force revoke
+#auth       required     pam_listfile.so item=user sense=deny file=/etc/vsftpd/ftpusers onerr=succeed
+#auth       required     pam_shells.so
+#auth       include      password-auth
+#account    include      password-auth
+#session    required     pam_loginuid.so
+#session    include      password-auth
+
+
+
+### HOST-X --- Custom PAM config for vsftpd with MySQL authentication via pam_exec
+###
+###
 auth       required     pam_exec.so expose_authtok /etc/bitworker/bw-vsftpd-pam-userlogin-check.sh
 auth       optional     pam_permit.so
 account    required     pam_permit.so
