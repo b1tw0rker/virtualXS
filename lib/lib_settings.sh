@@ -3,6 +3,7 @@
 ### Append root .bashrc additions
 ###
 ###
+printf "\n********************************************************************\n\n"
 if confirm "Append root .bashrc additions (claude alias, chk-service)" "$u_bashrc_root"; then
 
     if grep -qF 'bw-chk-service' /root/.bashrc 2>/dev/null; then
@@ -17,6 +18,7 @@ fi
 ### Copy /root/.claude.json
 ###
 ###
+printf "\n********************************************************************\n\n"
 if confirm "Copy .claude.json to /root/" "$u_claude_json"; then
 
     cp "$u_path/files/root/.claude.json" /root/.claude.json

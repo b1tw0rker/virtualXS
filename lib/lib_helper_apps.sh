@@ -55,6 +55,7 @@ fi
 ###
 ### Required for the .bashrc entry: /opt/chk-service/bw-chk-service.sh dev
 ###
+printf "\n********************************************************************\n\n"
 if confirm "Install chk-service from GitHub" "$u_chk_service"; then
 
     if [ -d "/opt/chk-service" ]; then
