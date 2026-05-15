@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-### Version: 1.2.93
+### Version: 1.2.92
 ### Build date: 12.05.2026
 ### (C) 2021 - 2026 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -32,7 +32,7 @@ done
 ###
 ###
 infocolor=$(tput setaf 6) # DEV
-u_version=1.2.93
+u_version=1.2.92
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
 WEBHOSTER=host-x.de
@@ -299,6 +299,7 @@ if vxs_should_run_from repo; then
         u_letsencrypt_dovecot=n
         u_autoconfig=n
         u_vsftpd=n
+        u_mysql=y
         u_ssl=n
         u_backup=n
         u_quota=n
@@ -480,21 +481,10 @@ fi
 
 if vxs_should_run_from mysql; then
 
-    ### Set MySQL root password from /root/.my.cnf
+    ### q config mysql
     ###
     ###
-    printf "\n********************************************************************\n\nSetting MySQL root password... "
-    mysql_pwd=$(grep '^password=' /root/.my.cnf | cut -d'=' -f2-)
-    if mysqladmin -u root password "$mysql_pwd" >>/dev/null 2>&1; then
-        unset mysql_pwd
-        if [ -f /etc/bitworker/bw-mysql-dump.sh ]; then
-            chmod 700 /etc/bitworker/bw-mysql-dump.sh
-        fi
-        printf "[\e[32mOK\e[0m]\n"
-    else
-        unset mysql_pwd
-        printf "[\e[31mERROR\e[0m] mysqladmin failed\n"
-    fi
+    source $u_path/lib/lib_mysql.sh
 
 fi
 
