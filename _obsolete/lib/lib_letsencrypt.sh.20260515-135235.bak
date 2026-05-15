@@ -82,10 +82,9 @@ letsencrypt_dns_issue() {
 ### letsencrypt
 ###
 ###
-printf "\n********************************************************************\n\nCreate initial Let's Encrypt Cert: $u_srv [y/n/D (dry-run)]: "
+printf "\n********************************************************************\n\nCreate initial Let's Encrypt Cert: $u_srv [y/N/d (dry-run)]: "
 if [ "$u_letsencrypt" = "" ]; then
     read u_letsencrypt
-    if [ "$u_letsencrypt" = "" ]; then u_letsencrypt="d"; fi
 fi
 
 if [ "$u_letsencrypt" = "y" ] || [ "$u_letsencrypt" = "d" ]; then
@@ -104,10 +103,9 @@ if [ "$u_letsencrypt" = "y" ] || [ "$u_letsencrypt" = "d" ]; then
 
 fi
 
-printf "\n********************************************************************\n\nCreate Let's Encrypt Cert for dovecot (imap.$u_domain) [y/n/D (dry-run)]: "
+printf "\n********************************************************************\n\nCreate Let's Encrypt Cert for dovecot (imap.$u_domain) [y/N/d (dry-run)]: "
 if [ "$u_letsencrypt_dovecot" = "" ]; then
     read u_letsencrypt_dovecot
-    if [ "$u_letsencrypt_dovecot" = "" ]; then u_letsencrypt_dovecot="d"; fi
 fi
 
 if [ "$u_letsencrypt_dovecot" = "y" ] || [ "$u_letsencrypt_dovecot" = "d" ]; then
@@ -134,31 +132,5 @@ if [ "$u_letsencrypt_dovecot" = "y" ] || [ "$u_letsencrypt_dovecot" = "d" ]; the
     sed -i 's/^ssl_key =/#ssl_key =/' /etc/dovecot/conf.d/10-ssl.conf
     printf "[\e[32mOK\e[0m]\n"
     sed -i 's/^ssl_key = <\/etc\/pki\/dovecot\/private\/dovecot.pem/#ssl_key = <\/etc\/pki\/dovecot\/private\/dovecot.pem\n\nssl_cert = \<\/etc\/letsencrypt\/live\/'"$u_imap"'\/fullchain.pem\nssl_key = \<\/etc\/letsencrypt\/live\/'"$u_imap"'\/privkey.pem\n/' /etc/dovecot/conf.d/10-ssl.conf
-
-fi
-
-printf "\n********************************************************************\n\nCreate Let's Encrypt Cert for dovecot (smtp.$u_domain) [y/n/D (dry-run)]: "
-if [ "$u_letsencrypt_dovecot_smtp" = "" ]; then
-    read u_letsencrypt_dovecot_smtp
-    if [ "$u_letsencrypt_dovecot_smtp" = "" ]; then u_letsencrypt_dovecot_smtp="d"; fi
-fi
-
-if [ "$u_letsencrypt_dovecot_smtp" = "y" ] || [ "$u_letsencrypt_dovecot_smtp" = "d" ]; then
-
-    ### ask for servername
-    u_tmp_smtp=smtp.$u_domain
-    read -p "Servername for Dovecot SMTP (mostly smtp.$u_domain): " -ei $u_tmp_smtp u_smtp_dovecot
-
-    letsencrypt_dns_prepare
-
-    ### get cert from Let's Encrypt
-    ###
-    ###
-    if [ "$u_letsencrypt_dovecot_smtp" = "d" ]; then
-        letsencrypt_dns_issue "$u_smtp_dovecot" "true"
-    else
-        letsencrypt_dns_issue "$u_smtp_dovecot"
-    fi
-    printf "[\e[32mOK\e[0m]\n"
 
 fi
