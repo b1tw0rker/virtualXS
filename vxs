@@ -300,7 +300,7 @@ if vxs_should_run_from repo; then
         u_php=n
         u_disable_apps=y
         u_enable_apps=n
-        u_start_apps=n
+        u_start_server=n
         u_folders_create=y
         u_postfix=n
         u_ssh=y

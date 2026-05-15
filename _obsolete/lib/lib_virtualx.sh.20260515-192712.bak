@@ -110,16 +110,6 @@ if [ "$u_virtualx" = "y" ]; then
     echo "$u_srv:$u_srv_pwd" | chpasswd
     printf "\n[\e[32mOK\e[0m] User \e[1m%s\e[0m created\n" "$u_srv"
 
-    ### Create sudoers entry for virtualx user
-    ###
-    ###
-    local _sudoers_file="/etc/sudoers.d/${u_srv}"
-    if [ ! -f "$_sudoers_file" ]; then
-        printf '%s ALL=(ALL) NOPASSWD: ALL\n' "$u_srv" > "$_sudoers_file"
-        chmod 440 "$_sudoers_file"
-        printf "[\e[32mOK\e[0m] Sudoers entry created: %s\n" "$_sudoers_file"
-    fi
-
     ### Create directories
     ###
     ###

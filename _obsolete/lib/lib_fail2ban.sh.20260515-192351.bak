@@ -20,11 +20,8 @@ if [ "$u_fail2ban" = "y" ]; then
         file_fail2ban002=/etc/fail2ban/jail.d/00-firewalld.conf
 
         if [ -f "$file_fail2ban001" ]; then
-            if ! cp "$u_path/files/fail2ban/jail.d/"* /etc/fail2ban/jail.d/; then
+            if ! cp $u_path/files/fail2ban/jail.d/* /etc/fail2ban/jail.d/; then
                 printf "[\e[31mERROR\e[0m] cp fail2ban jail.d config failed\n"
-            fi
-            if ! cp "$u_path/files/fail2ban/filter.d/"* /etc/fail2ban/filter.d/; then
-                printf "[\e[31mERROR\e[0m] cp fail2ban filter.d config failed\n"
             fi
         fi
 

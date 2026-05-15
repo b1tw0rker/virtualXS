@@ -33,12 +33,12 @@ fi
 ### q start apps
 ###
 ###
-printf "\n********************************************************************\n\nSmoke-Start apps now [y/N]: "
-if [ "$u_start_apps" = "" ]; then
-    read u_start_apps
+printf "\n********************************************************************\n\nSmoke-Start Server now [y/N]: "
+if [ "$u_start_server" = "" ]; then
+    read u_start_server
 fi
 
-if [ "$u_start_apps" = "y" ]; then
+if [ "$u_start_server" = "y" ]; then
 
     for service in "${services[@]}"; do
         systemctl start "$service"
