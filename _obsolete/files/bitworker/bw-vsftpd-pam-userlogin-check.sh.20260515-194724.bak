@@ -7,12 +7,8 @@
 # PAM_USER is set as environment variable by PAM.
 #
 # Deployed to: /etc/bitworker/bw-vsftpd-pam-userlogin-check.sh (chmod 700, root:root)
-# MySQL password is read from /etc/vsftpd/.my.cnf (copied from /root/.my.cnf during vsftpd setup)
+# MySQL password is read directly from /root/.my.cnf
 # Password hash in DB: SHA2(password, 256) - 64 hex chars
-#
-# Test on terminal:
-# echo 'PASSWORD' | PAM_USER=srv016.host-x.de /etc/bitworker/bw-vsftpd-pam-userlogin-check.sh; echo "Exit code: $?"
-# Exit code 0 = success, 1 = failure
 
 MYSQL_DB="virtualx"
 

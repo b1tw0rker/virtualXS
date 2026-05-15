@@ -42,6 +42,17 @@ if [ "$u_vsftpd" = "y" ]; then
 
     cat "$u_path/files/vsftpd/vsftpd.conf" >>"$file_vsftpd002"
 
+    ### Copy MySQL credentials for PAM auth script
+    ###
+    if [ -f /root/.my.cnf ]; then
+        cp /root/.my.cnf /etc/vsftpd/.my.cnf
+        chmod 600 /etc/vsftpd/.my.cnf
+        chown root:root /etc/vsftpd/.my.cnf
+        printf "[\e[32mOK\e[0m] MySQL-Zugangsdaten kopiert: /etc/vsftpd/.my.cnf\n"
+    else
+        printf "[\e[31mERROR\e[0m] /root/.my.cnf nicht gefunden – /etc/vsftpd/.my.cnf fehlt\n"
+    fi
+
     ### pam_exec script + PAM config
     ###
     ###
