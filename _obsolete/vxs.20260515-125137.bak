@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-### Version: 1.2.94
+### Version: 1.2.93
 ### Build date: 12.05.2026
 ### (C) 2021 - 2026 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -32,7 +32,7 @@ done
 ###
 ###
 infocolor=$(tput setaf 6) # DEV
-u_version=1.2.94
+u_version=1.2.93
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
 WEBHOSTER=host-x.de
@@ -252,10 +252,9 @@ if vxs_should_run_from repo; then
         
         # Vergleiche die beiden Eingaben
         if [ "$u_mysql_pwd" == "$u_mysql_pwd_confirm" ]; then
-            printf "[\e[32mOK\e[0m] Passwords match\n"
+            echo "Passwords match."
             printf '[client]\npassword=%s\n' "$u_mysql_pwd" > /root/.my.cnf
             chmod 600 /root/.my.cnf
-            mysqladmin -u root password "$u_mysql_pwd" >>/dev/null 2>&1 && printf "[\e[32mOK\e[0m] Changed MySql root pass success\n"
             unset u_mysql_pwd u_mysql_pwd_confirm
             break # Schleife verlassen
         else
@@ -479,7 +478,25 @@ if vxs_should_run_from vsftpd; then
 
 fi
 
+if vxs_should_run_from mysql; then
 
+    ### Set MySQL root password from /root/.my.cnf
+    ###
+    ###
+    printf "\n********************************************************************\n\nSetting MySQL root password... "
+    mysql_pwd=$(grep '^password=' /root/.my.cnf | cut -d'=' -f2-)
+    if mysqladmin -u root password "$mysql_pwd" >>/dev/null 2>&1; then
+        unset mysql_pwd
+        if [ -f /etc/bitworker/bw-mysql-dump.sh ]; then
+            chmod 700 /etc/bitworker/bw-mysql-dump.sh
+        fi
+        printf "[\e[32mOK\e[0m]\n"
+    else
+        unset mysql_pwd
+        printf "[\e[31mERROR\e[0m] mysqladmin failed\n"
+    fi
+
+fi
 
 if vxs_should_run_from backup; then
 

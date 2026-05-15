@@ -38,9 +38,7 @@ if [ "$u_powerdns_master" = "y" ]; then
     ###
     ###
     mysql_pwd=$(grep '^password=' /root/.my.cnf | cut -d'=' -f2-)
-    if mysqladmin -u root password "$mysql_pwd" >>/dev/null 2>&1; then
-        printf "[OK] Changed MySql root pass success\n"
-    fi
+    mysqladmin -u root password "$mysql_pwd" >>/dev/null 2>&1
 
     ### install powerdns mysql scheme
     ###
