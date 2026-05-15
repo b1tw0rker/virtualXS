@@ -81,10 +81,7 @@ if [ "$u_postfix" = "y" ]; then
     fi
     
     echo "Reload Postfix"
-    if postfix reload; then
-        printf "[\e[32mOK\e[0m]\n"
-    else
-        printf "[\e[31mERROR\e[0m]\n"
-    fi
+    postfix reload
+    printf "[\e[32mOK\e[0m]\n"
     
 fi

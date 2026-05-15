@@ -34,6 +34,12 @@ if [ "$u_vsftpd" = "y" ]; then
         mkdir "$file_vsftpd001"
     fi
 
+    # One-time backup of the original vsftpd.conf
+    if [ -f "$file_vsftpd002" ] && [ ! -f /etc/vsftpd/vsftpd.orig ]; then
+        cp "$file_vsftpd002" /etc/vsftpd/vsftpd.orig
+        printf "[\e[32mOK\e[0m] Original gesichert: /etc/vsftpd/vsftpd.orig\n"
+    fi
+
     cat "$u_path/files/vsftpd/vsftpd.conf" >"$file_vsftpd002"
 
     ### pam_exec script + PAM config
