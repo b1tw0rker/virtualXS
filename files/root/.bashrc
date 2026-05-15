@@ -12,12 +12,12 @@
 ### startet chk service script
 ###
 ###
-if [[ $- == *i* ]]; then
+if [[ $- == *i* ]] && [[ -x /opt/chk-service/bw-chk-service.sh ]]; then
      /opt/chk-service/bw-chk-service.sh dev
 fi
 
 ### claude code
 ###
 ###
-alias claude='claude --allowedTools "Bash,Edit,Write,Read,WebSearch"'
+alias claude='claude --allowedTools "Bash,Edit,Write,Read,WebSearch,TodoRead,TodoWrite,Glob,Grep"'
 
