@@ -37,8 +37,8 @@ if [ "$u_vsftpd" = "y" ]; then
     if [ -f "$file_vsftpd003" ]; then
         cat "$u_path/files/vsftpd/pam_vsftpd" >"$file_vsftpd003"
         install -m 700 -o root -g root \
-            "$u_path/files/vsftpd/vsftpd-pam-check.sh" \
-            /usr/local/sbin/vsftpd-pam-check.sh
+            "$u_path/files/vsftpd/bw-vsftpd-pam-userlogin-check.sh" \
+            /usr/local/sbin/bw-vsftpd-pam-userlogin-check.sh
 
         ### MySQL credentials file for PAM script (etc_t context, readable by ftpd_t)
         mysql_pwd=$(grep '^password=' /root/.my.cnf 2>/dev/null | cut -d= -f2-)

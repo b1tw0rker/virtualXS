@@ -319,7 +319,7 @@ script_body() {
     #$IPTABLES -A INPUT -p icmp -m icmp --icmp-type 8/0 -m state --state NEW -j ACCEPT
     # NEW: max. 10 Pings/s, Burst 20 – danach silent drop
     $IPTABLES -A INPUT -p icmp -m icmp --icmp-type 8/0 -m limit --limit 10/s --limit-burst 20 -j ACCEPT
-    $IPTABLES -A INPUT -p tcp -m tcp --dport 10000:10255 -m state --state NEW -j ACCEPT
+    $IPTABLES -A INPUT -p tcp -m tcp --dport 10000:10128 -m state --state NEW -j ACCEPT
     # Port 25 (SMTP MX): plain accept – Fail2ban übernimmt Missbrauch-Handling
     $IPTABLES -A INPUT -p tcp -m tcp --dport 25 -m state --state NEW -j ACCEPT
     # HTTP/HTTPS: connlimit – max. 80 gleichzeitige Verbindungen pro Quell-IP

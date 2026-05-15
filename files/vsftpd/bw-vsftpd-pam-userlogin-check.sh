@@ -1,16 +1,16 @@
 #!/bin/bash
 #
-# vsftpd-pam-check.sh
+# bw-vsftpd-pam-userlogin-check.sh
 # PAM exec authentication script for vsftpd against virtualx MySQL db.
 #
 # Called by pam_exec with expose_authtok; password arrives on stdin.
 # PAM_USER is set as environment variable by PAM.
 #
-# Deployed to: /usr/local/sbin/vsftpd-pam-check.sh (chmod 700, root:root)
-# Password hash in DB: SHA2(password, 256) – 64 hex chars
+# Deployed to: /etc/bitworker/bw-vsftpd-pam-userlogin-check.sh (chmod 700, root:root)
+# Password hash in DB: SHA2(password, 256) - 64 hex chars
 
 MYSQL_DB="virtualx"
-MYSQL_CREDS="/etc/vsftpd/mysql-pam.cnf"
+MYSQL_CREDS="/etc/bitworker/mysql-pam.cnf"
 
 # Read password from stdin (provided by pam_exec expose_authtok)
 read -r password
@@ -34,7 +34,7 @@ if [[ ! "$hash" =~ ^[0-9a-f]{64}$ ]]; then
     exit 1
 fi
 
-# Query MySQL – PAM_USER is regex-validated, hash is hex-only: no injection possible
+# Query MySQL - PAM_USER is regex-validated, hash is hex-only: no injection possible
 result=$(mysql \
     --defaults-file="$MYSQL_CREDS" \
     --skip-column-names \

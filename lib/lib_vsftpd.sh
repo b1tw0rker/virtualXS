@@ -24,6 +24,8 @@ if [ "$u_vsftpd" = "y" ]; then
     file_vsftpd002=/etc/vsftpd/vsftpd.conf
     file_vsftpd003=/etc/pam.d/vsftpd
     file_vsftpd004=/etc/letsencrypt/live/$u_srv/fullchain.pem
+    file_vsftpd005=/etc/bitworker
+    file_vsftpd006=/etc/bitworker/mysql-pam.cnf
 
     if [ ! -d "$file_vsftpd001" ]; then
         mkdir "$file_vsftpd001"
@@ -36,16 +38,19 @@ if [ "$u_vsftpd" = "y" ]; then
     ###
     if [ -f "$file_vsftpd003" ]; then
         cat "$u_path/files/vsftpd/pam_vsftpd" >"$file_vsftpd003"
+        if [ ! -d "$file_vsftpd005" ]; then
+            mkdir "$file_vsftpd005"
+        fi
         install -m 700 -o root -g root \
-            "$u_path/files/vsftpd/vsftpd-pam-check.sh" \
-            /usr/local/sbin/vsftpd-pam-check.sh
+            "$u_path/files/vsftpd/bw-vsftpd-pam-userlogin-check.sh" \
+            /etc/bitworker/bw-vsftpd-pam-userlogin-check.sh
 
-        ### MySQL credentials file for PAM script (etc_t context, readable by ftpd_t)
+        ### MySQL credentials file for PAM script, derived from /root/.my.cnf
         mysql_pwd=$(grep '^password=' /root/.my.cnf 2>/dev/null | cut -d= -f2-)
         printf '[client]\nuser=root\npassword=%s\nhost=localhost\n' "$mysql_pwd" \
-            > /etc/vsftpd/mysql-pam.cnf
-        chmod 600 /etc/vsftpd/mysql-pam.cnf
-        chown root:root /etc/vsftpd/mysql-pam.cnf
+            > "$file_vsftpd006"
+        chmod 600 "$file_vsftpd006"
+        chown root:root "$file_vsftpd006"
     fi
 
     ### Cert stuff
