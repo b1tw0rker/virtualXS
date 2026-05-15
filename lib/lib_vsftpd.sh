@@ -40,7 +40,7 @@ if [ "$u_vsftpd" = "y" ]; then
         printf "[\e[32mOK\e[0m] Original gesichert: /etc/vsftpd/vsftpd.orig\n"
     fi
 
-    cat "$u_path/files/vsftpd/vsftpd.conf" >"$file_vsftpd002"
+    cat "$u_path/files/vsftpd/vsftpd.conf" >>"$file_vsftpd002"
 
     ### pam_exec script + PAM config
     ###
