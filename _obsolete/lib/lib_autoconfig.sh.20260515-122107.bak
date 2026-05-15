@@ -4,6 +4,8 @@
 #https://www.heise.de/ct/ausgabe/2013-8-Selbstkonfiguration-von-E-Mail-Clients-2324925.html
 
 file001=/etc/httpd/conf.d
+file002=/etc/letsencrypt/live/$u_srv/fullchain.pem
+file003=/etc/letsencrypt/live/$u_srv/privkey.pem
 
 printf "\n********************************************************************\n\nCreate Autoconfig and Autodiscover for mail clients [y/N]: "
 if [ "$u_autoconfig" = "" ]; then
@@ -12,7 +14,9 @@ fi
 
 if [ "$u_autoconfig" = "y" ]; then
 
-    if [ -d "$file001" ]; then
+    if [ ! -f "$file002" ] || [ ! -f "$file003" ]; then
+        printf "\nAutoconfig can only be created if an initial Let's Encrypt certificate has been issued first.\n"
+    elif [ -d "$file001" ]; then
 
         cp $u_path/files/autoconfig/autoconfig.conf $file001/
 
@@ -75,7 +79,7 @@ if [ "$u_autoconfig" = "y" ]; then
         ###
         printf "TODO: The files: /home/httpd/autoconfig/htdocs/autodiscover.xml und config-v1.1.xml must be configured manually.\n"
 
-    fi
+    fi  # end if initial Let's Encrypt certificate is unavailable / elif
     printf "[\e[32mOK\e[0m]\n"
 
 fi  # end if [ "$u_autoconfig" = "y" ]
