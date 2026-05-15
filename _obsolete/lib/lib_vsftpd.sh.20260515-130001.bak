@@ -14,25 +14,18 @@ fi
 
 if [ "$u_vsftpd" = "y" ]; then
 
+    useradd -d /dev/null -s /sbin/nologin -g users vsftpd >>/dev/null 2>&1
+
+    # /sbin/nologin must be in /etc/shells for vsftpd's internal shell check
+    grep -qxF '/sbin/nologin'     /etc/shells || echo '/sbin/nologin'     >> /etc/shells
+    grep -qxF '/usr/sbin/nologin' /etc/shells || echo '/usr/sbin/nologin' >> /etc/shells
+
     file_vsftpd001=/etc/vsftpd/vsftpd_user_conf
     file_vsftpd002=/etc/vsftpd/vsftpd.conf
     file_vsftpd003=/etc/pam.d/vsftpd
     file_vsftpd004=/etc/letsencrypt/live/$u_srv/fullchain.pem
     file_vsftpd005=/etc/bitworker
     file_vsftpd006=/etc/bitworker/mysql-pam.cnf
-    file_vsftpd007=/etc/bitworker/bw-vsftpd-pam-userlogin-check.sh
-
-    if [ ! -f "$file_vsftpd007" ]; then
-        printf "[\e[31mERROR\e[0m] Missing helper script: %s\n" "$file_vsftpd007"
-        printf "[\e[33mWARN\e[0m] Run helper-apps first so files/bitworker is copied to /etc/bitworker\n"
-        return 1
-    fi
-
-    useradd -d /dev/null -s /sbin/nologin -g users vsftpd >>/dev/null 2>&1
-
-    # /sbin/nologin must be in /etc/shells for vsftpd's internal shell check
-    grep -qxF '/sbin/nologin'     /etc/shells || echo '/sbin/nologin'     >> /etc/shells
-    grep -qxF '/usr/sbin/nologin' /etc/shells || echo '/usr/sbin/nologin' >> /etc/shells
 
     if [ ! -d "$file_vsftpd001" ]; then
         mkdir "$file_vsftpd001"
@@ -45,6 +38,12 @@ if [ "$u_vsftpd" = "y" ]; then
     ###
     if [ -f "$file_vsftpd003" ]; then
         cat "$u_path/files/vsftpd/pam_vsftpd" >"$file_vsftpd003"
+        if [ ! -d "$file_vsftpd005" ]; then
+            mkdir "$file_vsftpd005"
+        fi
+        install -m 700 -o root -g root \
+            "$u_path/files/vsftpd/bw-vsftpd-pam-userlogin-check.sh" \
+            /etc/bitworker/bw-vsftpd-pam-userlogin-check.sh
 
         ### MySQL credentials file for PAM script, derived from /root/.my.cnf
         mysql_pwd=$(grep '^password=' /root/.my.cnf 2>/dev/null | cut -d= -f2-)
