@@ -10,7 +10,6 @@ write_enable=YES
 userlist_enable=YES
 pam_service_name=vsftpd
 chroot_local_user=YES
-ftpd_banner=Welcome to HOST-X FTP service.
 hide_file={*.virtualx,.bash_logout,.bash_profile,.bashrc,WEBSTATS,.virtualx.*}
 force_dot_files=YES
 max_per_ip=30
@@ -47,7 +46,7 @@ pasv_max_port=10255
 ### nicht schön aber wirkungsvoll
 ###
 ###
-allow_writeable_chroot=YES
+#allow_writeable_chroot=YES
 
 ### Virtuell User
 ### https://www.howtoforge.com/tutorial/virtual-hosting-with-vsftpd-and-mysql-on-ubuntu-15.10
