@@ -60,7 +60,7 @@ u_aws=n
 ### - postfix: Springt zum Abschnitt, in dem Postfix konfiguriert wird
 ### - helper_apps: Springt zum Abschnitt, in dem Hilfsanwendungen konfiguriert werden
 ### - httpd: Springt zum Abschnitt, in dem der HTTP-Server konfiguriert wird
-### - wordpress: Springt zum Abschnitt APPS, in dem WP-CLI installiert wird
+### - wordpress: Springt zum Abschnitt, in dem WP-CLI installiert wird
 ### - dovecot: Springt zum Abschnitt, in dem Dovecot konfiguriert wird
 ### - letsencrypt: Springt zum Abschnitt, in dem Let's Encrypt konfiguriert wird
 ### - autoconfig: Springt zum Abschnitt, in dem Autoconfig konfiguriert wird
@@ -84,7 +84,7 @@ DEV_START_AT=${1:-}
 ###
 source $u_path/lib/functions.sh
 
-_VXS_SECTIONS=(repo dnf folders helper_apps apps postfix httpd dovecot letsencrypt autoconfig vsftpd mysql backup quota powerdns logrotate cron tripwire php ssh fail2ban firewall kernel_modules virtualx wordpress)
+_VXS_SECTIONS=(repo dnf folders helper_apps apps postfix httpd wordpress dovecot letsencrypt autoconfig vsftpd mysql backup quota powerdns logrotate cron tripwire php ssh fail2ban firewall kernel_modules virtualx)
 
 _vxs_section_index() {
     local section="$1" i
@@ -447,6 +447,15 @@ if vxs_should_run_from httpd; then
 
 fi
 
+if vxs_should_run_from wordpress; then
+
+    ### q install wordpress cli
+    ###
+    ###
+    source $u_path/lib/lib_wordpress.sh
+
+fi
+
 if vxs_should_run_from dovecot; then
 
     ### q config dovecot
@@ -672,22 +681,6 @@ if vxs_should_run_from virtualx; then
     print_center "*                                                                  *\n"
     print_center "********************************************************************\n"
     printf "\n"
-
-fi
-
-if vxs_should_run_from wordpress; then
-
-    ###
-    ### *** APPS ***
-    ###
-    printf "\n********************************************************************\n"
-    printf "*                            A P P S                               *\n"
-    printf "********************************************************************\n\n"
-
-    ### q install wordpress cli
-    ###
-    ###
-    source $u_path/lib/lib_wordpress.sh
 
 fi
 
