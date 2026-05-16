@@ -53,15 +53,8 @@ if [ "$u_dnf" = "y" ]; then
         sed -i 's/^upgrade_type = default/upgrade_type = security/' $file001
         sed -i 's/^apply_updates = no/apply_updates = yes/' $file001
         sed -i 's/^emit_via = stdio/emit_via = motd/' $file001
-        printf "[\e[32mOK\e[0m] dnf-automatic.conf updated\n"
-
-        if systemctl enable --now dnf-automatic.timer; then
-            printf "[\e[32mOK\e[0m] dnf-automatic.timer enabled\n"
-        else
-            printf "[\e[31mFAIL\e[0m] dnf-automatic.timer could not be enabled\n"
-        fi
-    else
-        printf "[\e[33mINFO\e[0m] %s not found – dnf-automatic skipped\n" "$file001"
+        
+        systemctl enable --now dnf-automatic.timer
     fi
     printf "[\e[32mOK\e[0m]\n"
     

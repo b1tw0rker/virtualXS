@@ -96,7 +96,9 @@ fi
 
 if [ "$u_virtualx" = "y" ]; then
 
-    if ! systemctl is-active --quiet mysqld; then
+    if [ ! -f /etc/letsencrypt/options-ssl-apache.conf ]; then
+        printf "[\e[31mERROR\e[0m] /etc/letsencrypt/options-ssl-apache.conf not found – VirtualX-Installation übersprungen\n"
+    elif ! systemctl is-active --quiet mysqld; then
         printf "[\e[31mERROR\e[0m] MySQL läuft nicht – VirtualX-Installation übersprungen\n"
     else
 

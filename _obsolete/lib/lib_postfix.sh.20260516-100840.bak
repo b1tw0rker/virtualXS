@@ -25,14 +25,11 @@ if [ "$u_postfix" = "y" ]; then
     
     if [ -f "$file_postfix001" ] && [ "$u_bitworker" != "### by BitWorker" ]; then
         cat $u_path/files/postfix/main.cf >>$file_postfix001
-        printf "[\e[32mOK\e[0m] main.cf BitWorker block appended\n"
-    else
-        printf "[\e[33mINFO\e[0m] main.cf BitWorker block already present – skipped\n"
     fi
-
-    cp $u_path/files/postfix/bounce.de.default /etc/postfix/ && printf "[\e[32mOK\e[0m] bounce.de.default copied\n"
-    cp $u_path/files/postfix/mysql-domains.cf /etc/postfix/ && printf "[\e[32mOK\e[0m] mysql-domains.cf copied\n"
-    cp $u_path/files/postfix/mysql-virtual.cf /etc/postfix/ && printf "[\e[32mOK\e[0m] mysql-virtual.cf copied\n"
+    
+    cp $u_path/files/postfix/bounce.de.default /etc/postfix/
+    cp $u_path/files/postfix/mysql-domains.cf /etc/postfix/
+    cp $u_path/files/postfix/mysql-virtual.cf /etc/postfix/
     
     mysql_pwd=$(grep '^password=' /root/.my.cnf | cut -d'=' -f2-)
     sed -i 's/^password = XXX/password = '"$mysql_pwd"'/' /etc/postfix/mysql-virtual.cf

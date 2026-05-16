@@ -19,11 +19,7 @@ if [ "$u_dovecot" = "y" ]; then
     file_dovecot002=/etc/dovecot/dovecot.conf
 
     touch /etc/dovecot/master-users
-    if cp $u_path/files/dovecot/dovecot-sql.conf.ext /etc/dovecot/; then
-        printf "[\e[32mOK\e[0m] dovecot-sql.conf.ext copied\n"
-    else
-        printf "[\e[31mFAIL\e[0m] could not copy dovecot-sql.conf.ext\n"
-    fi
+    cp $u_path/files/dovecot/dovecot-sql.conf.ext /etc/dovecot/
 
     mysql_pwd=$(grep '^password=' /root/.my.cnf | cut -d'=' -f2-)
     sed -i 's/password=XXX/password='"$mysql_pwd"'/' $file_dovecot001

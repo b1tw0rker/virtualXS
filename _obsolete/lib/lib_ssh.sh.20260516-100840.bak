@@ -27,18 +27,14 @@ if [ "$u_ssh" = "y" ]; then
         ###
         if [ -f "$file_ssh001" ] && [ "$u_bitworker" != "### by BitWorker" ]; then
                 cat $u_path/files/ssh/sshd_config >>$file_ssh001
-                printf "[\e[32mOK\e[0m] sshd_config updated\n"
+                ### add backup remote client ssh connection
+                ###
+                ###
                 #sed -i 's/^Match User root Address XXX/Match User root Address '"$u_client_ip"'/' $file_ssh001
-        else
-                printf "[\e[33mINFO\e[0m] sshd_config BitWorker block already present – skipped\n"
         fi
 
 
-        if systemctl restart sshd; then
-                printf "[\e[32mOK\e[0m] sshd restarted\n"
-        else
-                printf "[\e[31mFAIL\e[0m] sshd restart failed\n"
-        fi
+        systemctl restart sshd
         printf "[\e[32mOK\e[0m]\n"
 
 fi

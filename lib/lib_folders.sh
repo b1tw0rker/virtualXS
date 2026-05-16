@@ -18,7 +18,9 @@ if [ "$u_folders_create" = "y" ]; then
   )
 
   for folder in "${folders[@]}"; do
-    if [ ! -d "$folder" ]; then
+    if [ -d "$folder" ]; then
+      printf "[\e[33mINFO\e[0m] %s already exists\n" "$folder"
+    else
       mkdir "$folder"
 
       if [ "$folder" = "/home/pop" ]; then
