@@ -475,7 +475,7 @@ if vxs_should_run_from letsencrypt; then
     ### q config letsencrypt
     ###
     ###
-    if [ "$u_server" = "w" ] || [ "$u_server" = "m" ]; then
+    if [ "$u_server" = "w" ]; then
         source $u_path/lib/lib_letsencrypt.sh
     fi
 

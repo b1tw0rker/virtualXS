@@ -15,12 +15,11 @@ _vxs_step=0
 ###
 confirm() {
     local prompt="$1"
-    local preset="$2"                # raw value – may be empty in manual mode
-    local default_value="${preset:-N}"
+    local default_value="${2:-N}" # Setze standardmäßig auf 'N', falls kein Wert angegeben wird
     local result
 
-    # Auto-accept only if explicitly pre-set to y/n (empty = ask interactively)
-    case ${preset,,} in
+    # Auto-accept if value is already pre-set (e.g. from server presettings)
+    case ${default_value,,} in
         "y" | "yes") printf "%s [y/N]: y\n" "$prompt"; return 0 ;;
         "n" | "no")  printf "%s [y/N]: n\n" "$prompt"; return 1 ;;
     esac
