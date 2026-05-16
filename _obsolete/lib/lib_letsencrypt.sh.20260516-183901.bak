@@ -79,40 +79,9 @@ letsencrypt_dns_issue() {
     "${letsencrypt_cmd[@]}"
 }
 
-letsencrypt_show_cert_status() {
-    local domain="$1"
-    local cert_file="/etc/letsencrypt/live/${domain}/cert.pem"
-
-    if [ ! -f "$cert_file" ]; then
-        _log warn "No certificate found for: ${domain}"
-        return
-    fi
-
-    local end_date days_left
-    end_date=$(openssl x509 -enddate -noout -in "$cert_file" 2>/dev/null | cut -d= -f2)
-    if [ -z "$end_date" ]; then
-        _log warn "Certificate found but could not read expiry for: ${domain}"
-        return
-    fi
-
-    local end_epoch now_epoch
-    end_epoch=$(date -d "$end_date" +%s 2>/dev/null)
-    now_epoch=$(date +%s)
-    days_left=$(( (end_epoch - now_epoch) / 86400 ))
-
-    if [ "$days_left" -lt 0 ]; then
-        _log error "Certificate for ${domain} EXPIRED ${days_left#-} days ago (${end_date})"
-    elif [ "$days_left" -lt 30 ]; then
-        _log warn "Certificate for ${domain} expires in ${days_left} days (${end_date})"
-    else
-        _log ok "Certificate for ${domain} valid — expires in ${days_left} days (${end_date})"
-    fi
-}
-
 ### letsencrypt
 ###
 ###
-letsencrypt_show_cert_status "$u_srv"
 printf "\n********************************************************************\n\n%d) Create initial Let's Encrypt Cert: $u_srv [y/n/D (dry-run)]: " "$(( ++_vxs_step ))"
 if [ "$u_letsencrypt" = "" ]; then
     read u_letsencrypt
@@ -134,7 +103,6 @@ if [ "$u_letsencrypt" = "y" ] || [ "$u_letsencrypt" = "d" ]; then
 
 fi
 
-letsencrypt_show_cert_status "imap.$u_domain"
 printf "\n********************************************************************\n\n%d) Create Let's Encrypt Cert for dovecot (imap.$u_domain) [y/n/D (dry-run)]: " "$(( ++_vxs_step ))"
 if [ "$u_letsencrypt_dovecot" = "" ]; then
     read u_letsencrypt_dovecot
@@ -168,7 +136,6 @@ if [ "$u_letsencrypt_dovecot" = "y" ] || [ "$u_letsencrypt_dovecot" = "d" ]; the
 
 fi
 
-letsencrypt_show_cert_status "smtp.$u_domain"
 printf "\n********************************************************************\n\n%d) Create Let's Encrypt Cert for dovecot (smtp.$u_domain) [y/n/D (dry-run)]: " "$(( ++_vxs_step ))"
 if [ "$u_letsencrypt_dovecot_smtp" = "" ]; then
     read u_letsencrypt_dovecot_smtp
