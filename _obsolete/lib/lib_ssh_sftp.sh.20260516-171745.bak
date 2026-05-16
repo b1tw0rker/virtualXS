@@ -17,7 +17,6 @@ if [ "$u_ssh_sftp" = "" ]; then
 fi
 
 if [ "$u_ssh_sftp" = "y" ]; then
-    printf "\n"
 
         file_ssh001=/etc/ssh/sshd_config
 

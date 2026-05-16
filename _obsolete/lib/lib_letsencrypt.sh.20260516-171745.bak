@@ -89,7 +89,7 @@ if [ "$u_letsencrypt" = "" ]; then
 fi
 
 if [ "$u_letsencrypt" = "y" ] || [ "$u_letsencrypt" = "d" ]; then
-    printf "\n"
+
     letsencrypt_dns_prepare
 
     ### get cert from Let's Encrypt
@@ -110,7 +110,7 @@ if [ "$u_letsencrypt_dovecot" = "" ]; then
 fi
 
 if [ "$u_letsencrypt_dovecot" = "y" ] || [ "$u_letsencrypt_dovecot" = "d" ]; then
-    printf "\n"
+
     ### ask for servername
     u_tmp_imap=imap.$u_domain
     read -p "Servername for Dovecot (mostly imap.$u_domain): " -ei $u_tmp_imap u_imap
@@ -143,7 +143,7 @@ if [ "$u_letsencrypt_dovecot_smtp" = "" ]; then
 fi
 
 if [ "$u_letsencrypt_dovecot_smtp" = "y" ] || [ "$u_letsencrypt_dovecot_smtp" = "d" ]; then
-    printf "\n"
+
     ### ask for servername
     u_tmp_smtp=smtp.$u_domain
     read -p "Servername for Dovecot SMTP (mostly smtp.$u_domain): " -ei $u_tmp_smtp u_smtp_dovecot

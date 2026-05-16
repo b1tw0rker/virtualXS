@@ -9,7 +9,7 @@ if [ "$u_tripwire" = "" ]; then
 fi
 
 if [ "$u_tripwire" = "y" ]; then
-    printf "\n"
+    
     # Tripwire ist bereits via dnf installiert (siehe lib_dnf.sh)
     echo "Configuring Tripwire..."
     

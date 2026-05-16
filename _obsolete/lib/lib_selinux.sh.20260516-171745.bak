@@ -6,7 +6,6 @@ if [ "$u_selinux" = "" ]; then
 fi
 
 if [ "$u_selinux" = "y" ]; then
-    printf "\n"
 
     ### --- Tools sicherstellen ----------------------------------
     ###

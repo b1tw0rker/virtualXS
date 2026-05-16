@@ -24,7 +24,7 @@ if [ "$u_powerdns_master" = "" ]; then
 fi
 
 if [ "$u_powerdns_master" = "y" ]; then
-    printf "\n"
+
     u_powerdns_slave=n
 
     dnf -y install $dns_apps
@@ -83,7 +83,7 @@ if [ "$u_powerdns_slave" = "" ]; then
 fi
 
 if [ "$u_powerdns_slave" = "y" ]; then
-    printf "\n"
+
     read -p "Master Server IP: " u_master_server_ip
     # Reverse Lookup mit dig
     u_reverse=$(dig +short -x $u_master_server_ip | sed 's/\.$//')

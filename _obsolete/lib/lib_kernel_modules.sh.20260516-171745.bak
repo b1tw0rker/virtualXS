@@ -6,7 +6,7 @@ if [ "$u_module_blacklist" = "" ]; then
 fi
 
 if [ "$u_module_blacklist" = "y" ]; then
-    printf "\n"
+
     folder_modprobe=/etc/modprobe.d
 
     if [ ! -d "$folder_modprobe" ]; then

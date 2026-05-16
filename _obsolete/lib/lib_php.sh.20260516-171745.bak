@@ -13,7 +13,7 @@ if [ "$u_php" = "" ]; then
 fi
 
 if [ "$u_php" = "y" ]; then
-    printf "\n"
+
     if [ -f "$file_php_001" ]; then
 
         sed -i 's/^upload_max_filesize = 2M/upload_max_filesize = 20M/' $file_php_001

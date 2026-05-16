@@ -9,7 +9,7 @@ if [ "$u_helper_apps" = "" ]; then
 fi
 
 if [ "$u_helper_apps" = "y" ]; then
-    printf "\n"
+    
     file004=/etc/bitworker
     
     if [ ! -d "$file004" ]; then

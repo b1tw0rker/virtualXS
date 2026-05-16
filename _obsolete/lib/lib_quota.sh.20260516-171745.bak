@@ -23,7 +23,7 @@ else
 fi
 
 if [ "$u_quota" = "y" ]; then
-    printf "\n"
+
     ### do some searchs inorder to inspect the system
     ### grep uquota
     ###

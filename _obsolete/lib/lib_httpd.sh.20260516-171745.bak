@@ -11,7 +11,7 @@ if [ "$u_httpd" = "" ]; then
 fi
 
 if [ "$u_httpd" = "y" ]; then
-    printf "\n"
+
     if [ -f "$file005" ]; then
 
         sed -i 's/^#ServerName www.example.com:80/ServerName '"$u_ip"':80/' $file005

@@ -8,7 +8,7 @@ if [ "$u_firewall" = "" ]; then
 fi
 
 if [ "$u_firewall" = "y" ]; then
-    printf "\n"
+    
     if [ ! -d "$file004" ]; then
         mkdir $file004
     fi
@@ -72,7 +72,7 @@ if [ "$u_activate_firewall" = "" ]; then
 fi
 
 if [ "$u_activate_firewall" = "y" ]; then
-    printf "\n"
+    
     if [ -f "/usr/lib/systemd/system/firewall.service" ]; then
         systemctl start firewall
     fi

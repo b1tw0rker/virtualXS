@@ -19,7 +19,7 @@ services=(
 )
 
 if [ "$u_enable_apps" = "y" ]; then
-    printf "\n"
+
     for service in "${services[@]}"; do
         if systemctl is-enabled --quiet "$service"; then
             printf "[\e[36mINFO\e[0m] %s already enabled\n" "$service"
@@ -43,7 +43,7 @@ if [ "$u_start_server" = "" ]; then
 fi
 
 if [ "$u_start_server" = "y" ]; then
-    printf "\n"
+
     for service in "${services[@]}"; do
         if systemctl start "$service" 2>/dev/null; then
             printf "[\e[32mOK\e[0m] %s started\n" "$service"

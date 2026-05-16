@@ -6,7 +6,7 @@ if [ "$u_backup" = "" ]; then
 fi
 
 if [ "$u_backup" = "y" ]; then
-    printf "\n"
+
     if ! git clone https://github.com/b1tw0rker/rsync.git /etc/bitworker/rsync/; then
         printf "[\e[31mERROR\e[0m] git clone failed\n"
     else

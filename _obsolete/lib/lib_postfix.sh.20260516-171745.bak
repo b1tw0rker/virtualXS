@@ -20,7 +20,7 @@ fi
 
 
 if [ "$u_postfix" = "y" ]; then
-    printf "\n"
+    
     postfix_config_dir=/etc/postfix
     file_postfix001=/etc/postfix/main.cf
     file_postfix002=/etc/postfix/master.cf

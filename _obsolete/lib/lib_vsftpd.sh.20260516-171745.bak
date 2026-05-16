@@ -11,7 +11,7 @@ fi
 
 
 if [ "$u_vsftpd" = "y" ]; then
-    printf "\n"
+
     file_vsftpd001=/etc/vsftpd/vsftpd_user_conf
     file_vsftpd002=/etc/vsftpd/vsftpd.conf
     file_vsftpd003=/etc/pam.d/vsftpd

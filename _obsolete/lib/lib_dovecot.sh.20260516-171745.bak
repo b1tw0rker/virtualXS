@@ -12,7 +12,7 @@ fi
 u_path=/opt/virtualXS # no ending slash
 
 if [ "$u_dovecot" = "y" ]; then
-    printf "\n"
+
     useradd -s /sbin/nologin -g users spam >>/dev/null 2>&1
 
     file_dovecot001=/etc/dovecot/dovecot-sql.conf.ext
