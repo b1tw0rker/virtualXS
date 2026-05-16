@@ -33,7 +33,9 @@ if [ "$u_folders_create" = "y" ]; then
     fi
   done
 
-  # Copy certbot-apache TLS options to letsencrypt config dir
+  ### Copy certbot-apache TLS options to letsencrypt config dir
+  ###
+  ###
   if [ -f /usr/lib/python3.12/site-packages/certbot_apache/_internal/tls_configs/current-options-ssl-apache.conf ]; then
     cp /usr/lib/python3.12/site-packages/certbot_apache/_internal/tls_configs/current-options-ssl-apache.conf /etc/letsencrypt/options-ssl-apache.conf
     if [ -f /etc/letsencrypt/options-ssl-apache.conf ]; then
