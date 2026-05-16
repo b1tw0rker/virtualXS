@@ -83,15 +83,8 @@ if [ "$u_postfix" = "y" ]; then
         postmap /etc/postfix/access
     fi
     
-# inet_protocols = ipv4 combined with inet_interfaces = all requires a full
-      # stop + start instead of reload or restart. On reload, Postfix keeps its
-      # old listener sockets alive and ignores the protocol change; on the next
-      # internal restart it tries to bind ::1 (IPv6 loopback) — which is blocked
-      # by ipv4-only mode — and crashes with "Address family not supported".
-      # A clean stop + start forces Postfix to re-evaluate inet_interfaces and
-      # skip all IPv6 addresses from the start.
-      echo "Restart Postfix (stop + start)"
-      if systemctl stop postfix && systemctl start postfix; then
+    echo "Reload Postfix"
+    if postfix reload; then
         printf "[\e[32mOK\e[0m]\n"
     else
         printf "[\e[31mERROR\e[0m]\n"
