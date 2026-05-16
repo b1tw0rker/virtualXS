@@ -108,7 +108,7 @@ if [ "$u_activate_firewall" = "y" ]; then
     
 fi
 
-printf "\n[\e[33mINFO\e[0m] Don't forget to enable Firewall with: systemctl enable firewalld -- after reboot\n"
+printf "\nTODO: Don't forget to enable Firewall with: -systemctl enable firewall- after reboot\n"
 
 printf "\n********************************************************************\n\n"
 

@@ -46,20 +46,8 @@ if [ "$u_autoconfig" = "y" ]; then
                 mkdir /home/httpd/autoconfig/htdocs/autodiscover
             fi
 
-            cp $u_path/files/autoconfig/mail/config-v1.1.xml /home/httpd/autoconfig/htdocs/mail/
-            cp $u_path/files/autoconfig/autodiscover/autodiscover.xml /home/httpd/autoconfig/htdocs/autodiscover/
-
-            ### set mail hostnames from u_domain
-            ###
-            u_imap_host="imap.$u_domain"
-            u_smtp_host="smtp.$u_domain"
-
-            sed -i "s/imap\.host-x\.de/$u_imap_host/g" /home/httpd/autoconfig/htdocs/autodiscover/autodiscover.xml
-            sed -i "s/smtp\.host-x\.de/$u_smtp_host/g" /home/httpd/autoconfig/htdocs/autodiscover/autodiscover.xml
-
-            sed -i "s/imap\.host-x\.de/$u_imap_host/g" /home/httpd/autoconfig/htdocs/mail/config-v1.1.xml
-            sed -i "s/smtp\.host-x\.de/$u_smtp_host/g" /home/httpd/autoconfig/htdocs/mail/config-v1.1.xml
-            sed -i "s/host-x\.de/$u_domain/g" /home/httpd/autoconfig/htdocs/mail/config-v1.1.xml
+            cp $u_path/files/autoconfig/config-v1.1.xml /home/httpd/autoconfig/htdocs/mail/
+            cp $u_path/files/autoconfig/autodiscover.xml /home/httpd/autoconfig/htdocs/autodiscover/
         fi
 
         ### insert som local Vars
@@ -82,15 +70,10 @@ if [ "$u_autoconfig" = "y" ]; then
             apachectl -t
         fi
 
-        ### Check if Let's Encrypt certs exist for the configured mail hostnames
+        ### TODO: Automatisch die richtigen Werte einsetzen
         ###
         ###
-        if [ ! -d "/etc/letsencrypt/live/$u_imap_host" ] || [ ! -d "/etc/letsencrypt/live/$u_smtp_host" ]; then
-            printf "NOTE: Autoconfig XML files configured for %s / %s.\n" "$u_imap_host" "$u_smtp_host"
-            printf "      Let's Encrypt certs not yet found for one or both hostnames.\n"
-        else
-            printf "Autoconfig XML files configured for %s / %s.\n" "$u_imap_host" "$u_smtp_host"
-        fi
+        printf "TODO: The files: /home/httpd/autoconfig/htdocs/autodiscover.xml und config-v1.1.xml must be configured manually.\n"
 
     fi
     printf "[\e[32mOK\e[0m]\n"

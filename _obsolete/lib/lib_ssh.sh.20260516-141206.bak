@@ -47,5 +47,6 @@ if [ "$u_ssh" = "y" ]; then
         else
                 printf "[\e[31mFAIL\e[0m] sshd restart failed\n"
         fi
+        printf "[\e[32mOK\e[0m]\n"
 
 fi

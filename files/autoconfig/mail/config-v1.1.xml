@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <clientConfig version="1.1">
-  <emailProvider id="IPv6EMail">
+  <emailProvider id="host-x.de">
     <domain>host-x.de</domain>
-    <displayName>IPv4 E-Mail Service</displayName>
-    <displayShortName>IPv6EMail</displayShortName>
+    <displayName>E-Mail Service host-x.de</displayName>
+    <displayShortName>Mail</displayShortName>
     <incomingServer type="imap">
       <hostname>imap.host-x.de</hostname>
       <port>993</port>

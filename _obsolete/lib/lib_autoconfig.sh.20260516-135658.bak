@@ -46,8 +46,8 @@ if [ "$u_autoconfig" = "y" ]; then
                 mkdir /home/httpd/autoconfig/htdocs/autodiscover
             fi
 
-            cp $u_path/files/autoconfig/mail/config-v1.1.xml /home/httpd/autoconfig/htdocs/mail/
-            cp $u_path/files/autoconfig/autodiscover/autodiscover.xml /home/httpd/autoconfig/htdocs/autodiscover/
+            cp $u_path/files/autoconfig/config-v1.1.xml /home/httpd/autoconfig/htdocs/mail/
+            cp $u_path/files/autoconfig/autodiscover.xml /home/httpd/autoconfig/htdocs/autodiscover/
 
             ### set mail hostnames from u_domain
             ###

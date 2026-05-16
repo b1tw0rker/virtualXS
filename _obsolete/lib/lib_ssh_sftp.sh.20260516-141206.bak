@@ -74,5 +74,6 @@ EOF
                         printf "[\e[31mFAIL\e[0m] sshd restart failed\n"
                 fi
         fi
+        printf "[\e[32mOK\e[0m]\n"
 
 fi
