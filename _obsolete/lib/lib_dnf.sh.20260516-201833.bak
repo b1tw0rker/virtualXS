@@ -5,9 +5,10 @@ file001=/etc/dnf/automatic.conf
 ### install
 ###
 ###
-printf "\n********************************************************************\n\n"
-printf "\e[2m%d) Install apps via dnf [y/N]: N  [derzeit deaktiviert]\e[0m\n" "$(( ++_vxs_step ))"
-u_dnf="n"
+printf "\n********************************************************************\n\n%d) Install apps via dnf [y/N]: " "$(( ++_vxs_step ))"
+if [ "$u_dnf" = "" ]; then
+    read u_dnf
+fi
 
 if [ "$u_dnf" = "y" ]; then
     printf "\n"
