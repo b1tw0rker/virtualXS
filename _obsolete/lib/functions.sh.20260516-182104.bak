@@ -66,67 +66,6 @@ abort_vxs() {
     exit 130
 }
 
-### SELinux: Sicherstellen, dass policycoreutils und semanage vorhanden sind.
-### Gibt 1 zurueck wenn Tools nicht installiert werden konnten.
-### version 1.0.0
-### last-modified: 16.05.26
-###
-_selinux_ensure_tools() {
-    if ! command -v setsebool &>/dev/null || ! command -v restorecon &>/dev/null || ! command -v setenforce &>/dev/null; then
-        _log info "policycoreutils fehlt – wird nachinstalliert"
-        if ! dnf -y install policycoreutils 2>/dev/null; then
-            _log error "policycoreutils konnte nicht installiert werden"
-            return 1
-        fi
-        _log ok "policycoreutils installiert"
-    fi
-    if ! command -v semanage &>/dev/null; then
-        _log info "semanage fehlt – installiere policycoreutils-python-utils"
-        if ! dnf -y install policycoreutils-python-utils 2>/dev/null; then
-            _log error "policycoreutils-python-utils konnte nicht installiert werden"
-            return 1
-        fi
-        _log ok "policycoreutils-python-utils installiert"
-    fi
-}
-
-### SELinux: Einen Boolean persistent setzen.
-### Prueft Verfuegbarkeit via getsebool; setzt mit setsebool -P.
-### Usage: _selinux_set_bool <boolean> [on|off]
-### version 1.0.0
-### last-modified: 16.05.26
-###
-_selinux_set_bool() {
-    local bool="$1" val="${2:-on}"
-    if ! getsebool "$bool" &>/dev/null; then
-        _log info "SELinux Boolean $bool – auf diesem System nicht verfuegbar"
-        return
-    fi
-    if setsebool -P "$bool" "$val" 2>/dev/null; then
-        _log ok "setsebool -P $bool $val"
-    else
-        _log error "setsebool -P $bool $val – fehlgeschlagen"
-    fi
-}
-
-### SELinux: restorecon fuer einen Pfad ausfuehren (nur wenn Pfad existiert).
-### Usage: _selinux_restorecon <path>
-### version 1.0.0
-### last-modified: 16.05.26
-###
-_selinux_restorecon() {
-    local path="$1"
-    if [ ! -e "$path" ]; then
-        _log info "restorecon: $path nicht vorhanden – uebersprungen"
-        return
-    fi
-    if restorecon -Rv "$path" >/dev/null 2>&1; then
-        _log ok "restorecon -Rv $path"
-    else
-        _log error "restorecon -Rv $path – fehlgeschlagen"
-    fi
-}
-
 ### print centered some lines and write some infos
 ### https://superuser.com/questions/823883/how-to-justify-and-center-text-in-bash/829870
 ### version 1.0.0

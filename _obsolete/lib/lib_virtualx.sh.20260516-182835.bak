@@ -14,7 +14,7 @@ compact_virtualx_check_error() {
 
 print_virtualx_access_summary() {
     printf "\n----------------------------\n"
-    _log ok "VirtualX API ready"
+    printf "[\e[32mOK\e[0m] VirtualX API ready\n"
     printf "User: \e[1m%s\e[0m\n" "$u_srv"
     printf "Password: \e[1;33m%s\e[0m\n" "$u_srv_pwd"
 
@@ -97,9 +97,9 @@ fi
 if [ "$u_virtualx" = "y" ]; then
     printf "\n"
     if [ ! -f /etc/letsencrypt/options-ssl-apache.conf ]; then
-        _log error "/etc/letsencrypt/options-ssl-apache.conf not found – VirtualX-Installation übersprungen"
+        printf "[\e[31mERROR\e[0m] /etc/letsencrypt/options-ssl-apache.conf not found – VirtualX-Installation übersprungen\n"
     elif ! systemctl is-active --quiet mysqld; then
-        _log error "MySQL läuft nicht – VirtualX-Installation übersprungen"
+        printf "[\e[31mERROR\e[0m] MySQL läuft nicht – VirtualX-Installation übersprungen\n"
     else
 
     ### Create user for vhost
@@ -110,7 +110,7 @@ if [ "$u_virtualx" = "y" ]; then
     fi
     u_srv_pwd=$(tr -dc 'A-Za-z0-9@_-' < /dev/urandom | head -c 14)
     echo "$u_srv:$u_srv_pwd" | chpasswd
-    _log ok "User \e[1m$u_srv\e[0m created"
+    printf "\n[\e[32mOK\e[0m] User \e[1m%s\e[0m created\n" "$u_srv"
 
     ### Create sudoers entry for virtualx user
     ###
@@ -119,7 +119,7 @@ if [ "$u_virtualx" = "y" ]; then
     if [ ! -f "$_sudoers_file" ]; then
         printf '%s ALL=(ALL) NOPASSWD: ALL\n' "$u_srv" > "$_sudoers_file"
         chmod 440 "$_sudoers_file"
-        _log ok "Sudoers entry created: $_sudoers_file"
+        printf "[\e[32mOK\e[0m] Sudoers entry created: %s\n" "$_sudoers_file"
     fi
 
     ### Create directories
@@ -274,7 +274,7 @@ guest_username=$u_srv
 write_enable=YES
 local_root=/home/httpd/$u_srv
 EOF
-        _log ok "vsftpd user config created: $vsftpd_user_conf_dir/$u_srv"
+        printf "[\e[32mOK\e[0m] vsftpd user config created: %s\n" "$vsftpd_user_conf_dir/$u_srv"
     fi
 
     ### Create virtualx DB entry
@@ -293,7 +293,7 @@ INSERT INTO passwd (dom_id, username, passwd, rootdir, status)
     rootdir = '/home/httpd/$u_srv',
     status  = 'A';
 EOF
-    _log ok "virtualX DB entry created for $u_srv"
+    printf "[\e[32mOK\e[0m] virtualX DB entry created for %s\n" "$u_srv"
 
     print_virtualx_access_summary
 

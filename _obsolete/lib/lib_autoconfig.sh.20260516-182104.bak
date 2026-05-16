@@ -72,21 +72,13 @@ if [ "$u_autoconfig" = "y" ]; then
         ### Check Apache State
         ###
         ###
-
-        ### --- SELinux: Dateikontext fuer autoconfig-Verzeichnis setzen ---------
-        ###  /home/httpd/autoconfig/logs muss schreibbar fuer httpd_t sein.
-        ###  restorecon laeuft VOR dem Reload, damit Apache die Logs oeffnen kann.
-        ###
-        printf "\n--- SELinux: autoconfig ---\n"
-        _selinux_restorecon /home/httpd
-
         u_state=$(apachectl -t 2>&1)
 
         if [ "$u_state" = "Syntax OK" ]; then
             systemctl reload httpd
-            _log ok "httpd reloaded"
+            printf "[\e[32mOK\e[0m] httpd reloaded\n"
         else
-            _log error "httpd reload failed:"
+            printf "[\e[31mFAIL\e[0m] httpd reload failed:\n"
             apachectl -t
         fi
 
@@ -94,9 +86,9 @@ if [ "$u_autoconfig" = "y" ]; then
         ###
         ###
         if [ ! -d "/etc/letsencrypt/live/$u_imap_host" ] || [ ! -d "/etc/letsencrypt/live/$u_smtp_host" ]; then
-            _log info "Autoconfig configured for $u_imap_host / $u_smtp_host – certs not yet found."
+            printf "[\e[36mINFO\e[0m] Autoconfig configured for %s / %s – certs not yet found.\n" "$u_imap_host" "$u_smtp_host"
         else
-            _log ok "Autoconfig configured for $u_imap_host / $u_smtp_host."
+            printf "[\e[32mOK\e[0m] Autoconfig configured for %s / %s.\n" "$u_imap_host" "$u_smtp_host"
         fi
 
     fi

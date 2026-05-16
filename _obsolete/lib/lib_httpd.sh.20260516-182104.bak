@@ -85,29 +85,10 @@ if [ "$u_httpd" = "y" ]; then
 
     if [ "$u_state" = "Syntax OK" ]; then
         systemctl reload httpd
-        _log ok "httpd reloaded"
+        printf "[\e[32mOK\e[0m] httpd reloaded\n"
     else
-        _log error "httpd reload failed:"
+        printf "[\e[31mFAIL\e[0m] httpd reload failed:\n"
         apachectl -t
     fi
-
-    ### --- SELinux: HTTPD Booleans + Dateikontexte ---------------
-    ###   httpd_can_network_connect     – Verbindung zu externen Diensten
-    ###   httpd_can_network_connect_db  – Verbindung zu Datenbank (z.B. MySQL)
-    ###   httpd_can_sendmail            – E-Mail-Versand aus PHP/CGI
-    ###   httpd_unified                 – httpd liest alle httpd-Label
-    ###   httpd_enable_homedirs         – Zugriff auf /home/* (UserDir)
-    ###   httpd_read_user_content       – Lesen von Benutzer-Inhalten
-    ###
-    printf "\n--- SELinux: HTTPD ---\n"
-    _selinux_ensure_tools
-    _selinux_set_bool httpd_can_network_connect
-    _selinux_set_bool httpd_can_network_connect_db
-    _selinux_set_bool httpd_can_sendmail
-    _selinux_set_bool httpd_unified
-    _selinux_set_bool httpd_enable_homedirs
-    _selinux_set_bool httpd_read_user_content
-    _selinux_restorecon /etc/httpd
-    _selinux_restorecon /var/www
 
 fi

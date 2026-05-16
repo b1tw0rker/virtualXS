@@ -65,14 +65,14 @@ Match Group users LocalPort 1122
 EOF
 
                 if semanage port -a -t ssh_port_t -p tcp 1122 2>/dev/null; then
-                        _log ok "semanage port 1122 added"
+                        printf "[\e[32mOK\e[0m] semanage port 1122 added\n"
                 else
-                        _log info "semanage port 1122 already exists or skipped"
+                        printf "[\e[36mINFO\e[0m] semanage port 1122 already exists or skipped\n"
                 fi
                 if systemctl restart sshd; then
-                        _log ok "sshd restarted"
+                        printf "[\e[32mOK\e[0m] sshd restarted\n"
                 else
-                        _log error "sshd restart failed"
+                        printf "[\e[31mFAIL\e[0m] sshd restart failed\n"
                 fi
         fi
 

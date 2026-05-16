@@ -36,17 +36,17 @@ if [ "$u_ssh" = "y" ]; then
         ###
         if [ -f "$file_ssh001" ] && [ "$u_bitworker" != "### by BitWorker" ]; then
                 cat $u_path/files/ssh/sshd_config >>$file_ssh001
-                _log ok "sshd_config updated"
+                printf "[\e[32mOK\e[0m] sshd_config updated\n"
                 #sed -i 's/^Match User root Address XXX/Match User root Address '"$u_client_ip"'/' $file_ssh001
         else
-                _log info "sshd_config BitWorker block already present – skipped"
+                printf "[\e[36mINFO\e[0m] sshd_config BitWorker block already present – skipped\n"
         fi
 
 
         if systemctl restart sshd; then
-                _log ok "sshd restarted"
+                printf "[\e[32mOK\e[0m] sshd restarted\n"
         else
-                _log error "sshd restart failed"
+                printf "[\e[31mFAIL\e[0m] sshd restart failed\n"
         fi
 
 fi

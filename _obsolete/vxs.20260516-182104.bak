@@ -84,7 +84,7 @@ DEV_START_AT=${1:-}
 ###
 source $u_path/lib/functions.sh
 
-_VXS_SECTIONS=(repo dnf folders helper_apps letsencrypt apps postfix httpd dovecot autoconfig vsftpd mysql backup quota powerdns logrotate cron tripwire php ssh fail2ban firewall kernel_modules virtualx wordpress)
+_VXS_SECTIONS=(repo dnf folders helper_apps letsencrypt apps postfix httpd dovecot autoconfig vsftpd mysql backup quota powerdns logrotate cron tripwire php ssh fail2ban firewall kernel_modules selinux virtualx wordpress)
 
 _vxs_section_index() {
     local section="$1" i
@@ -329,6 +329,7 @@ if vxs_should_run_from repo; then
         u_firewall=y
         u_activate_firewall=y
         u_hardening=y
+        u_selinux=y
         u_module_blacklist=y
         u_virtualx=y
     fi
@@ -366,6 +367,7 @@ if vxs_should_run_from repo; then
         u_firewall=y
         u_activate_firewall=y
         u_hardening=y
+        u_selinux=y
         u_module_blacklist=y
         u_virtualx=n
     fi
@@ -534,17 +536,7 @@ if vxs_should_run_from vsftpd; then
 
 fi
 
-if vxs_should_run_from mysql; then
 
-    ### SELinux: MySQL Boolean + Dateikontext
-    ###   mysql_connect_any – MySQL verbindet sich auf beliebige Ports/Sockets
-    ###
-    printf "\n--- SELinux: MySQL ---\n"
-    _selinux_ensure_tools
-    _selinux_set_bool mysql_connect_any
-    _selinux_restorecon /home/mysql
-
-fi
 
 if vxs_should_run_from backup; then
 
@@ -649,6 +641,15 @@ if vxs_should_run_from kernel_modules; then
     ###
     ###
     source $u_path/lib/lib_kernel_modules.sh
+
+fi
+
+if vxs_should_run_from selinux; then
+
+    ### q config SELinux
+    ###
+    ###
+    source $u_path/lib/lib_selinux.sh
 
 fi
 

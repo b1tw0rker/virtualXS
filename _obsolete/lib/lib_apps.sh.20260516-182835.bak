@@ -22,12 +22,12 @@ if [ "$u_enable_apps" = "y" ]; then
     printf "\n"
     for service in "${services[@]}"; do
         if systemctl is-enabled --quiet "$service"; then
-            _log info "$service already enabled"
+            printf "[\e[36mINFO\e[0m] %s already enabled\n" "$service"
         else
             if systemctl enable "$service" 2>/dev/null; then
-                _log ok "$service enabled"
+                printf "[\e[32mOK\e[0m] %s enabled\n" "$service"
             else
-                _log error "could not enable $service"
+                printf "[\e[31mFAIL\e[0m] could not enable %s\n" "$service"
             fi
         fi
     done
@@ -46,9 +46,9 @@ if [ "$u_start_server" = "y" ]; then
     printf "\n"
     for service in "${services[@]}"; do
         if systemctl start "$service" 2>/dev/null; then
-            _log ok "$service started"
+            printf "[\e[32mOK\e[0m] %s started\n" "$service"
         else
-            _log error "could not start $service"
+            printf "[\e[31mFAIL\e[0m] could not start %s\n" "$service"
         fi
     done
 

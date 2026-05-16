@@ -7,10 +7,10 @@ printf "\n********************************************************************\n
 if confirm "$(( ++_vxs_step ))) Append root .bashrc additions (claude alias, chk-service)" "$u_bashrc_root"; then
 
     if grep -qF 'bw-chk-service' /root/.bashrc 2>/dev/null; then
-        _log info "/root/.bashrc additions already present – skipping"
+        printf "[\e[36mINFO\e[0m] /root/.bashrc additions already present – skipping\n"
     else
         cat "$u_path/files/root/.bashrc" >> /root/.bashrc
-        _log ok "/root/.bashrc updated"
+        printf "[\e[32mOK\e[0m] /root/.bashrc updated\n"
     fi
 
 fi
@@ -22,11 +22,11 @@ printf "\n********************************************************************\n
 if confirm "$(( ++_vxs_step ))) Copy .claude.json to /root/" "$u_claude_json"; then
 
     if [[ -f /root/.claude.json ]]; then
-        _log info "/root/.claude.json already exists, skipping"
+        printf "[\e[34mINFO\e[0m] /root/.claude.json already exists, skipping\n"
     else
         cp "$u_path/files/root/.claude.json" /root/.claude.json
         chmod 600 /root/.claude.json
-        _log ok "/root/.claude.json installed"
+        printf "[\e[32mOK\e[0m] /root/.claude.json installed\n"
     fi
 
 fi

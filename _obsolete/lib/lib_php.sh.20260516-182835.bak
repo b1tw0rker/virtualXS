@@ -31,12 +31,12 @@ if [ "$u_php" = "y" ]; then
 
     if [ -d "$file_php_003" ]; then
         if ! cp $u_path/files/php/90-bw-security.ini $file_php_003; then
-            _log error "cp 90-bw-security.ini failed"
+            printf "[\e[31mERROR\e[0m] cp 90-bw-security.ini failed\n"
         else
-            _log ok "90-bw-security.ini copied"
+            printf "[\e[32mOK\e[0m] 90-bw-security.ini copied\n"
         fi
     else
-        _log info "PHP config dir not found – skipped"
+        printf "[\e[36mINFO\e[0m] PHP config dir not found – skipped\n"
     fi
 
 fi

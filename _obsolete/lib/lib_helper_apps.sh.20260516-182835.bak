@@ -20,7 +20,7 @@ if [ "$u_helper_apps" = "y" ]; then
     ###
     ###
     if ! cp $u_path/files/bitworker/bw-* $file004/; then
-        _log error "cp failed: $u_path/files/bitworker/bw-* → $file004/"
+        printf "[\e[31mERROR\e[0m] cp failed: %s → %s\n" "$u_path/files/bitworker/bw-*" "$file004/"
     else
 
         ###
@@ -47,7 +47,7 @@ if [ "$u_helper_apps" = "y" ]; then
                 ln -sf "$helper_file" "/bin/$helper_name"
             fi
         done
-        _log ok "helper scripts linked"
+        printf "[\e[32mOK\e[0m] helper scripts linked\n"
     fi
 fi
 
@@ -59,7 +59,7 @@ printf "\n********************************************************************\n
 if confirm "$(( ++_vxs_step ))) Install chk-service from GitHub" "$u_chk_service"; then
 
     if [ -d "/opt/chk-service" ]; then
-        _log info "/opt/chk-service already exists – pulling latest changes"
+        printf "[\e[36mINFO\e[0m] /opt/chk-service already exists – pulling latest changes\n"
         git -C /opt/chk-service pull
     else
         git clone https://github.com/b1tw0rker/chk-service /opt/chk-service
@@ -67,9 +67,9 @@ if confirm "$(( ++_vxs_step ))) Install chk-service from GitHub" "$u_chk_service
 
     if [ -f "/opt/chk-service/bw-chk-service.sh" ]; then
         chmod 700 /opt/chk-service/bw-chk-service.sh
-        _log ok "chk-service installed at /opt/chk-service"
+        printf "[\e[32mOK\e[0m] chk-service installed at /opt/chk-service\n"
     else
-        _log error "bw-chk-service.sh not found after clone"
+        printf "[\e[31mERROR\e[0m] bw-chk-service.sh not found after clone\n"
     fi
 
 fi

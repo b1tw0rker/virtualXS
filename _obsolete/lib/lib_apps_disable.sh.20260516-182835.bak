@@ -17,9 +17,9 @@ if [ "$u_disable_apps" = "y" ]; then
         if systemctl list-unit-files | grep -q "$service"; then
             systemctl disable "$service"
             systemctl stop "$service"
-            _log ok "$service disabled"
+            printf "[\e[32mOK\e[0m] %s disabled\n" "$service"
         else
-            _log info "$service not found – skipped"
+            printf "[\e[36mINFO\e[0m] %s not found – skipped\n" "$service"
         fi
     done
 

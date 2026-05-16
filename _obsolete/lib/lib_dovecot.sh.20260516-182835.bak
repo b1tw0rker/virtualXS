@@ -20,9 +20,9 @@ if [ "$u_dovecot" = "y" ]; then
 
     touch /etc/dovecot/master-users
     if cp $u_path/files/dovecot/dovecot-sql.conf.ext /etc/dovecot/; then
-        _log ok "dovecot-sql.conf.ext copied"
+        printf "[\e[32mOK\e[0m] dovecot-sql.conf.ext copied\n"
     else
-        _log error "could not copy dovecot-sql.conf.ext"
+        printf "[\e[31mFAIL\e[0m] could not copy dovecot-sql.conf.ext\n"
     fi
 
     mysql_pwd=$(grep '^password=' /root/.my.cnf | cut -d'=' -f2-)
@@ -53,7 +53,7 @@ if [ "$u_dovecot" = "y" ]; then
     ###
     sed -i 's/^!include auth-system.conf.ext/#!include auth-system.conf.ext/' /etc/dovecot/conf.d/10-auth.conf
     sed -i 's/^#!include auth-sql.conf.ext/!include auth-sql.conf.ext/' /etc/dovecot/conf.d/10-auth.conf
-    _log ok "Dovecot auth configured"
+    printf "[\e[32mOK\e[0m] Dovecot auth configured\n"
 
     ### --- SELinux: Dovecot Dateikontexte -----------------------
     ###  /etc/dovecot und /var/log werden nach Konfiguration zurueckgesetzt.

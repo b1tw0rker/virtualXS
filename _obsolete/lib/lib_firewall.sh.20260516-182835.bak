@@ -58,7 +58,7 @@ if [ "$u_firewall" = "y" ]; then
         chmod 700 /etc/cron.hourly/firewall-test
     fi
 
-    _log ok "/etc/firewall configured"
+    printf "[\e[32mOK\e[0m] /etc/firewall configured\n"
     
 fi
 
@@ -81,7 +81,7 @@ if [ "$u_activate_firewall" = "y" ]; then
         
         /etc/firewall/stop.sh
         
-        _log info "Stopping Firewall"
+        printf "[\e[36mINFO\e[0m] Stopping Firewall\n"
         iptables -F
         iptables -X
         iptables -t filter -F
@@ -104,11 +104,11 @@ if [ "$u_activate_firewall" = "y" ]; then
         systemctl start fail2ban
     fi
 
-    _log ok "Firewall activated"
+    printf "[\e[32mOK\e[0m] Firewall activated\n"
     
 fi
 
-_log info "Don't forget to enable Firewall with: systemctl enable firewalld -- after reboot"
+printf "\n[\e[36mINFO\e[0m] Don't forget to enable Firewall with: systemctl enable firewalld -- after reboot\n"
 
 printf "\n********************************************************************\n\n"
 
@@ -124,13 +124,13 @@ if confirm "$(( ++_vxs_step ))) Kernel-Hardening (ASLR, SYN-Flood, Redirect-/Spo
     fi
     
     if ! cp $u_path/files/firewall/99-bw-kernel-hardening.conf $folder001; then
-        _log error "cp 99-bw-kernel-hardening.conf failed"
+        printf "[\e[31mERROR\e[0m] cp 99-bw-kernel-hardening.conf failed\n"
     else
         ### activate kernel rules
         ###
         ###
         sysctl -p "$folder001/99-bw-kernel-hardening.conf"
-        _log ok "Kernel hardening applied"
+        printf "[\e[32mOK\e[0m] Kernel hardening applied\n"
     fi
     
 fi

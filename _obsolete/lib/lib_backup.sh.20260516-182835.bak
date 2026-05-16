@@ -8,7 +8,7 @@ fi
 if [ "$u_backup" = "y" ]; then
     printf "\n"
     if ! git clone https://github.com/b1tw0rker/rsync.git /etc/bitworker/rsync/; then
-        _log error "git clone failed"
+        printf "[\e[31mERROR\e[0m] git clone failed\n"
     else
         chmod 700 /etc/bitworker/rsync/copyjob.sh
 
@@ -19,10 +19,10 @@ if [ "$u_backup" = "y" ]; then
         ###
         ###
         if ! cp $u_path/files/backup/copyjobcron /etc/cron.daily/copyjob; then
-            _log error "cp copyjobcron failed"
+            printf "[\e[31mERROR\e[0m] cp copyjobcron failed\n"
         else
             chmod 700 /etc/cron.daily/copyjob
-            _log ok "backup cronjob installed"
+            printf "[\e[32mOK\e[0m] backup cronjob installed\n"
         fi
     fi
 

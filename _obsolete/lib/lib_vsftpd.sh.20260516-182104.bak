@@ -19,8 +19,8 @@ if [ "$u_vsftpd" = "y" ]; then
     file_vsftpd007=/etc/bitworker/bw-vsftpd-pam-userlogin-check.sh
 
     if [ ! -f "$file_vsftpd007" ]; then
-        _log error "Missing helper script: $file_vsftpd007"
-        _log warn "Run helper-apps first so files/bitworker is copied to /etc/bitworker"
+        printf "[\e[31mERROR\e[0m] Missing helper script: %s\n" "$file_vsftpd007"
+        printf "[\e[33mWARN\e[0m] Run helper-apps first so files/bitworker is copied to /etc/bitworker\n"
         return 1
     fi
 
@@ -39,7 +39,7 @@ if [ "$u_vsftpd" = "y" ]; then
     # One-time backup of the original vsftpd.conf
     if [ -f "$file_vsftpd002" ] && [ ! -f /etc/vsftpd/vsftpd.orig ]; then
         cp "$file_vsftpd002" /etc/vsftpd/vsftpd.orig
-        _log ok "Original gesichert: /etc/vsftpd/vsftpd.orig"
+        printf "[\e[32mOK\e[0m] Original gesichert: /etc/vsftpd/vsftpd.orig\n"
     fi
 
     cat "$u_path/files/vsftpd/vsftpd.conf" >>"$file_vsftpd002"
@@ -50,9 +50,9 @@ if [ "$u_vsftpd" = "y" ]; then
         cp /root/.my.cnf /etc/vsftpd/.my.cnf
         chmod 600 /etc/vsftpd/.my.cnf
         chown root:root /etc/vsftpd/.my.cnf
-        _log ok "MySQL-Zugangsdaten kopiert: /etc/vsftpd/.my.cnf"
+        printf "[\e[32mOK\e[0m] MySQL-Zugangsdaten kopiert: /etc/vsftpd/.my.cnf\n"
     else
-        _log error "/root/.my.cnf nicht gefunden – /etc/vsftpd/.my.cnf fehlt"
+        printf "[\e[31mERROR\e[0m] /root/.my.cnf nicht gefunden – /etc/vsftpd/.my.cnf fehlt\n"
     fi
 
     ### pam_exec script + PAM config
@@ -70,9 +70,9 @@ if [ "$u_vsftpd" = "y" ]; then
             -e "s|^#\?rsa_cert_file=.*|rsa_cert_file=/etc/letsencrypt/live/${u_srv}/fullchain.pem|" \
             -e "s|^#\?rsa_private_key_file=.*|rsa_private_key_file=/etc/letsencrypt/live/${u_srv}/privkey.pem|" \
             "$file_vsftpd002"
-        _log ok "SSL cert aktiviert: /etc/letsencrypt/live/${u_srv}/"
+        printf "[\e[32mOK\e[0m] SSL cert aktiviert: /etc/letsencrypt/live/${u_srv}/\n"
     else
-        _log warn "SSL cert nicht gefunden – rsa_cert_file bleibt auskommentiert"
+        printf "[\e[33mWARN\e[0m] SSL cert nicht gefunden – rsa_cert_file bleibt auskommentiert\n"
     fi
 
     ### Start or restart vsftpd
@@ -80,26 +80,16 @@ if [ "$u_vsftpd" = "y" ]; then
     ###
     if systemctl is-active --quiet vsftpd; then
         if systemctl restart vsftpd; then
-            _log ok "Vsftpd restarted"
+            printf "[\e[32mOK\e[0m] Vsftpd restarted\n"
         else
-            _log error "Vsftpd restart failed – check: journalctl -xeu vsftpd.service"
+            printf "[\e[31mERROR\e[0m] Vsftpd restart failed – check: journalctl -xeu vsftpd.service\n"
         fi
     else
         if systemctl enable --now vsftpd; then
-            _log ok "Vsftpd gestartet"
+            printf "[\e[32mOK\e[0m] Vsftpd gestartet\n"
         else
-            _log error "Vsftpd start failed – check: journalctl -xeu vsftpd.service"
+            printf "[\e[31mERROR\e[0m] Vsftpd start failed – check: journalctl -xeu vsftpd.service\n"
         fi
     fi
-
-    ### --- SELinux: VSFTPD Booleans + Dateikontexte -------------
-    ###   ftpd_connect_db       – vsftpd verbindet sich mit Datenbank (PAM/MySQL)
-    ###   ftpd_use_passive_mode – passiver FTP-Modus erlaubt
-    ###
-    printf "\n--- SELinux: VSFTPD ---\n"
-    _selinux_ensure_tools
-    _selinux_set_bool ftpd_connect_db
-    _selinux_set_bool ftpd_use_passive_mode
-    _selinux_restorecon /home/pop
 
 fi

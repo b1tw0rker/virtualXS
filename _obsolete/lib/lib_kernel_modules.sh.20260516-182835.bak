@@ -14,9 +14,9 @@ if [ "$u_module_blacklist" = "y" ]; then
     fi
 
     if ! cp $u_path/files/firewall/99-bw-module-blacklist.conf $folder_modprobe; then
-        _log error "cp 99-bw-module-blacklist.conf failed"
+        printf "[\e[31mERROR\e[0m] cp 99-bw-module-blacklist.conf failed\n"
     else
-        _log ok "kernel module blacklist applied"
+        printf "[\e[32mOK\e[0m] kernel module blacklist applied\n"
     fi
 
 fi

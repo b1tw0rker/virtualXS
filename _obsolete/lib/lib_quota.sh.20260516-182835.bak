@@ -12,8 +12,7 @@ file_fstab002=/etc/fstab.bak
 u_quota_check=$(grep -m 1 "uquota" /etc/fstab)
 (( _vxs_step++ ))
 if [ "$u_quota_check" != "" ]; then
-    printf "\n********************************************************************\n\n%d) Activate Quota for /home [y/N]:\n" "$_vxs_step"
-    _log ok "(already active - skipping)"
+    printf "\n********************************************************************\n\n%d) Activate Quota for /home [y/N]:\n[\e[32mOK\e[0m] (already active - skipping)\n" "$_vxs_step"
     u_quota=n
 else
     printf "\n********************************************************************\n\n%d) Activate Quota for /home [y/N]: " "$_vxs_step"
@@ -37,6 +36,6 @@ if [ "$u_quota" = "y" ]; then
         umount /home
         mount -o uquota /dev/mapper/cl-home /home
     fi
-    _log ok "Quota configured"
+    printf "[\e[32mOK\e[0m] Quota configured\n"
 
 fi

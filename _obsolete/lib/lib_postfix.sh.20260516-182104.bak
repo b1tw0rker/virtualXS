@@ -33,14 +33,14 @@ if [ "$u_postfix" = "y" ]; then
     
     if [ -f "$file_postfix001" ] && [ "$u_bitworker" != "### by BitWorker" ]; then
         cat $u_path/files/postfix/main.cf >>$file_postfix001
-        _log ok "main.cf BitWorker block appended"
+        printf "[\e[32mOK\e[0m] main.cf BitWorker block appended\n"
     else
-        _log info "main.cf BitWorker block already present – skipped"
+        printf "[\e[36mINFO\e[0m] main.cf BitWorker block already present – skipped\n"
     fi
 
-    cp $u_path/files/postfix/bounce.de.default /etc/postfix/ && _log ok "bounce.de.default copied"
-    cp $u_path/files/postfix/mysql-domains.cf /etc/postfix/ && _log ok "mysql-domains.cf copied"
-    cp $u_path/files/postfix/mysql-virtual.cf /etc/postfix/ && _log ok "mysql-virtual.cf copied"
+    cp $u_path/files/postfix/bounce.de.default /etc/postfix/ && printf "[\e[32mOK\e[0m] bounce.de.default copied\n"
+    cp $u_path/files/postfix/mysql-domains.cf /etc/postfix/ && printf "[\e[32mOK\e[0m] mysql-domains.cf copied\n"
+    cp $u_path/files/postfix/mysql-virtual.cf /etc/postfix/ && printf "[\e[32mOK\e[0m] mysql-virtual.cf copied\n"
     
     mysql_pwd=$(grep '^password=' /root/.my.cnf | cut -d'=' -f2-)
     sed -i 's/^password = XXX/password = '"$mysql_pwd"'/' /etc/postfix/mysql-virtual.cf
@@ -99,17 +99,9 @@ if [ "$u_postfix" = "y" ]; then
       # A clean stop + start forces Postfix to re-evaluate inet_interfaces and
       # skip all IPv6 addresses from the start.
       if systemctl stop postfix && systemctl start postfix; then
-        _log ok "Postfix restarted"
+        printf "[\e[32mOK\e[0m] Postfix restarted\n"
     else
-        _log error "Postfix restart failed"
+        printf "[\e[31mERROR\e[0m] Postfix restart failed\n"
     fi
-
-    ### --- SELinux: Postfix Boolean + Dateikontext ---------------
-    ###   allow_postfix_local_write_mail_spool – Postfix schreibt in Mail-Spool
-    ###
-    printf "\n--- SELinux: Postfix ---\n"
-    _selinux_ensure_tools
-    _selinux_set_bool allow_postfix_local_write_mail_spool
-    _selinux_restorecon /etc/postfix
     
 fi
