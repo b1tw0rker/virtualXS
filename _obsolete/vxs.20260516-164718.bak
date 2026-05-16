@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-### Version: 1.2.122
+### Version: 1.2.121
 ### Build date: 12.05.2026
 ### (C) 2021 - 2026 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -32,7 +32,7 @@ done
 ###
 ###
 infocolor=$(tput setaf 6) # DEV
-u_version=1.2.122
+u_version=1.2.121
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
 WEBHOSTER=host-x.de
@@ -309,9 +309,6 @@ if vxs_should_run_from repo; then
         u_fail2ban=y
         u_tripwire=y
         u_helper_apps=y
-        u_chk_service=y
-        u_bashrc_root=y
-        u_claude_json=y
         u_httpd=y
         u_wp_cli=y
         u_dovecot=y
@@ -347,9 +344,6 @@ if vxs_should_run_from repo; then
         u_fail2ban=y
         u_tripwire=y
         u_helper_apps=y
-        u_chk_service=y
-        u_bashrc_root=y
-        u_claude_json=y
         u_httpd=n
         u_wp_cli=n
         u_dovecot=n

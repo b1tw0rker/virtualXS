@@ -18,12 +18,6 @@ confirm() {
     local default_value="${2:-N}" # Setze standardmäßig auf 'N', falls kein Wert angegeben wird
     local result
 
-    # Auto-accept if value is already pre-set (e.g. from server presettings)
-    case ${default_value,,} in
-        "y" | "yes") printf "%s [y/N]: y\n" "$prompt"; return 0 ;;
-        "n" | "no")  printf "%s [y/N]: n\n" "$prompt"; return 1 ;;
-    esac
-
     while true; do
         read -p "$prompt [y/N]: " -i "$default_value" result
         case ${result,,} in          # Konvertiert die Eingabe in Kleinbuchstaben, um Groß- und Kleinschreibung zu ignorieren
