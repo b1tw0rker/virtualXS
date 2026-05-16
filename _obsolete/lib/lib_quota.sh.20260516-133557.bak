@@ -14,10 +14,9 @@ if [ "$u_quota_check" != "" ]; then
     printf "\n********************************************************************\n\nActivate Quota for /home [y/N]:\n[\e[32mOK\e[0m] (already active - skipping)\n"
     u_quota=n
 else
-    printf "\n********************************************************************\n\nActivate Quota for /home [Y/n]: "
+    printf "\n********************************************************************\n\nActivate Quota for /home [y/N]: "
     if [ "$u_quota" = "" ]; then
         read u_quota
-        [ "$u_quota" = "" ] && u_quota="y"
     fi
 fi
 

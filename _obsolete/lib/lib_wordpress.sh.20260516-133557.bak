@@ -4,17 +4,9 @@
 ###
 ###
 if [ "$u_server" = "w" ]; then # Only for web servers
-    # Smart default: Y if wp-cli not yet installed, N if already present
-    _wp_default="y"
-    _wp_prompt="[Y/n]"
-    if [ -f "/usr/local/bin/wp" ]; then
-        _wp_default="n"
-        _wp_prompt="[y/N]"
-    fi
-    printf "\n********************************************************************\n\nInstall Wordpress CLI (wp-cli)? %s: " "$_wp_prompt"
+    printf "\n********************************************************************\n\nInstall Wordpress CLI (wp-cli)? [y/N]: "
     if [ -z "$u_wp_cli" ]; then
         read u_wp_cli
-        [ "$u_wp_cli" = "" ] && u_wp_cli="$_wp_default"
     fi
     
     if [ "$u_wp_cli" = "y" ]; then

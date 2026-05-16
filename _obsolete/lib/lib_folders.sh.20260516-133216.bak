@@ -1,21 +1,8 @@
 #!/bin/bash
 
-# Smart default: Y if at least one folder is missing, N if all already exist
-_vxf_default="y"
-_vxf_prompt="[Y/n]"
-_vxf_all_exist=true
-for _vxf in /home/httpd /home/pop /home/mysql /etc/bitworker /var/log/rsync /etc/httpd/virtualx.d; do
-  [ -d "$_vxf" ] || { _vxf_all_exist=false; break; }
-done
-if [ "$_vxf_all_exist" = "true" ]; then
-  _vxf_default="n"
-  _vxf_prompt="[y/N]"
-fi
-
-printf "\n********************************************************************\n\nCreate virtualx standard folders (/home/httpd, /home/pop, /home/mysql, /etc/bitworker, /var/log/rsync, /etc/httpd/virtualx.d) %s: " "$_vxf_prompt"
+printf "\n********************************************************************\n\nCreate virtualx standard folders (/home/httpd, /home/pop, /home/mysql, /etc/bitworker, /var/log/rsync, /etc/httpd/virtualx.d) [y/N]: "
 if [ "$u_folders_create" = "" ]; then
   read u_folders_create
-  [ "$u_folders_create" = "" ] && u_folders_create="$_vxf_default"
 fi
 
 if [ "$u_folders_create" = "y" ]; then

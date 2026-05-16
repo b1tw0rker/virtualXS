@@ -3,17 +3,9 @@
 ### /etc/ssh/sshd_config SFTP
 ###
 ###
-# Smart default: Y if internal-sftp not yet configured, N if already set
-_sftp_default="y"
-_sftp_prompt="[Y/n]"
-if grep -q "internal-sftp" /etc/ssh/sshd_config 2>/dev/null; then
-    _sftp_default="n"
-    _sftp_prompt="[y/N]"
-fi
-printf "\n********************************************************************\n\nEnable SFTP %s: " "$_sftp_prompt"
+printf "\n********************************************************************\n\nEnable SFTP [y/N]: "
 if [ "$u_ssh_sftp" = "" ]; then
         read u_ssh_sftp
-        [ "$u_ssh_sftp" = "" ] && u_ssh_sftp="$_sftp_default"
 fi
 
 if [ "$u_ssh_sftp" = "y" ]; then
