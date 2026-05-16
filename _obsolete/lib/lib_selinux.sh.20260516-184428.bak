@@ -38,6 +38,22 @@ if [ "$u_selinux" = "y" ]; then
         _log error "SELinux ist nicht auf Enforcing – aktuell: $_selinux_current"
     fi
 
+    ### --- Hilfsfunktion: Boolean setzen ------------------------
+    ###  Prueft Verfuegbarkeit via getsebool, setzt den Boolean persistent (-P).
+    ###
+    _selinux_set_bool() {
+        local bool="$1" val="${2:-on}"
+        if ! getsebool "$bool" &>/dev/null; then
+            _log info "Boolean $bool – auf diesem System nicht verfuegbar"
+            return
+        fi
+        if setsebool -P "$bool" "$val" 2>/dev/null; then
+            _log ok "setsebool -P $bool $val"
+        else
+            _log error "setsebool -P $bool $val – fehlgeschlagen"
+        fi
+    }
+
     ### --- Booleans – HTTPD (Apache) ---------------------------
     ###   httpd_can_network_connect     – Verbindung zu externen Diensten
     ###   httpd_can_network_connect_db  – Verbindung zu Datenbank (z.B. MySQL)

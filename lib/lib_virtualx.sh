@@ -1,17 +1,5 @@
 #!/bin/bash
 
-compact_virtualx_check_error() {
-    local message="$1"
-
-    message=$(printf '%s' "$message" | tr '\r\n' ' ' | sed 's/[[:space:]]\+/ /g; s/^ //; s/ $//')
-
-    if [ -z "$message" ]; then
-        message="unknown error"
-    fi
-
-    printf '%.220s' "$message"
-}
-
 print_virtualx_access_summary() {
     printf "\n----------------------------\n"
     _log ok "VirtualX API ready"

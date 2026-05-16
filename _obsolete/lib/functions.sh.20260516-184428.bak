@@ -142,22 +142,3 @@ print_center() {
     y=$(echo -ne "${y#*[}" | cut -d';' -f1)
     echo -ne "\033[${y};${x}f$*"
 }
-
-### Fehlermeldung normalisieren: Zeilenumbrueche entfernen, mehrfache
-### Leerzeichen kollabieren, fuehrende/nachfolgende Leerzeichen entfernen,
-### auf 220 Zeichen kuerzen. Gibt den kompakten String auf stdout aus.
-### Usage: compact_virtualx_check_error "<message>"
-### version 1.0.0
-### last-modified: 16.05.26
-###
-compact_virtualx_check_error() {
-    local message="$1"
-
-    message=$(printf '%s' "$message" | tr '\r\n' ' ' | sed 's/[[:space:]]\+/ /g; s/^ //; s/ $//')
-
-    if [ -z "$message" ]; then
-        message="unknown error"
-    fi
-
-    printf '%.220s' "$message"
-}
