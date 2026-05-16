@@ -21,12 +21,8 @@ fi
 printf "\n********************************************************************\n\n"
 if confirm "Copy .claude.json to /root/" "$u_claude_json"; then
 
-    if [[ -f /root/.claude.json ]]; then
-        printf "[\e[34mINFO\e[0m] /root/.claude.json already exists, skipping\n"
-    else
-        cp "$u_path/files/root/.claude.json" /root/.claude.json
-        chmod 600 /root/.claude.json
-        printf "[\e[32mOK\e[0m] /root/.claude.json installed\n"
-    fi
+    cp "$u_path/files/root/.claude.json" /root/.claude.json
+    chmod 600 /root/.claude.json
+    printf "[\e[32mOK\e[0m] /root/.claude.json installed\n"
 
 fi
