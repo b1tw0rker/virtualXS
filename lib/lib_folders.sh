@@ -14,6 +14,7 @@ if [ "$u_folders_create" = "y" ]; then
     /etc/bitworker
     /var/log/rsync
     /etc/httpd/virtualx.d
+    /etc/letsencrypt
   )
 
   for folder in "${folders[@]}"; do
@@ -23,8 +24,24 @@ if [ "$u_folders_create" = "y" ]; then
       if [ "$folder" = "/home/pop" ]; then
         chmod 777 "$folder"
       fi
+
+      if [ -d "$folder" ]; then
+        printf "[\e[32mOK\e[0m] created %s successfully\n" "$folder"
+      else
+        printf "[\e[31mFAIL\e[0m] could not create %s\n" "$folder"
+      fi
     fi
   done
+
+  # Copy certbot-apache TLS options to letsencrypt config dir
+  if [ -f /usr/lib/python3.12/site-packages/certbot_apache/_internal/tls_configs/current-options-ssl-apache.conf ]; then
+    cp /usr/lib/python3.12/site-packages/certbot_apache/_internal/tls_configs/current-options-ssl-apache.conf /etc/letsencrypt/options-ssl-apache.conf
+    if [ -f /etc/letsencrypt/options-ssl-apache.conf ]; then
+      printf "[\e[32mOK\e[0m] copy /etc/letsencrypt/options-ssl-apache.conf success\n"
+    else
+      printf "[\e[31mFAIL\e[0m] could not copy options-ssl-apache.conf\n"
+    fi
+  fi
 
   printf "[\e[32mOK\e[0m]\n"
 
