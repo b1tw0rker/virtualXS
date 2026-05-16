@@ -61,7 +61,7 @@ if [ "$u_dnf" = "y" ]; then
             printf "[\e[31mFAIL\e[0m] dnf-automatic.timer could not be enabled\n"
         fi
     else
-        printf "[\e[33mINFO\e[0m] %s not found – dnf-automatic skipped\n" "$file001"
+        printf "[\e[36mINFO\e[0m] %s not found – dnf-automatic skipped\n" "$file001"
     fi
     
 fi

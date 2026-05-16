@@ -66,7 +66,7 @@ EOF
                 if semanage port -a -t ssh_port_t -p tcp 1122 2>/dev/null; then
                         printf "[\e[32mOK\e[0m] semanage port 1122 added\n"
                 else
-                        printf "[\e[36mINFO\e[0m] semanage port 1122 already exists or skipped\n"
+                        printf "[\e[33mINFO\e[0m] semanage port 1122 already exists or skipped\n"
                 fi
                 if systemctl restart sshd; then
                         printf "[\e[32mOK\e[0m] sshd restarted\n"

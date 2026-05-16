@@ -22,7 +22,7 @@ if [ "$u_backup" = "y" ]; then
             printf "[\e[31mERROR\e[0m] cp copyjobcron failed\n"
         else
             chmod 700 /etc/cron.daily/copyjob
-            printf "[\e[32mOK\e[0m] backup cronjob installed\n"
+            printf "[\e[32mOK\e[0m]\n"
         fi
     fi
 

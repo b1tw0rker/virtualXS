@@ -19,7 +19,7 @@ if [ "$u_disable_apps" = "y" ]; then
             systemctl stop "$service"
             printf "[\e[32mOK\e[0m] %s disabled\n" "$service"
         else
-            printf "[\e[36mINFO\e[0m] %s not found – skipped\n" "$service"
+            printf "[\e[33mINFO\e[0m] %s not found – skipped\n" "$service"
         fi
     done
 

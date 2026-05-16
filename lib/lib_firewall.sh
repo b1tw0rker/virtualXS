@@ -81,7 +81,7 @@ if [ "$u_activate_firewall" = "y" ]; then
         
         /etc/firewall/stop.sh
         
-        printf "[\e[33mINFO\e[0m] Stopping Firewall\n"
+        printf "[\e[36mINFO\e[0m] Stopping Firewall\n"
         iptables -F
         iptables -X
         iptables -t filter -F
@@ -108,7 +108,7 @@ if [ "$u_activate_firewall" = "y" ]; then
     
 fi
 
-printf "\n[\e[33mINFO\e[0m] Don't forget to enable Firewall with: systemctl enable firewalld -- after reboot\n"
+printf "\n[\e[36mINFO\e[0m] Don't forget to enable Firewall with: systemctl enable firewalld -- after reboot\n"
 
 printf "\n********************************************************************\n\n"
 

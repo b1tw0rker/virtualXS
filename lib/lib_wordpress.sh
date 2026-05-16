@@ -18,7 +18,7 @@ if [ "$u_server" = "w" ]; then # Only for web servers
     fi
     
     if [ "$u_wp_cli" = "y" ]; then
-        printf "[\e[33mINFO\e[0m] Installing WP-CLI...\n"
+        printf "[\e[36mINFO\e[0m] Installing WP-CLI...\n"
         if curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
             && chmod +x wp-cli.phar \
             && mv wp-cli.phar /usr/local/bin/wp; then

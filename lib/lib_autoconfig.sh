@@ -86,7 +86,7 @@ if [ "$u_autoconfig" = "y" ]; then
         ###
         ###
         if [ ! -d "/etc/letsencrypt/live/$u_imap_host" ] || [ ! -d "/etc/letsencrypt/live/$u_smtp_host" ]; then
-            printf "[\e[33mINFO\e[0m] Autoconfig configured for %s / %s – certs not yet found.\n" "$u_imap_host" "$u_smtp_host"
+            printf "[\e[36mINFO\e[0m] Autoconfig configured for %s / %s – certs not yet found.\n" "$u_imap_host" "$u_smtp_host"
         else
             printf "[\e[32mOK\e[0m] Autoconfig configured for %s / %s.\n" "$u_imap_host" "$u_smtp_host"
         fi

@@ -38,7 +38,7 @@ if [ "$u_ssh" = "y" ]; then
                 printf "[\e[32mOK\e[0m] sshd_config updated\n"
                 #sed -i 's/^Match User root Address XXX/Match User root Address '"$u_client_ip"'/' $file_ssh001
         else
-                printf "[\e[36mINFO\e[0m] sshd_config BitWorker block already present – skipped\n"
+                printf "[\e[33mINFO\e[0m] sshd_config BitWorker block already present – skipped\n"
         fi
 
 

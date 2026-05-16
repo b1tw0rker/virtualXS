@@ -59,7 +59,7 @@ printf "\n********************************************************************\n
 if confirm "Install chk-service from GitHub" "$u_chk_service"; then
 
     if [ -d "/opt/chk-service" ]; then
-        printf "[\e[33mINFO\e[0m] /opt/chk-service already exists – pulling latest changes\n"
+        printf "[\e[36mINFO\e[0m] /opt/chk-service already exists – pulling latest changes\n"
         git -C /opt/chk-service pull
     else
         git clone https://github.com/b1tw0rker/chk-service /opt/chk-service

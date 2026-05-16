@@ -11,7 +11,7 @@ if [ "$u_selinux" = "y" ]; then
     ###
     ###
     if ! command -v setsebool &>/dev/null || ! command -v restorecon &>/dev/null || ! command -v setenforce &>/dev/null; then
-        printf "[\e[36mINFO\e[0m] policycoreutils fehlt – wird nachinstalliert\n"
+        printf "[\e[33mINFO\e[0m] policycoreutils fehlt – wird nachinstalliert\n"
         if dnf -y install policycoreutils 2>/dev/null; then
             printf "[\e[32mOK\e[0m] policycoreutils installiert\n"
         else
@@ -20,7 +20,7 @@ if [ "$u_selinux" = "y" ]; then
     fi
 
     if ! command -v semanage &>/dev/null; then
-        printf "[\e[36mINFO\e[0m] semanage fehlt – installiere policycoreutils-python-utils\n"
+        printf "[\e[33mINFO\e[0m] semanage fehlt – installiere policycoreutils-python-utils\n"
         if dnf -y install policycoreutils-python-utils 2>/dev/null; then
             printf "[\e[32mOK\e[0m] policycoreutils-python-utils installiert\n"
         else
@@ -43,7 +43,7 @@ if [ "$u_selinux" = "y" ]; then
     _selinux_set_bool() {
         local bool="$1" val="${2:-on}"
         if ! getsebool "$bool" &>/dev/null; then
-            printf "[\e[36mINFO\e[0m] Boolean %-40s – auf diesem System nicht verfuegbar\n" "$bool"
+            printf "[\e[33mINFO\e[0m] Boolean %-40s – auf diesem System nicht verfuegbar\n" "$bool"
             return
         fi
         if setsebool -P "$bool" "$val" 2>/dev/null; then
@@ -112,7 +112,7 @@ if [ "$u_selinux" = "y" ]; then
                 printf "[\e[31mERROR\e[0m] restorecon -Rv %s – fehlgeschlagen\n" "$_path"
             fi
         else
-            printf "[\e[36mINFO\e[0m] %s nicht vorhanden – restorecon uebersprungen\n" "$_path"
+            printf "[\e[33mINFO\e[0m] %s nicht vorhanden – restorecon uebersprungen\n" "$_path"
         fi
     done
 

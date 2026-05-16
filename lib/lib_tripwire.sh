@@ -63,13 +63,13 @@ if [ "$u_tripwire" = "y" ]; then
     fi
     
     printf "[\e[32mOK\e[0m] Tripwire configured\n"
-    printf "[\e[33mINFO\e[0m] Monitored directories include:\n"
-    printf "[\e[33mINFO\e[0m]   - Standard system directories (/etc, /bin, /sbin, etc.)\n"
-    printf "[\e[33mINFO\e[0m]   - /home/httpd/ (web content)\n"
-    printf "[\e[33mINFO\e[0m]   - /var/log/ (log files)\n"
-    printf "[\e[33mINFO\e[0m] Usage:\n"
-    printf "[\e[33mINFO\e[0m]   - Integrity check: tripwire --check\n"
-    printf "[\e[33mINFO\e[0m]   - Update database: tripwire --update\n"
-    printf "[\e[33mINFO\e[0m]   - Generate report: tripwire --check --interactive\n"
+    printf "[\e[36mINFO\e[0m] Monitored directories include:\n"
+    printf "[\e[36mINFO\e[0m]   - Standard system directories (/etc, /bin, /sbin, etc.)\n"
+    printf "[\e[36mINFO\e[0m]   - /home/httpd/ (web content)\n"
+    printf "[\e[36mINFO\e[0m]   - /var/log/ (log files)\n"
+    printf "[\e[36mINFO\e[0m] Usage:\n"
+    printf "[\e[36mINFO\e[0m]   - Integrity check: tripwire --check\n"
+    printf "[\e[36mINFO\e[0m]   - Update database: tripwire --update\n"
+    printf "[\e[36mINFO\e[0m]   - Generate report: tripwire --check --interactive\n"
     
 fi

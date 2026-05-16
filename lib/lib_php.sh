@@ -36,7 +36,7 @@ if [ "$u_php" = "y" ]; then
             printf "[\e[32mOK\e[0m] 90-bw-security.ini copied\n"
         fi
     else
-        printf "[\e[33mINFO\e[0m] PHP config dir not found – skipped\n"
+        printf "[\e[36mINFO\e[0m] PHP config dir not found – skipped\n"
     fi
 
 fi

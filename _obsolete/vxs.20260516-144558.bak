@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-### Version: 1.2.119
+### Version: 1.2.118
 ### Build date: 12.05.2026
 ### (C) 2021 - 2026 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -32,7 +32,7 @@ done
 ###
 ###
 infocolor=$(tput setaf 6) # DEV
-u_version=1.2.119
+u_version=1.2.118
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
 WEBHOSTER=host-x.de
@@ -636,7 +636,7 @@ if vxs_should_run_from virtualx; then
         _vx_db_exists=$(mysql -u root -e "SHOW DATABASES LIKE 'virtualx';" 2>/dev/null | grep -c "virtualx" || true)
 
         if [ "$_vx_db_exists" -gt 0 ]; then
-            printf "[\e[36mINFO\e[0m] virtualX-Datenbank ist bereits vorhanden.\n"
+            printf "[\e[33mINFO\e[0m] virtualX-Datenbank ist bereits vorhanden.\n"
             printf "  [1] Schema-Update durchführen  (neue Tabellen anlegen, vorhandene behalten)\n"
             printf "  [2] Datenbank löschen und neu installieren  (DROP DATABASE virtualx)\n"
             printf "  [3] Überspringen\n"

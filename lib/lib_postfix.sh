@@ -35,7 +35,7 @@ if [ "$u_postfix" = "y" ]; then
         cat $u_path/files/postfix/main.cf >>$file_postfix001
         printf "[\e[32mOK\e[0m] main.cf BitWorker block appended\n"
     else
-        printf "[\e[33mINFO\e[0m] main.cf BitWorker block already present – skipped\n"
+        printf "[\e[36mINFO\e[0m] main.cf BitWorker block already present – skipped\n"
     fi
 
     cp $u_path/files/postfix/bounce.de.default /etc/postfix/ && printf "[\e[32mOK\e[0m] bounce.de.default copied\n"

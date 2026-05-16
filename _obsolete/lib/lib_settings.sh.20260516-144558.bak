@@ -7,7 +7,7 @@ printf "\n********************************************************************\n
 if confirm "Append root .bashrc additions (claude alias, chk-service)" "$u_bashrc_root"; then
 
     if grep -qF 'bw-chk-service' /root/.bashrc 2>/dev/null; then
-        printf "[\e[36mINFO\e[0m] /root/.bashrc additions already present – skipping\n"
+        printf "[\e[33mINFO\e[0m] /root/.bashrc additions already present – skipping\n"
     else
         cat "$u_path/files/root/.bashrc" >> /root/.bashrc
         printf "[\e[32mOK\e[0m] /root/.bashrc updated\n"
