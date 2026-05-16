@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-### Version: 1.2.123
+### Version: 1.2.122
 ### Build date: 12.05.2026
 ### (C) 2021 - 2026 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -32,7 +32,7 @@ done
 ###
 ###
 infocolor=$(tput setaf 6) # DEV
-u_version=1.2.123
+u_version=1.2.122
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
 WEBHOSTER=host-x.de
@@ -282,17 +282,13 @@ if vxs_should_run_from repo; then
     ###
     ###
     printf "\n********************************************************************\n\n"
-    printf "  w = Web Server  (automated, all steps preset)\n"
-    printf "  d = DNS Server  (automated, all steps preset)\n"
-    printf "  m = Manual      (web server steps, each question asked individually)\n\n"
     while true; do
-        read -p "Create Web or DNS Server [W/d/m]: " u_server
+        read -p "Create Web or DNS Server [W/d]: " u_server
         u_server=${u_server:-w}
         case $u_server in
             [w]) break ;;
             [d]) break ;;
-            [m]) break ;;
-            *) echo "Please enter only 'w', 'd' or 'm'." ;;
+            *) echo "Please enter only 'w' or 'd'." ;;
         esac
     done
 
