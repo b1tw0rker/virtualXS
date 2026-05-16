@@ -19,7 +19,7 @@ if [ "$u_folders_create" = "y" ]; then
 
   for folder in "${folders[@]}"; do
     if [ -d "$folder" ]; then
-      printf "[\e[33mINFO\e[0m] %s already exists\n" "$folder"
+      printf "[\e[32mINFO\e[0m] %s already exists\n" "$folder"
     else
       mkdir "$folder"
 
@@ -47,6 +47,5 @@ if [ "$u_folders_create" = "y" ]; then
     fi
   fi
 
-  printf "[\e[32mOK\e[0m]\n"
 
 fi
