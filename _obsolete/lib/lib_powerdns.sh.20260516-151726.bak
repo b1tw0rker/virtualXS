@@ -18,7 +18,7 @@ file_powerdns001=/etc/pdns/pdns.conf
 ### q Install Master PowerDNS
 ###
 ###
-printf "\n********************************************************************\n\n%d) Install Master PowerDNS [y/N]: " "$(( ++_vxs_step ))"
+printf "\n********************************************************************\n\nInstall Master PowerDNS [y/N]: "
 if [ "$u_powerdns_master" = "" ]; then
     read u_powerdns_master
 fi
@@ -77,7 +77,7 @@ fi
 ### q Install Slave PowerDNS
 ###
 ###
-printf "\n********************************************************************\n\n%d) Install Slave PowerDNS [y/N]: " "$(( ++_vxs_step ))"
+printf "\n********************************************************************\n\nInstall Slave PowerDNS [y/N]: "
 if [ "$u_powerdns_slave" = "" ]; then
     read u_powerdns_slave
 fi

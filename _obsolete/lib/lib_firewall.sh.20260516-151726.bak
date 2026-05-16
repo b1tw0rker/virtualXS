@@ -2,7 +2,7 @@
 
 file004=/etc/firewall
 
-printf "\n********************************************************************\n\n%d) Create /etc/firewall [y/N]: " "$(( ++_vxs_step ))"
+printf "\n********************************************************************\n\nCreate /etc/firewall [y/N]: "
 if [ "$u_firewall" = "" ]; then
     read u_firewall
 fi
@@ -66,7 +66,7 @@ fi
 ###
 ###
 
-printf "\n********************************************************************\n\n%d) Activate firewall now [y/N]: " "$(( ++_vxs_step ))"
+printf "\n********************************************************************\n\nActivate firewall now [y/N]: "
 if [ "$u_activate_firewall" = "" ]; then
     read u_activate_firewall
 fi
@@ -115,7 +115,7 @@ printf "\n********************************************************************\n
 ### https://www.cyberciti.biz/faq/linux-kernel-etcsysctl-conf-security-hardening/
 ###
 ###
-if confirm "$(( ++_vxs_step ))) Kernel-Hardening (ASLR, SYN-Flood, Redirect-/Spoofing-Schutz, Kernel-Pointer, Symlink-Schutz)" "$u_hardening"; then
+if confirm "Kernel-Hardening (ASLR, SYN-Flood, Redirect-/Spoofing-Schutz, Kernel-Pointer, Symlink-Schutz)" "$u_hardening"; then
     
     folder001=/etc/sysctl.d
     

@@ -3,7 +3,7 @@
 ### q enable apps
 ###
 ###
-printf "\n********************************************************************\n\n%d) Enable apps at startup [y/N]: " "$(( ++_vxs_step ))"
+printf "\n********************************************************************\n\nEnable apps at startup [y/N]: "
 if [ "$u_enable_apps" = "" ]; then
     read u_enable_apps
 fi
@@ -37,7 +37,7 @@ fi
 ### q start apps
 ###
 ###
-printf "\n********************************************************************\n\n%d) Smoke-Start Server now [y/N]: " "$(( ++_vxs_step ))"
+printf "\n********************************************************************\n\nSmoke-Start Server now [y/N]: "
 if [ "$u_start_server" = "" ]; then
     read u_start_server
 fi

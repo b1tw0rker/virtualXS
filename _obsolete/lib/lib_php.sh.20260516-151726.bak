@@ -7,7 +7,7 @@ file_php_003=/etc/php.d
 ### Mofify php.ini to yor needs here
 ###
 ###
-printf "\n********************************************************************\n\n%d) PHP Security patch [y/N]: " "$(( ++_vxs_step ))"
+printf "\n********************************************************************\n\nPHP Security patch [y/N]: "
 if [ "$u_php" = "" ]; then
     read u_php
 fi

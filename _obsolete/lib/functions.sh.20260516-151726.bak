@@ -5,10 +5,6 @@
 ###
 ###
 
-### Global step counter for question numbering
-###
-_vxs_step=0
-
 ### Confirm function
 ### version 1.0.0
 ### last-modified: 01.10.23

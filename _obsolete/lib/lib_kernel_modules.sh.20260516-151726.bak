@@ -1,6 +1,6 @@
 #!/bin/bash
 
-printf "\n********************************************************************\n\n%d) Disable kernel modules (printer, USB storage, Bluetooth, unused protocols) [y/N]: " "$(( ++_vxs_step ))"
+printf "\n********************************************************************\n\nDisable kernel modules (printer, USB storage, Bluetooth, unused protocols) [y/N]: "
 if [ "$u_module_blacklist" = "" ]; then
     read u_module_blacklist
 fi

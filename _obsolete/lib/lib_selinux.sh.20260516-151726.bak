@@ -1,6 +1,6 @@
 #!/bin/bash
 
-printf "\n********************************************************************\n\n%d) SELinux konfigurieren (Modus + Booleans + Dateikontexte) [y/N]: " "$(( ++_vxs_step ))"
+printf "\n********************************************************************\n\nSELinux konfigurieren (Modus + Booleans + Dateikontexte) [y/N]: "
 if [ "$u_selinux" = "" ]; then
     read u_selinux
 fi

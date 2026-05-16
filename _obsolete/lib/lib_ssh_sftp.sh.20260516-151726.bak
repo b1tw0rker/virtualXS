@@ -10,7 +10,7 @@ if grep -q "internal-sftp" /etc/ssh/sshd_config 2>/dev/null; then
     _sftp_default="n"
     _sftp_prompt="[y/N]"
 fi
-printf "\n********************************************************************\n\n%d) Enable SFTP %s: " "$(( ++_vxs_step ))" "$_sftp_prompt"
+printf "\n********************************************************************\n\nEnable SFTP %s: " "$_sftp_prompt"
 if [ "$u_ssh_sftp" = "" ]; then
         read u_ssh_sftp
         [ "$u_ssh_sftp" = "" ] && u_ssh_sftp="$_sftp_default"

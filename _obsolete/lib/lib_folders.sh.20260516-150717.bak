@@ -12,7 +12,7 @@ if [ "$_vxf_all_exist" = "true" ]; then
   _vxf_prompt="[y/N]"
 fi
 
-printf "\n********************************************************************\n\n%d) Create virtualx standard folders (/home/httpd, /home/pop, /home/mysql, /etc/bitworker, /var/log/rsync, /etc/httpd/virtualx.d) %s: " "$(( ++_vxs_step ))" "$_vxf_prompt"
+printf "\n********************************************************************\n\nCreate virtualx standard folders (/home/httpd, /home/pop, /home/mysql, /etc/bitworker, /var/log/rsync, /etc/httpd/virtualx.d) %s: " "$_vxf_prompt"
 if [ "$u_folders_create" = "" ]; then
   read u_folders_create
   [ "$u_folders_create" = "" ] && u_folders_create="$_vxf_default"
@@ -27,11 +27,12 @@ if [ "$u_folders_create" = "y" ]; then
     /etc/bitworker
     /var/log/rsync
     /etc/httpd/virtualx.d
+    /etc/letsencrypt
   )
 
   for folder in "${folders[@]}"; do
     if [ -d "$folder" ]; then
-      printf "[\e[36mINFO\e[0m] %s already exists\n" "$folder"
+      printf "[\e[32mINFO\e[0m] %s already exists\n" "$folder"
     else
       mkdir "$folder"
 

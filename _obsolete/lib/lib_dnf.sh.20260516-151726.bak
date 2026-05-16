@@ -5,7 +5,7 @@ file001=/etc/dnf/automatic.conf
 ### install
 ###
 ###
-printf "\n********************************************************************\n\n%d) Install apps via dnf [y/N]: " "$(( ++_vxs_step ))"
+printf "\n********************************************************************\n\nInstall apps via dnf [y/N]: "
 if [ "$u_dnf" = "" ]; then
     read u_dnf
 fi

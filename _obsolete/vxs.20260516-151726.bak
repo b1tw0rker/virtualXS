@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-### Version: 1.2.120
+### Version: 1.2.119
 ### Build date: 12.05.2026
 ### (C) 2021 - 2026 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -32,7 +32,7 @@ done
 ###
 ###
 infocolor=$(tput setaf 6) # DEV
-u_version=1.2.120
+u_version=1.2.119
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
 WEBHOSTER=host-x.de
@@ -341,7 +341,7 @@ if vxs_should_run_from repo; then
 
     if [ ! -f "/etc/yum.repos.d/virtx.repo" ]; then
         
-        printf "\n********************************************************************\n\n%d) Add Virt-X Repo? [y/N]: " "$(( ++_vxs_step ))"
+        printf "\n********************************************************************\n\nAdd Virt-X Repo? [y/N]: "
         if [ "$u_virtx_repo" = "" ]; then
             read u_virtx_repo
         fi
@@ -357,7 +357,7 @@ if vxs_should_run_from repo; then
     ###
     if [ ! -f "/etc/yum.repos.d/epel.repo" ]; then
         
-        printf "\n********************************************************************\n\n%d) Add Epel Repo? [y/N]: " "$(( ++_vxs_step ))"
+        printf "\n********************************************************************\n\nAdd Epel Repo? [y/N]: "
         if [ "$u_epel_repo" = "" ]; then
             read u_epel_repo
         fi
@@ -390,7 +390,7 @@ if vxs_should_run_from dnf; then
     ###
     ###
     if [ "$u_dnf" = "y" ] && [ ! -f "$dir001/rebooted" ]; then
-        printf "\n********************************************************************\n\n%d) Reboot now - Strongly recommended if this is the initial run [y/N]: " "$(( ++_vxs_step ))"
+        printf "\n********************************************************************\n\nReboot now - Strongly recommended if this is the initial run [y/N]: "
         if [ "$u_reboot1" = "" ]; then
             read u_reboot1
         fi
@@ -660,7 +660,7 @@ if vxs_should_run_from virtualx; then
                     ;;
             esac
         else
-            printf "%d) virtualX MySQL Schema installieren [y/N]: " "$(( ++_vxs_step ))"
+            printf "virtualX MySQL Schema installieren [y/N]: "
             if [ "$u_virtualx_schema" = "" ]; then
                 read u_virtualx_schema
             fi

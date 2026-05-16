@@ -4,7 +4,7 @@
 ###
 ###
 
-printf "\n********************************************************************\n\n%d) Configure Dovecot [y/N]: " "$(( ++_vxs_step ))"
+printf "\n********************************************************************\n\nConfigure Dovecot [y/N]: "
 if [ "$u_dovecot" = "" ]; then
     read u_dovecot
 fi

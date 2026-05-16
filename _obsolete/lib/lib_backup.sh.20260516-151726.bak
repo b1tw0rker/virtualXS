@@ -1,6 +1,6 @@
 #!/bin/bash
 
-printf "\n********************************************************************\n\n%d) GIT Clone RSYNC backup script to: /etc/bitworker [y/N]: " "$(( ++_vxs_step ))"
+printf "\n********************************************************************\n\nGIT Clone RSYNC backup script to: /etc/bitworker [y/N]: "
 if [ "$u_backup" = "" ]; then
     read u_backup
 fi

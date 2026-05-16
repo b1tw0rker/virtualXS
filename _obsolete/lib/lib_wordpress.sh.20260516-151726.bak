@@ -11,7 +11,7 @@ if [ "$u_server" = "w" ]; then # Only for web servers
         _wp_default="n"
         _wp_prompt="[y/N]"
     fi
-    printf "\n********************************************************************\n\n%d) Install Wordpress CLI (wp-cli)? %s: " "$(( ++_vxs_step ))" "$_wp_prompt"
+    printf "\n********************************************************************\n\nInstall Wordpress CLI (wp-cli)? %s: " "$_wp_prompt"
     if [ -z "$u_wp_cli" ]; then
         read u_wp_cli
         [ "$u_wp_cli" = "" ] && u_wp_cli="$_wp_default"

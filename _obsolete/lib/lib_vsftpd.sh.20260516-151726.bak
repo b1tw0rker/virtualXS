@@ -3,7 +3,7 @@
 ### /etc/vsftpd/
 ###
 ###
-printf "\n********************************************************************\n\n%d) Configure Vsftpd [y/N]: " "$(( ++_vxs_step ))"
+printf "\n********************************************************************\n\nConfigure Vsftpd [y/N]: "
 if [ "$u_vsftpd" = "" ]; then
     read u_vsftpd
 fi

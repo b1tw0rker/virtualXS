@@ -10,7 +10,7 @@ if grep -q "### by BitWorker" /etc/ssh/sshd_config 2>/dev/null; then
     _ssh_default="n"
     _ssh_prompt="[y/N]"
 fi
-printf "\n********************************************************************\n\n%d) Configure SSH-Server /etc/ssh/sshd_config %s: " "$(( ++_vxs_step ))" "$_ssh_prompt"
+printf "\n********************************************************************\n\nConfigure SSH-Server /etc/ssh/sshd_config %s: " "$_ssh_prompt"
 if [ "$u_ssh" = "" ]; then
         read u_ssh
         [ "$u_ssh" = "" ] && u_ssh="$_ssh_default"

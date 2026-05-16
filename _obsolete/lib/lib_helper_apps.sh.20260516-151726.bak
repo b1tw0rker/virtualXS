@@ -3,7 +3,7 @@
 ### /etc/bitworker/
 ###
 ###
-printf "\n********************************************************************\n\n%d) Copy helper-apps to /etc/bitworker [y/N]: " "$(( ++_vxs_step ))"
+printf "\n********************************************************************\n\nCopy helper-apps to /etc/bitworker [y/N]: "
 if [ "$u_helper_apps" = "" ]; then
     read u_helper_apps
 fi
@@ -56,7 +56,7 @@ fi
 ### Required for the .bashrc entry: /opt/chk-service/bw-chk-service.sh dev
 ###
 printf "\n********************************************************************\n\n"
-if confirm "$(( ++_vxs_step ))) Install chk-service from GitHub" "$u_chk_service"; then
+if confirm "Install chk-service from GitHub" "$u_chk_service"; then
 
     if [ -d "/opt/chk-service" ]; then
         printf "[\e[36mINFO\e[0m] /opt/chk-service already exists – pulling latest changes\n"

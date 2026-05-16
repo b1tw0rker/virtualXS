@@ -5,7 +5,7 @@ file006=/etc/httpd/conf.d/obsolete
 file007=/etc/httpd/conf.modules.d/obsolete
 file008=/etc/httpd/conf.d
 
-printf "\n********************************************************************\n\nConfigure /etc/httpd/conf/httpd.conf [y/N]: "
+printf "\n********************************************************************\n\n%d) Configure /etc/httpd/conf/httpd.conf [y/N]: " "$(( ++_vxs_step ))"
 if [ "$u_httpd" = "" ]; then
     read u_httpd
 fi

@@ -4,7 +4,7 @@
 ###
 ###
 printf "\n********************************************************************\n\n"
-if confirm "$(( ++_vxs_step ))) Append root .bashrc additions (claude alias, chk-service)" "$u_bashrc_root"; then
+if confirm "Append root .bashrc additions (claude alias, chk-service)" "$u_bashrc_root"; then
 
     if grep -qF 'bw-chk-service' /root/.bashrc 2>/dev/null; then
         printf "[\e[36mINFO\e[0m] /root/.bashrc additions already present – skipping\n"
@@ -19,7 +19,7 @@ fi
 ###
 ###
 printf "\n********************************************************************\n\n"
-if confirm "$(( ++_vxs_step ))) Copy .claude.json to /root/" "$u_claude_json"; then
+if confirm "Copy .claude.json to /root/" "$u_claude_json"; then
 
     if [[ -f /root/.claude.json ]]; then
         printf "[\e[34mINFO\e[0m] /root/.claude.json already exists, skipping\n"

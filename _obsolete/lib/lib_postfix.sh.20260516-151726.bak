@@ -10,7 +10,7 @@ if grep -q "### by BitWorker" /etc/postfix/main.cf 2>/dev/null; then
     _postfix_default="n"
     _postfix_prompt="[y/N]"
 fi
-printf "\n********************************************************************\n\n%d) Configure /etc/postfix/main.cf %s: " "$(( ++_vxs_step ))" "$_postfix_prompt"
+printf "\n********************************************************************\n\nConfigure /etc/postfix/main.cf %s: " "$_postfix_prompt"
 if [ "$u_postfix" = "" ]; then
     read u_postfix
     [ "$u_postfix" = "" ] && u_postfix="$_postfix_default"
