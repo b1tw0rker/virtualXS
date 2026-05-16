@@ -75,19 +75,6 @@ if [ "$u_vsftpd" = "y" ]; then
         printf "[\e[33mWARN\e[0m] SSL cert nicht gefunden – rsa_cert_file bleibt auskommentiert\n"
     fi
 
-    ### SELinux
-    ### setsebool -P ftpd_connect_db on
-    ###   - setsebool  — setzt einen SELinux Boolean
-    ###   - -P         — permanent (ueberlebt Reboot, schreibt in die Policy)
-    ###
-    ### Ueberpruefen mit: getsebool ftpd_connect_db
-    ###
-    if setsebool -P ftpd_connect_db on; then
-        printf "[\e[32mOK\e[0m] SELinux Boolean gesetzt: ftpd_connect_db=on\n"
-    else
-        printf "[\e[31mERROR\e[0m] SELinux Boolean konnte nicht gesetzt werden: ftpd_connect_db\n"
-    fi
-
     ### Start or restart vsftpd
     ###
     ###
