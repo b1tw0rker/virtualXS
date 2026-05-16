@@ -292,41 +292,6 @@ if vxs_should_run_from repo; then
         esac
     done
 
-    ### Web Server presettings.
-    ### All with 'y' marked options will be executed automatically.
-    ### All with 'n' marked options will NOT be executed.
-    if [ "$u_server" = "w" ]; then
-        u_epel_repo=y
-        u_dnf=y
-        u_php=y
-        u_disable_apps=y
-        u_enable_apps=y
-        u_start_server=y
-        u_folders_create=y
-        u_postfix=y
-        u_ssh=y
-        u_ssh_sftp=y
-        u_fail2ban=y
-        u_tripwire=y
-        u_helper_apps=y
-        u_httpd=y
-        u_wp_cli=y
-        u_dovecot=y
-        u_letsencrypt=y
-        u_letsencrypt_dovecot=y
-        u_autoconfig=y
-        u_vsftpd=y
-        u_ssl=y
-        u_backup=y
-        u_quota=y
-        u_firewall=y
-        u_activate_firewall=y
-        u_hardening=y
-        u_selinux=y
-        u_module_blacklist=y
-        u_virtualx=y
-    fi
-
     ### DNS Server presettings.
     ### All with 'y' marked options will be executed automatticly.
     ### All with 'n' marked options will NOT executed.
