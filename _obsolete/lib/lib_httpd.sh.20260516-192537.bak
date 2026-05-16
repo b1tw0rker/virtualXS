@@ -63,32 +63,6 @@ if [ "$u_httpd" = "y" ]; then
         cp -rf $u_path/files/httpd/index.html /usr/share/httpd/noindex/
     fi
 
-    ### systemd drop-in: ProtectHome=no fuer /home/httpd Webhosting
-    ### Ohne diesen Drop-in blockiert ProtectHome=read-only den Schreibzugriff
-    ### auf /home/httpd/<kunde>/logs, den httpd benoetigt.
-    ###
-    _dropin_dir="/etc/systemd/system/httpd.service.d"
-    _dropin_file="${_dropin_dir}/virtualx-hosting.conf"
-    if [ ! -d "$_dropin_dir" ]; then
-        mkdir -p "$_dropin_dir"
-    fi
-    cat > "$_dropin_file" << 'DROPIN'
-# Drop-in Override fuer httpd.service.
-#
-# Die mitgelieferte Unit /usr/lib/systemd/system/httpd.service haertet httpd
-# mit ProtectHome=read-only ab. Auf diesem Webhosting-Server liegen
-# Kundendaten (DocumentRoot UND Logs) unter /home/httpd/<kunde>/..., damit
-# Kunden ihre Logs per FTP abrufen koennen. httpd muss daher in /home
-# schreiben duerfen -> ProtectHome deaktiviert.
-#
-# Aenderungen an dieser Datei mit `systemctl daemon-reload` aktivieren.
-
-[Service]
-ProtectHome=no
-DROPIN
-    systemctl daemon-reload
-    _log ok "httpd drop-in virtualx-hosting.conf erstellt, daemon-reload ausgefuehrt"
-
     ### if the apache server never has been started before, /etc/pki/certs/localhost.crt and /etc/pki/private/localhost.key are missing. Create self-signed certs for localhost.
     ### start and stop httpd to create the certs if they are missing.
     ###
