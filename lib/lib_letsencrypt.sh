@@ -147,7 +147,7 @@ if [ "$u_letsencrypt_dovecot" = "y" ] || [ "$u_letsencrypt_dovecot" = "d" ]; the
     printf "\n"
     ### ask for servername
     u_tmp_imap=imap.$u_domain
-    read -p "Servername for Dovecot (mostly imap.$u_domain): " -ei $u_tmp_imap u_imap
+    read -p "Servername for Dovecot IMAP: " -ei $u_tmp_imap u_imap
 
     letsencrypt_dns_prepare
 
@@ -182,7 +182,7 @@ if [ "$u_letsencrypt_dovecot_smtp" = "y" ] || [ "$u_letsencrypt_dovecot_smtp" = 
     printf "\n"
     ### ask for servername
     u_tmp_smtp=smtp.$u_domain
-    read -p "Servername for Dovecot SMTP (mostly smtp.$u_domain): " -ei $u_tmp_smtp u_smtp_dovecot
+    read -p "Servername for Dovecot SMTP: " -ei $u_tmp_smtp u_smtp_dovecot
 
     letsencrypt_dns_prepare
 
