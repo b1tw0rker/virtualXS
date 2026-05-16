@@ -112,8 +112,9 @@ letsencrypt_show_cert_status() {
 ### letsencrypt
 ###
 ###
+printf "\n********************************************************************\n\n"
 letsencrypt_show_cert_status "$u_srv"
-printf "\n********************************************************************\n\n%d) Create initial Let's Encrypt Cert: $u_srv [y/n/D (dry-run)]: " "$(( ++_vxs_step ))"
+printf "%d) Create initial Let's Encrypt Cert: $u_srv [y/n/D (dry-run)]: " "$(( ++_vxs_step ))"
 if [ "$u_letsencrypt" = "" ]; then
     read u_letsencrypt
     if [ "$u_letsencrypt" = "" ]; then u_letsencrypt="d"; fi
@@ -134,8 +135,9 @@ if [ "$u_letsencrypt" = "y" ] || [ "$u_letsencrypt" = "d" ]; then
 
 fi
 
+printf "\n********************************************************************\n\n"
 letsencrypt_show_cert_status "imap.$u_domain"
-printf "\n********************************************************************\n\n%d) Create Let's Encrypt Cert for dovecot (imap.$u_domain) [y/n/D (dry-run)]: " "$(( ++_vxs_step ))"
+printf "%d) Create Let's Encrypt Cert for dovecot (imap.$u_domain) [y/n/D (dry-run)]: " "$(( ++_vxs_step ))"
 if [ "$u_letsencrypt_dovecot" = "" ]; then
     read u_letsencrypt_dovecot
     if [ "$u_letsencrypt_dovecot" = "" ]; then u_letsencrypt_dovecot="d"; fi
@@ -168,8 +170,9 @@ if [ "$u_letsencrypt_dovecot" = "y" ] || [ "$u_letsencrypt_dovecot" = "d" ]; the
 
 fi
 
+printf "\n********************************************************************\n\n"
 letsencrypt_show_cert_status "smtp.$u_domain"
-printf "\n********************************************************************\n\n%d) Create Let's Encrypt Cert for dovecot (smtp.$u_domain) [y/n/D (dry-run)]: " "$(( ++_vxs_step ))"
+printf "%d) Create Let's Encrypt Cert for dovecot (smtp.$u_domain) [y/n/D (dry-run)]: " "$(( ++_vxs_step ))"
 if [ "$u_letsencrypt_dovecot_smtp" = "" ]; then
     read u_letsencrypt_dovecot_smtp
     if [ "$u_letsencrypt_dovecot_smtp" = "" ]; then u_letsencrypt_dovecot_smtp="d"; fi
