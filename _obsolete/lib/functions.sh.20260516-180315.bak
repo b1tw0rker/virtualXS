@@ -9,25 +9,6 @@
 ###
 _vxs_step=0
 
-### Log output helper
-### Prints a colored status line: ok (green), error (red), info (cyan), warn (yellow).
-### Usage: _log ok|error|info|warn "message"
-### version 1.0.0
-### last-modified: 16.05.26
-###
-_log() {
-    local level="${1^^}"
-    shift
-    local msg="$*"
-    case "$level" in
-        OK)    printf "[\e[32mOK\e[0m]    %s\n" "$msg" ;;
-        ERROR) printf "[\e[31mERROR\e[0m] %s\n" "$msg" ;;
-        INFO)  printf "[\e[36mINFO\e[0m]  %s\n" "$msg" ;;
-        WARN)  printf "[\e[33mWARN\e[0m]  %s\n" "$msg" ;;
-        *)     printf "[%s] %s\n" "$level" "$msg" ;;
-    esac
-}
-
 ### Confirm function
 ### version 1.0.0
 ### last-modified: 01.10.23

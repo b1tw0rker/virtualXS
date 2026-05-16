@@ -12,20 +12,20 @@ if [ "$u_selinux" = "y" ]; then
     ###
     ###
     if ! command -v setsebool &>/dev/null || ! command -v restorecon &>/dev/null || ! command -v setenforce &>/dev/null; then
-        _log info "policycoreutils fehlt – wird nachinstalliert"
+        printf "[\e[36mINFO\e[0m] policycoreutils fehlt – wird nachinstalliert\n"
         if dnf -y install policycoreutils 2>/dev/null; then
-            _log ok "policycoreutils installiert"
+            printf "[\e[32mOK\e[0m] policycoreutils installiert\n"
         else
-            _log error "policycoreutils konnte nicht installiert werden"
+            printf "[\e[31mERROR\e[0m] policycoreutils konnte nicht installiert werden\n"
         fi
     fi
 
     if ! command -v semanage &>/dev/null; then
-        _log info "semanage fehlt – installiere policycoreutils-python-utils"
+        printf "[\e[36mINFO\e[0m] semanage fehlt – installiere policycoreutils-python-utils\n"
         if dnf -y install policycoreutils-python-utils 2>/dev/null; then
-            _log ok "policycoreutils-python-utils installiert"
+            printf "[\e[32mOK\e[0m] policycoreutils-python-utils installiert\n"
         else
-            _log error "policycoreutils-python-utils konnte nicht installiert werden"
+            printf "[\e[31mERROR\e[0m] policycoreutils-python-utils konnte nicht installiert werden\n"
         fi
     fi
 
@@ -35,7 +35,7 @@ if [ "$u_selinux" = "y" ]; then
     ###
     _selinux_current=$(getenforce 2>/dev/null || echo "unbekannt")
     if [ "$_selinux_current" != "Enforcing" ]; then
-        _log error "SELinux ist nicht auf Enforcing – aktuell: $_selinux_current"
+        printf "[\e[31mERROR\e[0m] SELinux ist nicht auf Enforcing – aktuell: %s\n" "$_selinux_current"
     fi
 
     ### --- Hilfsfunktion: Boolean setzen ------------------------
@@ -44,13 +44,13 @@ if [ "$u_selinux" = "y" ]; then
     _selinux_set_bool() {
         local bool="$1" val="${2:-on}"
         if ! getsebool "$bool" &>/dev/null; then
-            _log info "Boolean $bool – auf diesem System nicht verfuegbar"
+            printf "[\e[36mINFO\e[0m] Boolean %-40s – auf diesem System nicht verfuegbar\n" "$bool"
             return
         fi
         if setsebool -P "$bool" "$val" 2>/dev/null; then
-            _log ok "setsebool -P $bool $val"
+            printf "[\e[32mOK\e[0m] setsebool -P %-40s %s\n" "$bool" "$val"
         else
-            _log error "setsebool -P $bool $val – fehlgeschlagen"
+            printf "[\e[31mERROR\e[0m] setsebool -P %s %s – fehlgeschlagen\n" "$bool" "$val"
         fi
     }
 
@@ -108,15 +108,15 @@ if [ "$u_selinux" = "y" ]; then
     for _path in "${_restorecon_paths[@]}"; do
         if [ -e "$_path" ]; then
             if restorecon -Rv "$_path" >/dev/null 2>&1; then
-                _log ok "restorecon -Rv $_path"
+                printf "[\e[32mOK\e[0m] restorecon -Rv %s\n" "$_path"
             else
-                _log error "restorecon -Rv $_path – fehlgeschlagen"
+                printf "[\e[31mERROR\e[0m] restorecon -Rv %s – fehlgeschlagen\n" "$_path"
             fi
         else
-            _log info "$_path nicht vorhanden – restorecon uebersprungen"
+            printf "[\e[36mINFO\e[0m] %s nicht vorhanden – restorecon uebersprungen\n" "$_path"
         fi
     done
 
-    printf "\n"; _log ok "SELinux Konfiguration abgeschlossen"
+    printf "\n[\e[32mOK\e[0m] SELinux Konfiguration abgeschlossen\n"
 
 fi

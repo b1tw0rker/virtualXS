@@ -25,6 +25,7 @@
 - Fuehre neue Hilfsfunktionen moeglichst lokal im betroffenen Skript ein, statt globale Utility-Funktionen ohne Bedarf in `lib/functions.sh` zu verschieben.
 - Ersetze bestehende Muster nur dann durch modernere Varianten, wenn dadurch ein konkreter Fehler, eine Sicherheitsluecke oder ein Wartungsproblem geloest wird.
 - Fuehre keine grossflaechigen Stilbereinigungen durch.
+- Ausgaben immer via `_log ok|error|info|warn "Meldung"` (definiert in `lib/functions.sh`) – kein direktes `printf` mit ANSI-Escape-Codes. Bei Aenderungen an einem Skript: das Skript auf `_log` umstellen.
 
 ## Kritische Aenderungen Und Backups
 
