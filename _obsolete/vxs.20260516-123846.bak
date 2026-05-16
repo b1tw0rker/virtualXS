@@ -57,12 +57,12 @@ u_aws=n
 ### - dnf: Springt zum Abschnitt, in dem DNF und Pakete installiert werden
 ### - apps: Springt zum Abschnitt, in dem Anwendungen aktiviert oder deaktiviert werden werden
 ### - folders: Springt zum Abschnitt, in dem Standardordner erstellt werden werden
-### - helper_apps: Springt zum Abschnitt, in dem Hilfsanwendungen konfiguriert werden
-### - letsencrypt: Springt zum Abschnitt, in dem Let's Encrypt konfiguriert wird
 ### - postfix: Springt zum Abschnitt, in dem Postfix konfiguriert wird
+### - helper_apps: Springt zum Abschnitt, in dem Hilfsanwendungen konfiguriert werden
 ### - httpd: Springt zum Abschnitt, in dem der HTTP-Server konfiguriert wird
 ### - wordpress: Springt zum Abschnitt APPS, in dem WP-CLI installiert wird
 ### - dovecot: Springt zum Abschnitt, in dem Dovecot konfiguriert wird
+### - letsencrypt: Springt zum Abschnitt, in dem Let's Encrypt konfiguriert wird
 ### - autoconfig: Springt zum Abschnitt, in dem Autoconfig konfiguriert wird
 ### - vsftpd: Springt zum Abschnitt, in dem vsftpd konfiguriert wird
 ### - mysql: Springt zum Abschnitt, in dem MySQL konfiguriert wird
@@ -84,7 +84,7 @@ DEV_START_AT=${1:-}
 ###
 source $u_path/lib/functions.sh
 
-_VXS_SECTIONS=(repo dnf folders helper_apps letsencrypt apps postfix httpd dovecot autoconfig vsftpd mysql backup quota powerdns logrotate cron tripwire php ssh fail2ban firewall kernel_modules selinux virtualx wordpress)
+_VXS_SECTIONS=(repo dnf folders helper_apps apps postfix httpd dovecot letsencrypt autoconfig vsftpd mysql backup quota powerdns logrotate cron tripwire php ssh fail2ban firewall kernel_modules selinux virtualx wordpress)
 
 _vxs_section_index() {
     local section="$1" i
@@ -424,17 +424,6 @@ if vxs_should_run_from helper_apps; then
 
 fi
 
-if vxs_should_run_from letsencrypt; then
-
-    ### q config letsencrypt
-    ###
-    ###
-    if [ "$u_server" = "w" ]; then
-        source $u_path/lib/lib_letsencrypt.sh
-    fi
-
-fi
-
 if vxs_should_run_from apps; then
 
     ### q apps
@@ -469,6 +458,17 @@ if vxs_should_run_from dovecot; then
     ###
     ###
     source $u_path/lib/lib_dovecot.sh
+
+fi
+
+if vxs_should_run_from letsencrypt; then
+
+    ### q config letsencrypt
+    ###
+    ###
+    if [ "$u_server" = "w" ]; then
+        source $u_path/lib/lib_letsencrypt.sh
+    fi
 
 fi
 

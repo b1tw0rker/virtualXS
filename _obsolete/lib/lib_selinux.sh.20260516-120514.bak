@@ -28,13 +28,50 @@ if [ "$u_selinux" = "y" ]; then
         fi
     fi
 
-    ### --- Enforcing-Pruefung ----------------------------------
-    ###  SELinux muss auf Enforcing stehen. Der Modus wird hier nicht
-    ###  veraendert – bei Abweichung wird ein Fehler ausgegeben.
+    ### --- Aktueller Status ------------------------------------
+    ###
     ###
     _selinux_current=$(getenforce 2>/dev/null || echo "unbekannt")
-    if [ "$_selinux_current" != "Enforcing" ]; then
-        printf "[\e[31mERROR\e[0m] SELinux ist nicht auf Enforcing – aktuell: %s\n" "$_selinux_current"
+    printf "[\e[33mINFO\e[0m] SELinux aktuell: %s\n" "$_selinux_current"
+
+    ### --- Modus setzen ----------------------------------------
+    ###
+    ###
+    printf "\n Modus waehlen:\n"
+    printf "   [e] enforcing  – Policy wird durchgesetzt, Verstoesze werden blockiert\n"
+    printf "   [p] permissive – Verstoesze werden geloggt, NICHT blockiert  (Standard)\n"
+    printf "   [d] disabled   – SELinux deaktiviert (erfordert Reboot)\n\n"
+
+    if [ "$u_selinux_mode" = "" ]; then
+        read -p "SELinux Modus [e/P/d]: " u_selinux_mode
+        u_selinux_mode=${u_selinux_mode:-p}
+    fi
+
+    case "$u_selinux_mode" in
+        e|E) _sl_mode=enforcing;  _sl_rt=1  ;;
+        d|D) _sl_mode=disabled;   _sl_rt="" ;;
+        *)   _sl_mode=permissive; _sl_rt=0  ;;
+    esac
+
+    if [ -f /etc/selinux/config ]; then
+        sed -i "s/^SELINUX=.*$/SELINUX=${_sl_mode}/" /etc/selinux/config
+        if grep -q "^SELINUX=${_sl_mode}" /etc/selinux/config; then
+            printf "[\e[32mOK\e[0m] /etc/selinux/config: SELINUX=%s\n" "$_sl_mode"
+        else
+            printf "[\e[31mERROR\e[0m] /etc/selinux/config – SELINUX konnte nicht gesetzt werden\n"
+        fi
+    else
+        printf "[\e[31mERROR\e[0m] /etc/selinux/config nicht gefunden\n"
+    fi
+
+    if [ -n "$_sl_rt" ]; then
+        if setenforce "$_sl_rt" 2>/dev/null; then
+            printf "[\e[32mOK\e[0m] setenforce %s – sofort aktiv\n" "$_sl_rt"
+        else
+            printf "[\e[33mINFO\e[0m] setenforce %s – konnte nicht gesetzt werden (System evtl. bereits disabled)\n" "$_sl_rt"
+        fi
+    else
+        printf "[\e[33mINFO\e[0m] Modus 'disabled' wird erst nach Reboot wirksam\n"
     fi
 
     ### --- Hilfsfunktion: Boolean setzen ------------------------
