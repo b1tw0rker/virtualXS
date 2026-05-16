@@ -286,8 +286,8 @@ if vxs_should_run_from repo; then
     printf "  d = DNS Server  (automated, all steps preset)\n"
     printf "  m = Manual      (web server steps, each question asked individually)\n\n"
     while true; do
-        read -p "Create Web or DNS Server [w/d/M]: " u_server
-        u_server=${u_server:-m}
+        read -p "Create Web or DNS Server [W/d/m]: " u_server
+        u_server=${u_server:-w}
         case $u_server in
             [w]) break ;;
             [d]) break ;;
