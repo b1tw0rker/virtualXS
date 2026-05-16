@@ -32,6 +32,8 @@ if [ "$u_enable_apps" = "y" ]; then
         fi
     done
 
+    printf "[\e[32mOK\e[0m]\n"
+
 fi
 
 ### q start apps
@@ -51,5 +53,6 @@ if [ "$u_start_server" = "y" ]; then
             printf "[\e[31mFAIL\e[0m] could not start %s\n" "$service"
         fi
     done
+    printf "[\e[32mOK\e[0m]\n"
 
 fi

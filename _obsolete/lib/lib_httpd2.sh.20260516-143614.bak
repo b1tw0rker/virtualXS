@@ -18,11 +18,12 @@ if [ "$u_httpd2" != "n" ]; then
     u_state=$(apachectl -t 2>&1)
 
     if [ "$u_state" = "Syntax OK" ]; then
+        printf "Reload httpd\n"
         systemctl reload httpd
-        printf "[\e[32mOK\e[0m] httpd reloaded\n"
     else
-        printf "[\e[31mFAIL\e[0m] httpd reload failed:\n"
+        printf "Reload httpd failed:\n"
         apachectl -t
     fi
+    printf "[\e[32mOK\e[0m]\n"
 
 fi

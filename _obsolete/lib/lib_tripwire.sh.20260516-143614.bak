@@ -62,14 +62,16 @@ if [ "$u_tripwire" = "y" ]; then
         systemctl start tripwire
     fi
     
-    printf "[\e[32mOK\e[0m] Tripwire configured\n"
-    printf "[\e[33mINFO\e[0m] Monitored directories include:\n"
-    printf "[\e[33mINFO\e[0m]   - Standard system directories (/etc, /bin, /sbin, etc.)\n"
-    printf "[\e[33mINFO\e[0m]   - /home/httpd/ (web content)\n"
-    printf "[\e[33mINFO\e[0m]   - /var/log/ (log files)\n"
-    printf "[\e[33mINFO\e[0m] Usage:\n"
-    printf "[\e[33mINFO\e[0m]   - Integrity check: tripwire --check\n"
-    printf "[\e[33mINFO\e[0m]   - Update database: tripwire --update\n"
-    printf "[\e[33mINFO\e[0m]   - Generate report: tripwire --check --interactive\n"
+    echo "Tripwire configuration completed."
+    echo "Monitored directories include:"
+    echo "  - Standard system directories (/etc, /bin, /sbin, etc.)"
+    echo "  - /home/httpd/ (web content)"
+    echo "  - /var/log/ (log files)"
+    echo ""
+    echo "Usage:"
+    echo "  - Integrity check: tripwire --check"
+    echo "  - Update database: tripwire --update"
+    echo "  - Generate report: tripwire --check --interactive"
+    printf "[\e[32mOK\e[0m]\n"
     
 fi

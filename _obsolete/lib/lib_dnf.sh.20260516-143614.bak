@@ -63,5 +63,6 @@ if [ "$u_dnf" = "y" ]; then
     else
         printf "[\e[33mINFO\e[0m] %s not found – dnf-automatic skipped\n" "$file001"
     fi
+    printf "[\e[32mOK\e[0m]\n"
     
 fi

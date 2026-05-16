@@ -58,7 +58,7 @@ if [ "$u_firewall" = "y" ]; then
         chmod 700 /etc/cron.hourly/firewall-test
     fi
 
-    printf "[\e[32mOK\e[0m] /etc/firewall configured\n"
+    printf "[\e[32mOK\e[0m]\n"
     
 fi
 
@@ -81,7 +81,7 @@ if [ "$u_activate_firewall" = "y" ]; then
         
         /etc/firewall/stop.sh
         
-        printf "[\e[33mINFO\e[0m] Stopping Firewall\n"
+        echo "Stopping Firewall"
         iptables -F
         iptables -X
         iptables -t filter -F
@@ -104,7 +104,7 @@ if [ "$u_activate_firewall" = "y" ]; then
         systemctl start fail2ban
     fi
 
-    printf "[\e[32mOK\e[0m] Firewall activated\n"
+    printf "[\e[32mOK\e[0m]\n"
     
 fi
 
@@ -130,7 +130,7 @@ if confirm "Kernel-Hardening (ASLR, SYN-Flood, Redirect-/Spoofing-Schutz, Kernel
         ###
         ###
         sysctl -p "$folder001/99-bw-kernel-hardening.conf"
-        printf "[\e[32mOK\e[0m] Kernel hardening applied\n"
+        printf "[\e[32mOK\e[0m]\n"
     fi
     
 fi

@@ -23,6 +23,4 @@ if [ "$u_disable_apps" = "y" ]; then
         fi
     done
 
-    printf "[\e[32mOK\e[0m]\n"
-
 fi

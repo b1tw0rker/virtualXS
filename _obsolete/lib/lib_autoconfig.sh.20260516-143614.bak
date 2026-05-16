@@ -75,10 +75,10 @@ if [ "$u_autoconfig" = "y" ]; then
         u_state=$(apachectl -t 2>&1)
 
         if [ "$u_state" = "Syntax OK" ]; then
+            printf "Reload httpd\n"
             systemctl reload httpd
-            printf "[\e[32mOK\e[0m] httpd reloaded\n"
         else
-            printf "[\e[31mFAIL\e[0m] httpd reload failed:\n"
+            printf "Reload httpd failed:\n"
             apachectl -t
         fi
 
@@ -86,11 +86,13 @@ if [ "$u_autoconfig" = "y" ]; then
         ###
         ###
         if [ ! -d "/etc/letsencrypt/live/$u_imap_host" ] || [ ! -d "/etc/letsencrypt/live/$u_smtp_host" ]; then
-            printf "[\e[33mINFO\e[0m] Autoconfig configured for %s / %s – certs not yet found.\n" "$u_imap_host" "$u_smtp_host"
+            printf "NOTE: Autoconfig XML files configured for %s / %s.\n" "$u_imap_host" "$u_smtp_host"
+            printf "      Let's Encrypt certs not yet found for one or both hostnames.\n"
         else
-            printf "[\e[32mOK\e[0m] Autoconfig configured for %s / %s.\n" "$u_imap_host" "$u_smtp_host"
+            printf "Autoconfig XML files configured for %s / %s.\n" "$u_imap_host" "$u_smtp_host"
         fi
 
     fi
+    printf "[\e[32mOK\e[0m]\n"
 
 fi  # end if [ "$u_autoconfig" = "y" ]

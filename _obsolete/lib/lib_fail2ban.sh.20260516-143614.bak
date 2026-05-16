@@ -33,10 +33,11 @@ if [ "$u_fail2ban" = "y" ]; then
                 sed -i 's/^banaction/#banaction/' $file_fail2ban002
         fi
 
+        echo "Restart fail2ban"
         if ! systemctl restart fail2ban; then
             printf "[\e[31mERROR\e[0m] fail2ban restart failed\n"
         else
-            printf "[\e[32mOK\e[0m] fail2ban restarted\n"
+            printf "[\e[32mOK\e[0m]\n"
         fi
 
 fi

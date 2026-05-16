@@ -98,10 +98,11 @@ if [ "$u_postfix" = "y" ]; then
       # by ipv4-only mode — and crashes with "Address family not supported".
       # A clean stop + start forces Postfix to re-evaluate inet_interfaces and
       # skip all IPv6 addresses from the start.
+      echo "Restart Postfix (stop + start)"
       if systemctl stop postfix && systemctl start postfix; then
-        printf "[\e[32mOK\e[0m] Postfix restarted\n"
+        printf "[\e[32mOK\e[0m]\n"
     else
-        printf "[\e[31mERROR\e[0m] Postfix restart failed\n"
+        printf "[\e[31mERROR\e[0m]\n"
     fi
     
 fi
