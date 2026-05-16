@@ -77,7 +77,7 @@ run_virtualx_ftps_check() {
     print_virtualx_check_result "FTPS" "$address" 1 "$output"
 }
 
-printf "\n********************************************************************\n\n%d) Ersten VirtualX Server installieren [y/N]: " "$(( ++_vxs_step ))"
+printf "\n********************************************************************\n\n%d) Install first VirtualX server [y/N]: " "$(( ++_vxs_step ))"
 if [ "$u_virtualx" = "" ]; then
     read u_virtualx
 fi
@@ -107,7 +107,7 @@ if [ "$u_virtualx" = "y" ]; then
     if [ ! -f "$_sudoers_file" ]; then
         printf '%s ALL=(ALL) NOPASSWD: ALL\n' "$u_srv" > "$_sudoers_file"
         chmod 440 "$_sudoers_file"
-        _log ok "Sudoers entry created: $_sudoers_file"
+        _log ok "Sudoers entry for API calls created: $_sudoers_file"
     fi
 
     ### Create directories

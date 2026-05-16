@@ -3,9 +3,10 @@
 ### /etc/tripwire/
 ###
 ###
-printf "\n********************************************************************\n\n"
-printf "\e[2m%d) Install & Configure Tripwire [y/N]: N  [derzeit deaktiviert]\e[0m\n" "$(( ++_vxs_step ))"
-u_tripwire="n"
+printf "\n********************************************************************\n\n%d) Install & Configure Tripwire [y/N]: " "$(( ++_vxs_step ))"
+if [ "$u_tripwire" = "" ]; then
+    read u_tripwire
+fi
 
 if [ "$u_tripwire" = "y" ]; then
     printf "\n"

@@ -110,10 +110,10 @@ DROPIN
     u_state=$(apachectl -t 2>&1)
 
     if [ "$u_state" = "Syntax OK" ]; then
-        systemctl restart httpd
-        _log ok "httpd restarted"
+        systemctl reload httpd
+        _log ok "httpd reloaded"
     else
-        _log error "httpd restart failed:"
+        _log error "httpd reload failed:"
         apachectl -t
     fi
 

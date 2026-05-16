@@ -1,17 +1,5 @@
 #!/bin/bash
 
-compact_virtualx_check_error() {
-    local message="$1"
-
-    message=$(printf '%s' "$message" | tr '\r\n' ' ' | sed 's/[[:space:]]\+/ /g; s/^ //; s/ $//')
-
-    if [ -z "$message" ]; then
-        message="unknown error"
-    fi
-
-    printf '%.220s' "$message"
-}
-
 print_virtualx_access_summary() {
     printf "\n----------------------------\n"
     _log ok "VirtualX API ready"
@@ -119,7 +107,7 @@ if [ "$u_virtualx" = "y" ]; then
     if [ ! -f "$_sudoers_file" ]; then
         printf '%s ALL=(ALL) NOPASSWD: ALL\n' "$u_srv" > "$_sudoers_file"
         chmod 440 "$_sudoers_file"
-        _log ok "Sudoers entry created: $_sudoers_file"
+        _log ok "Sudoers entry for API calls created: $_sudoers_file"
     fi
 
     ### Create directories
