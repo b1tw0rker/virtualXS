@@ -4,8 +4,8 @@
 ###
 ###
 # Smart default: Y if BitWorker block not yet present, N if already configured
-_postfix_default="n"
-_postfix_prompt="[y/N]"
+_postfix_default="y"
+_postfix_prompt="[Y/n]"
 if grep -q "### by BitWorker" /etc/postfix/main.cf 2>/dev/null; then
     _postfix_default="n"
     _postfix_prompt="[y/N]"

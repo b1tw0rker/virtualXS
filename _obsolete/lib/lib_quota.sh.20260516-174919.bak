@@ -12,13 +12,13 @@ file_fstab002=/etc/fstab.bak
 u_quota_check=$(grep -m 1 "uquota" /etc/fstab)
 (( _vxs_step++ ))
 if [ "$u_quota_check" != "" ]; then
-    printf "\n********************************************************************\n\n%d) Activate Quota for /home [y/N]:\n[\e[32mOK\e[0m] (already active - skipping)\n" "$_vxs_step"
+    printf "\n********************************************************************\n\n%d) Activate Quota for /home [Y/n]:\n[\e[32mOK\e[0m] (already active - skipping)\n" "$_vxs_step"
     u_quota=n
 else
-    printf "\n********************************************************************\n\n%d) Activate Quota for /home [y/N]: " "$_vxs_step"
+    printf "\n********************************************************************\n\n%d) Activate Quota for /home [Y/n]: " "$_vxs_step"
     if [ "$u_quota" = "" ]; then
         read u_quota
-        [ "$u_quota" = "" ] && u_quota="n"
+        [ "$u_quota" = "" ] && u_quota="y"
     fi
 fi
 

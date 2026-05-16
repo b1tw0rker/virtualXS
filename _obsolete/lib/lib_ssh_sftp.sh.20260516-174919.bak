@@ -4,8 +4,8 @@
 ###
 ###
 # Smart default: Y if internal-sftp not yet configured, N if already set
-_sftp_default="n"
-_sftp_prompt="[y/N]"
+_sftp_default="y"
+_sftp_prompt="[Y/n]"
 if grep -q "internal-sftp" /etc/ssh/sshd_config 2>/dev/null; then
     _sftp_default="n"
     _sftp_prompt="[y/N]"

@@ -5,8 +5,8 @@
 ###
 if [ "$u_server" = "w" ]; then # Only for web servers
     # Smart default: Y if wp-cli not yet installed, N if already present
-    _wp_default="n"
-    _wp_prompt="[y/N]"
+    _wp_default="y"
+    _wp_prompt="[Y/n]"
     if [ -f "/usr/local/bin/wp" ]; then
         _wp_default="n"
         _wp_prompt="[y/N]"
