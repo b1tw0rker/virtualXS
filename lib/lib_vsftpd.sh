@@ -27,6 +27,17 @@ if [ "$u_vsftpd" = "y" ]; then
         chmod 600 /etc/vsftpd/.my.cnf
         chown root:root /etc/vsftpd/.my.cnf
         _log ok "vsftpd credentials written to /etc/vsftpd/.my.cnf"
+        if MYSQL_PWD="$u_vsftpd_pwd" mysql \
+            --host=127.0.0.1 \
+            --user=vsftpd \
+            --skip-column-names \
+            --silent \
+            virtualx \
+            -e "SELECT 1;" >/dev/null 2>&1; then
+            _log ok "MySQL login test for 'vsftpd'@'127.0.0.1' succeeded"
+        else
+            _log error "MySQL login test for 'vsftpd'@'127.0.0.1' failed"
+        fi
     else
         _log error "Could not create/update MySQL user 'vsftpd'@'127.0.0.1'"
     fi
