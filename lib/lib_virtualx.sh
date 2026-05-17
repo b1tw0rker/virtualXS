@@ -229,7 +229,7 @@ EOF
     ###
     cat > /etc/php-fpm.d/$u_srv.conf <<EOF
 [$u_srv]
-user = $u_domain
+user = $u_srv
 group = users
 listen = /run/php-fpm/$u_srv.sock
 listen.acl_users = apache
