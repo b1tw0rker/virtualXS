@@ -1,6 +1,8 @@
 #!/bin/bash
 
 file005=/etc/httpd/conf/httpd.conf
+file006=/etc/httpd/conf.d/obsolete
+file007=/etc/httpd/conf.modules.d/obsolete
 file008=/etc/httpd/conf.d
 
 printf "\n********************************************************************\n\n%d) Configure /etc/httpd/conf/httpd.conf [y/N]: " "$(( ++_vxs_step ))"
@@ -16,22 +18,40 @@ if [ "$u_httpd" = "y" ]; then
 
     fi
 
-    # Disable default httpd config files in-place – dnf-update-safe (%config noreplace)
-    # RPM preserves modified files on update; new versions land as .rpmnew
-    if [ -f "/etc/httpd/conf.d/autoindex.conf" ]; then
-        echo "# Disabled by virtualXS" > /etc/httpd/conf.d/autoindex.conf
+    if [ ! -d "$file006" ]; then
+        mkdir $file006
     fi
-    if [ -f "/etc/httpd/conf.d/userdir.conf" ]; then
-        echo "# Disabled by virtualXS" > /etc/httpd/conf.d/userdir.conf
+
+    if [ ! -d "$file007" ]; then
+        mkdir $file007
     fi
-    if [ -f "/etc/httpd/conf.d/welcome.conf" ]; then
-        echo "# Disabled by virtualXS" > /etc/httpd/conf.d/welcome.conf
+
+    if [ -d "$file006" ]; then
+
+        if [ -f "/etc/httpd/conf.d/autoindex.conf" ]; then
+            mv /etc/httpd/conf.d/autoindex.conf $file006/
+        fi
+        if [ -f "/etc/httpd/conf.d/userdir.conf" ]; then
+            mv /etc/httpd/conf.d/userdir.conf $file006/
+        fi
+        if [ -f "/etc/httpd/conf.d/webalizer.conf" ]; then
+            mv /etc/httpd/conf.d/webalizer.conf $file006/
+        fi
+        if [ -f "/etc/httpd/conf.d/welcome.conf" ]; then
+            mv /etc/httpd/conf.d/welcome.conf $file006/
+        fi
+
     fi
-    if [ -f "/etc/httpd/conf.modules.d/00-dav.conf" ]; then
-        echo "# Disabled by virtualXS" > /etc/httpd/conf.modules.d/00-dav.conf
-    fi
-    if [ -f "/etc/httpd/conf.modules.d/00-lua.conf" ]; then
-        echo "# Disabled by virtualXS" > /etc/httpd/conf.modules.d/00-lua.conf
+
+    if [ -d "$file007" ]; then
+
+        if [ -f "/etc/httpd/conf.modules.d/00-dav.conf" ]; then
+            mv /etc/httpd/conf.modules.d/00-dav.conf $file006/
+        fi
+        if [ -f "/etc/httpd/conf.modules.d/00-lua.conf" ]; then
+            mv /etc/httpd/conf.modules.d/00-lua.conf $file006/
+        fi
+
     fi
 
     if [ -d "/var/www/html" ]; then
@@ -39,8 +59,6 @@ if [ "$u_httpd" = "y" ]; then
     fi
 
     ### Autoindex
-    ###
-    ###
     if [ -d "/usr/share/httpd/noindex" ]; then
         cp -rf $u_path/files/httpd/index.html /usr/share/httpd/noindex/
     fi
@@ -107,18 +125,15 @@ DROPIN
     ###   httpd_enable_homedirs         – Zugriff auf /home/* (UserDir)
     ###   httpd_read_user_content       – Lesen von Benutzer-Inhalten
     ###
-    printf "\n********************************************************************\n\n"
-    if confirm "$(( ++_vxs_step ))) SELinux: HTTPD Booleans + Dateikontexte setzen" "$u_httpd_selinux"; then
-        printf "\n--- SELinux: HTTPD ---\n"
-        _selinux_ensure_tools
-        _selinux_set_bool httpd_can_network_connect
-        _selinux_set_bool httpd_can_network_connect_db
-        _selinux_set_bool httpd_can_sendmail
-        _selinux_set_bool httpd_unified
-        _selinux_set_bool httpd_enable_homedirs
-        _selinux_set_bool httpd_read_user_content
-        _selinux_restorecon /etc/httpd
-        _selinux_restorecon /var/www
-    fi
+    printf "\n--- SELinux: HTTPD ---\n"
+    _selinux_ensure_tools
+    _selinux_set_bool httpd_can_network_connect
+    _selinux_set_bool httpd_can_network_connect_db
+    _selinux_set_bool httpd_can_sendmail
+    _selinux_set_bool httpd_unified
+    _selinux_set_bool httpd_enable_homedirs
+    _selinux_set_bool httpd_read_user_content
+    _selinux_restorecon /etc/httpd
+    _selinux_restorecon /var/www
 
 fi

@@ -318,7 +318,6 @@ if vxs_should_run_from repo; then
         u_bashrc_root=y
         u_claude_json=y
         u_httpd=y
-        u_httpd_selinux=y
         u_wp_cli=y
         u_dovecot=y
         u_letsencrypt=n
@@ -356,7 +355,6 @@ if vxs_should_run_from repo; then
         u_bashrc_root=y
         u_claude_json=y
         u_httpd=n
-        u_httpd_selinux=n
         u_wp_cli=n
         u_dovecot=n
         u_letsencrypt=n
