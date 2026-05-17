@@ -16,10 +16,13 @@ if [ "$u_vsftpd" = "y" ]; then
     # Generate random vsftpd MySQL password (12 chars, safe charset)
     u_vsftpd_pwd=$(tr -dc 'a-zA-Z0-9!@^*_+' </dev/urandom | head -c 12)
 
-    # Create or update MySQL user 'vsftpd'@'127.0.0.1' with generated password
-    if printf "CREATE USER IF NOT EXISTS 'vsftpd'@'127.0.0.1';\nALTER USER 'vsftpd'@'127.0.0.1' IDENTIFIED BY '%s';\nGRANT SELECT ON virtualx.passwd TO 'vsftpd'@'127.0.0.1';\nFLUSH PRIVILEGES;\n" \
+    # Create or update local MySQL users for vsftpd on both common local host variants.
+    if printf "CREATE USER IF NOT EXISTS 'vsftpd'@'127.0.0.1' IDENTIFIED BY '%s';\nCREATE USER IF NOT EXISTS 'vsftpd'@'localhost' IDENTIFIED BY '%s';\nALTER USER 'vsftpd'@'127.0.0.1' IDENTIFIED BY '%s';\nALTER USER 'vsftpd'@'localhost' IDENTIFIED BY '%s';\nGRANT SELECT ON virtualx.passwd TO 'vsftpd'@'127.0.0.1';\nGRANT SELECT ON virtualx.passwd TO 'vsftpd'@'localhost';\nFLUSH PRIVILEGES;\n" \
+        "$u_vsftpd_pwd" \
+        "$u_vsftpd_pwd" \
+        "$u_vsftpd_pwd" \
         "$u_vsftpd_pwd" | MYSQL_PWD="$u_mysql_pwd" mysql -u root >/dev/null 2>&1; then
-        _log ok "MySQL user 'vsftpd'@'127.0.0.1' created/updated (SELECT on virtualx.passwd)"
+        _log ok "MySQL user 'vsftpd' local hosts created/updated (SELECT on virtualx.passwd)"
         printf "\n  %-12s %s\n  %-12s %s\n\n" "User:" "vsftpd" "Password:" "$u_vsftpd_pwd"
         ### Write vsftpd credentials to /etc/vsftpd/.my.cnf
         mkdir -p /etc/vsftpd
@@ -28,18 +31,19 @@ if [ "$u_vsftpd" = "y" ]; then
         chown root:root /etc/vsftpd/.my.cnf
         _log ok "vsftpd credentials written to /etc/vsftpd/.my.cnf"
         if MYSQL_PWD="$u_vsftpd_pwd" mysql \
+            --protocol=TCP \
             --host=127.0.0.1 \
             --user=vsftpd \
             --skip-column-names \
             --silent \
             virtualx \
-            -e "SELECT 1;" >/dev/null 2>&1; then
-            _log ok "MySQL login test for 'vsftpd'@'127.0.0.1' succeeded"
+            -e "SELECT COUNT(*) FROM passwd LIMIT 1;" >/dev/null 2>&1; then
+            _log ok "MySQL login test for 'vsftpd' via TCP succeeded"
         else
-            _log error "MySQL login test for 'vsftpd'@'127.0.0.1' failed"
+            _log error "MySQL login test for 'vsftpd' via TCP failed"
         fi
     else
-        _log error "Could not create/update MySQL user 'vsftpd'@'127.0.0.1'"
+        _log error "Could not create/update local MySQL user 'vsftpd'"
     fi
     unset u_vsftpd_pwd
     file_vsftpd001=/etc/vsftpd/vsftpd_user_conf
