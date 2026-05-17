@@ -11,9 +11,6 @@ if confirm "$(( ++_vxs_step ))) Append root .bashrc additions (claude alias, chk
     else
         cat "$u_path/files/root/.bashrc" >> /root/.bashrc
         _log ok "/root/.bashrc updated"
-        # shellcheck source=/dev/null
-        source /root/.bashrc
-        _log info "/root/.bashrc sourced – changes active in current session"
     fi
 
 fi
