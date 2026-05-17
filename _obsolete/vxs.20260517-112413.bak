@@ -536,7 +536,7 @@ if vxs_should_run_from vsftpd; then
 
 fi
 
-if vxs_should_run_from mysql && [ "$u_vsftpd" = "y" ]; then
+if vxs_should_run_from mysql; then
 
     ### SELinux: MySQL Boolean + Dateikontext
     ###   mysql_connect_any – MySQL verbindet sich auf beliebige Ports/Sockets
