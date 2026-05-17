@@ -77,7 +77,7 @@ run_virtualx_ftps_check() {
     print_virtualx_check_result "FTPS" "$address" 1 "$output"
 }
 
-printf "\n********************************************************************\n\n%d) Install first VirtualX server [y/N]: " "$(( ++_vxs_step ))"
+printf "\n********************************************************************\n\n%d) Install VirtualX API server [y/N]: " "$(( ++_vxs_step ))"
 if [ "$u_virtualx" = "" ]; then
     read u_virtualx
 fi
@@ -85,9 +85,9 @@ fi
 if [ "$u_virtualx" = "y" ]; then
     printf "\n"
     if [ ! -f /etc/letsencrypt/options-ssl-apache.conf ]; then
-        _log error "/etc/letsencrypt/options-ssl-apache.conf not found – VirtualX-Installation übersprungen"
+        _log error "/etc/letsencrypt/options-ssl-apache.conf not found – VirtualX installation skipped"
     elif ! systemctl is-active --quiet mysqld; then
-        _log error "MySQL läuft nicht – VirtualX-Installation übersprungen"
+        _log error "MySQL is not running – VirtualX installation skipped"
     else
 
     ### Create user for vhost

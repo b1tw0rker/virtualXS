@@ -1,5 +1,0 @@
-#%PAM-1.0
-auth       required     pam_exec.so expose_authtok /usr/local/sbin/vsftpd-pam-check.sh
-auth       optional     pam_permit.so
-account    required     pam_permit.so
-session    required     pam_permit.so
