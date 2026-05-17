@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-### Version: 1.2.141
+### Version: 1.2.140
 ### Build date: 17.05.2026
 ### (C) 2021 - 2026 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -32,7 +32,7 @@ done
 ###
 ###
 infocolor=$(tput setaf 6) # DEV
-u_version=1.2.141
+u_version=1.2.140
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
 WEBHOSTER=host-x.de
@@ -301,18 +301,6 @@ if vxs_should_run_from repo; then
             else
                 _log error "Could not change MySQL root password"
             fi
-
-            ### Create MySQL user 'vsftpd' with SELECT on virtualx.passwd
-            _vsftpd_pwd=$(tr -dc 'a-zA-Z0-9!@^*_+' </dev/urandom | head -c 12)
-            if printf "CREATE USER IF NOT EXISTS 'vsftpd'@'localhost' IDENTIFIED BY '%s';\nGRANT SELECT ON \`virtualx\`.\`passwd\` TO 'vsftpd'@'localhost';\nFLUSH PRIVILEGES;\n" \
-                "$_vsftpd_pwd" | MYSQL_PWD="$u_mysql_pwd" mysql -u root >/dev/null 2>&1; then
-                _log ok "MySQL user 'vsftpd' created (SELECT on virtualx.passwd)"
-                printf "\n  %-12s %s\n  %-12s %s\n\n" "User:" "vsftpd" "Password:" "$_vsftpd_pwd"
-            else
-                _log error "Could not create MySQL user 'vsftpd'"
-            fi
-            unset _vsftpd_pwd
-
             unset u_mysql_pwd u_mysql_pwd_confirm _mycnf_exists
             break # Schleife verlassen
 
