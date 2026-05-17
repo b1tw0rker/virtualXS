@@ -98,7 +98,7 @@ if [ "$u_virtualx" = "y" ]; then
     fi
     u_srv_pwd=$(tr -dc 'A-Za-z0-9@_-' < /dev/urandom | head -c 14)
     echo "$u_srv:$u_srv_pwd" | chpasswd
-    _log ok "User "$'\e[1m'"$u_srv"$'\e[0m'" created"
+    _log ok "User \e[1m$u_srv\e[0m created"
 
     ### Create sudoers entry for virtualx user
     ###
