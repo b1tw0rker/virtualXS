@@ -7,7 +7,7 @@
 # PAM_USER is set as environment variable by PAM.
 #
 # Deployed to: /etc/bitworker/bw-vsftpd-pam-userlogin-check.sh (chmod 700, root:root)
-# MySQL vsftpd user credentials are read from /etc/vsftpd/.my.cnf (written during MySQL setup in vxs)
+# MySQL client credentials are read from /etc/vsftpd/.my.cnf
 # Password hash in DB: SHA2(password, 256) - 64 hex chars
 #
 # Test on terminal:
@@ -16,6 +16,7 @@
 # Debug mode prints the failure reason to stderr and is intended for manual tests only.
 
 MYSQL_DB="virtualx"
+MYSQL_DEFAULTS_FILE="/etc/vsftpd/.my.cnf"
 debug_enabled=0
 
 if [[ "${BW_VSFTPD_DEBUG:-0}" == "1" || "${1:-}" == "--debug" ]]; then
@@ -39,9 +40,8 @@ success() {
 }
 
 mysql_query() {
-    MYSQL_PWD="$mysql_vsftpd_pwd" mysql \
-        --host=127.0.0.1 \
-        --user=vsftpd \
+    mysql \
+        --defaults-file="$MYSQL_DEFAULTS_FILE" \
         --skip-column-names \
         --silent \
         "$MYSQL_DB" \
@@ -52,8 +52,6 @@ mysql_query() {
 # Read password from stdin (provided by pam_exec expose_authtok)
 read -r password || password=""
 
-mysql_vsftpd_pwd=$(grep '^password=' /etc/vsftpd/.my.cnf 2>/dev/null | cut -d= -f2-)
-
 # Reject empty credentials
 if [[ -z "$PAM_USER" ]]; then
     fail "PAM_USER is empty or unset"
@@ -63,8 +61,8 @@ if [[ -z "$password" ]]; then
     fail "No password was received on stdin"
 fi
 
-if [[ -z "$mysql_vsftpd_pwd" ]]; then
-    fail "No MySQL password was found in /etc/vsftpd/.my.cnf"
+if [[ ! -r "$MYSQL_DEFAULTS_FILE" ]]; then
+    fail "MySQL defaults file is missing or unreadable: $MYSQL_DEFAULTS_FILE"
 fi
 
 # Validate username: only allow hostname-safe characters (a-z A-Z 0-9 . _ -)
