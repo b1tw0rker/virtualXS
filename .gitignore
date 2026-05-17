@@ -2,4 +2,4 @@
 **/authorized_keys
 **/helper
 files/certbot/config/dns-config.conf
-_obsolete
+/_obsolete
