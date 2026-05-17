@@ -44,16 +44,13 @@ if [ "$u_vsftpd" = "y" ]; then
 
     cat "$u_path/files/vsftpd/vsftpd.conf" >>"$file_vsftpd002"
 
-    ### MySQL credentials for PAM auth script
-    ### /etc/vsftpd/.my.cnf is written by vxs during MySQL setup (vsftpd user, not root).
-    ### Only fall back to /root/.my.cnf if the vsftpd-specific file is missing.
-    if [ -f /etc/vsftpd/.my.cnf ]; then
-        _log ok "MySQL-Zugangsdaten vorhanden: /etc/vsftpd/.my.cnf"
-    elif [ -f /root/.my.cnf ]; then
+    ### Copy MySQL credentials for PAM auth script
+    ###
+    if [ -f /root/.my.cnf ]; then
         cp /root/.my.cnf /etc/vsftpd/.my.cnf
         chmod 600 /etc/vsftpd/.my.cnf
         chown root:root /etc/vsftpd/.my.cnf
-        _log warn "Fallback: /root/.my.cnf nach /etc/vsftpd/.my.cnf kopiert (vsftpd-User noch nicht angelegt)"
+        _log ok "MySQL-Zugangsdaten kopiert: /etc/vsftpd/.my.cnf"
     else
         _log error "/root/.my.cnf nicht gefunden – /etc/vsftpd/.my.cnf fehlt"
     fi

@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-### Version: 1.2.142
+### Version: 1.2.141
 ### Build date: 17.05.2026
 ### (C) 2021 - 2026 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -32,7 +32,7 @@ done
 ###
 ###
 infocolor=$(tput setaf 6) # DEV
-u_version=1.2.142
+u_version=1.2.141
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
 WEBHOSTER=host-x.de
@@ -283,6 +283,14 @@ if vxs_should_run_from repo; then
             printf '[client]\npassword=%s\n' "$u_mysql_pwd" > /root/.my.cnf
             chmod 600 /root/.my.cnf
 
+            # Wenn /etc/vsftpd/.my.cnf existiert, dort das Passwort ebenfalls aktualisieren
+            if [ -f /etc/vsftpd/.my.cnf ]; then
+                printf '[client]\npassword=%s\n' "$u_mysql_pwd" > /etc/vsftpd/.my.cnf
+                chmod 600 /etc/vsftpd/.my.cnf
+                chown root:root /etc/vsftpd/.my.cnf
+                _log ok "MySQL password updated in /etc/vsftpd/.my.cnf"
+            fi
+
             _log info "Starting MySQL"
             systemctl start mysqld >/dev/null 2>&1
 
@@ -300,12 +308,6 @@ if vxs_should_run_from repo; then
                 "$_vsftpd_pwd" | MYSQL_PWD="$u_mysql_pwd" mysql -u root >/dev/null 2>&1; then
                 _log ok "MySQL user 'vsftpd' created (SELECT on virtualx.passwd)"
                 printf "\n  %-12s %s\n  %-12s %s\n\n" "User:" "vsftpd" "Password:" "$_vsftpd_pwd"
-                ### Write vsftpd credentials to /etc/vsftpd/.my.cnf
-                mkdir -p /etc/vsftpd
-                printf '[client]\nuser=vsftpd\npassword=%s\n' "$_vsftpd_pwd" > /etc/vsftpd/.my.cnf
-                chmod 600 /etc/vsftpd/.my.cnf
-                chown root:root /etc/vsftpd/.my.cnf
-                _log ok "vsftpd credentials written to /etc/vsftpd/.my.cnf"
             else
                 _log error "Could not create MySQL user 'vsftpd'"
             fi

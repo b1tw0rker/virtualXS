@@ -7,7 +7,7 @@
 # PAM_USER is set as environment variable by PAM.
 #
 # Deployed to: /etc/bitworker/bw-vsftpd-pam-userlogin-check.sh (chmod 700, root:root)
-# MySQL vsftpd user credentials are read from /etc/vsftpd/.my.cnf (written during MySQL setup in vxs)
+# MySQL password is read from /etc/vsftpd/.my.cnf (copied from /root/.my.cnf during vsftpd setup)
 # Password hash in DB: SHA2(password, 256) - 64 hex chars
 #
 # Test on terminal:
@@ -19,10 +19,10 @@ MYSQL_DB="virtualx"
 # Read password from stdin (provided by pam_exec expose_authtok)
 read -r password
 
-mysql_vsftpd_pwd=$(grep '^password=' /etc/vsftpd/.my.cnf 2>/dev/null | cut -d= -f2-)
+mysql_root_pwd=$(grep '^password=' /etc/vsftpd/.my.cnf 2>/dev/null | cut -d= -f2-)
 
 # Reject empty credentials
-if [[ -z "$PAM_USER" || -z "$password" || -z "$mysql_vsftpd_pwd" ]]; then
+if [[ -z "$PAM_USER" || -z "$password" || -z "$mysql_root_pwd" ]]; then
     exit 1
 fi
 
@@ -41,9 +41,9 @@ if [[ ! "$hash" =~ ^[0-9a-f]{64}$ ]]; then
 fi
 
 # Query MySQL - PAM_USER is regex-validated, hash is hex-only: no injection possible
-result=$(MYSQL_PWD="$mysql_vsftpd_pwd" mysql \
+result=$(MYSQL_PWD="$mysql_root_pwd" mysql \
     --host=127.0.0.1 \
-    --user=vsftpd \
+    --user=root \
     --skip-column-names \
     --silent \
     "$MYSQL_DB" \
