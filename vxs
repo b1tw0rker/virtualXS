@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-### Version: 1.2.145
+### Version: 1.2.146
 ### Build date: 17.05.2026
 ### (C) 2021 - 2026 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -32,7 +32,7 @@ done
 ###
 ###
 infocolor=$(tput setaf 6) # DEV
-u_version=1.2.145
+u_version=1.2.146
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
 WEBHOSTER=host-x.de
