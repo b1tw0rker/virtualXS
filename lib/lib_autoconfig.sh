@@ -83,10 +83,10 @@ if [ "$u_autoconfig" = "y" ]; then
         u_state=$(apachectl -t 2>&1)
 
         if [ "$u_state" = "Syntax OK" ]; then
-            systemctl reload httpd
-            _log ok "httpd reloaded"
+            systemctl restart httpd
+            _log ok "httpd restarted"
         else
-            _log error "httpd reload failed:"
+            _log error "httpd restart failed:"
             apachectl -t
         fi
 
