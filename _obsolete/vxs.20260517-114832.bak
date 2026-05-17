@@ -242,70 +242,40 @@ if vxs_should_run_from repo; then
     ### Ask for MySql Password
     ###
     ###
-    _mycnf_exists=false
-    [ -f /root/.my.cnf ] && _mycnf_exists=true
-
     while true; do
         # Erste Abfrage
-        if $_mycnf_exists; then
-            read -s -p "5/6 • Set MySQL root password (Enter = keep current): " u_mysql_pwd
-        else
-            read -s -p "5/6 • Set MySQL root password: " u_mysql_pwd
-        fi
+        read -s -p "5/6 • Set MySQL root password: " u_mysql_pwd
         echo # Zeilenumbruch nach der Eingabe, da -s keinen Zeilenumbruch erzeugt
-
-        # Leeres Passwort: nur erlaubt wenn .my.cnf bereits existiert (=> unveraendert lassen)
-        if [ -z "$u_mysql_pwd" ]; then
-            if $_mycnf_exists; then
-                read -s -p "6/6 • Confirm (Enter = keep current): " u_mysql_pwd_confirm
-                echo
-                if [ -z "$u_mysql_pwd_confirm" ]; then
-                    _log info "MySQL password unchanged."
-                    unset u_mysql_pwd u_mysql_pwd_confirm _mycnf_exists
-                    break
-                else
-                    _log warn "Confirmation was not empty. Please try again."
-                    continue
-                fi
-            else
-                _log warn "Password must not be empty. Please enter a password."
-                continue
-            fi
-        fi
-
+        
         # Second prompt for confirmation
         read -s -p "6/6 • Confirm MySQL root password: " u_mysql_pwd_confirm
         echo # Zeilenumbruch
-
+        
         # Vergleiche die beiden Eingaben
         if [ "$u_mysql_pwd" == "$u_mysql_pwd_confirm" ]; then
-            _log ok "Passwords match"
+            printf "[\e[32mOK\e[0m] Passwords match\n"
             printf '[client]\npassword=%s\n' "$u_mysql_pwd" > /root/.my.cnf
             chmod 600 /root/.my.cnf
 
-            # Wenn /etc/vsftpd/.my.cnf existiert, dort das Passwort ebenfalls aktualisieren
-            if [ -f /etc/vsftpd/.my.cnf ]; then
-                printf '[client]\npassword=%s\n' "$u_mysql_pwd" > /etc/vsftpd/.my.cnf
-                chmod 600 /etc/vsftpd/.my.cnf
-                chown root:root /etc/vsftpd/.my.cnf
-                _log ok "MySQL password updated in /etc/vsftpd/.my.cnf"
-            fi
-
-            _log info "Starting MySQL"
+            printf "[\e[34mINFO\e[0m] Starting MySQL\n"
             systemctl start mysqld >/dev/null 2>&1
 
-            _log ok "MySQL Server started"
+            printf "[\e[32mOK\e[0m] MySQL Server started\n"
 
             if mysqladmin -u root password "$u_mysql_pwd" >/dev/null 2>&1; then
-                _log ok "Changed MySQL root password successfully"
+            
+            printf "[\e[32mOK\e[0m] Changed MySQL root password successfully\n"
+
             else
-                _log error "Could not change MySQL root password"
+
+            printf "[\e[31mERROR\e[0m] Could not change MySQL root password\n"
+        
             fi
-            unset u_mysql_pwd u_mysql_pwd_confirm _mycnf_exists
+            unset u_mysql_pwd u_mysql_pwd_confirm
             break # Schleife verlassen
 
         else
-            _log warn "Passwords do not match. Please try again."
+            echo "Passwords do not match. Please try again."
         fi
     done
 
