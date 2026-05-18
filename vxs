@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-### Version: 1.2.152
+### Version: 1.2.153
 ### Build date: 17.05.2026
 ### (C) 2021 - 2026 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -32,7 +32,7 @@ done
 ###
 ###
 infocolor=$(tput setaf 6) # DEV
-u_version=1.2.152
+u_version=1.2.153
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
 WEBHOSTER=host-x.de
@@ -493,10 +493,25 @@ if vxs_should_run_from helper_apps; then
     ###
     source $u_path/lib/lib_helper_apps.sh
 
-    ### q general root settings (.exrc, .bashrc, .claude.json)
+    ### q general root settings (.exrc, .bashrc)
     ###
     ###
     source $u_path/lib/lib_settings.sh
+
+fi
+
+
+if vxs_should_run_from apps; then
+
+    ### q apps
+    ###
+    ###
+    source $u_path/lib/lib_apps_disable.sh
+
+    ### q .claude.json (root)
+    ###
+    ###
+    source $u_path/lib/lib_claude_json.sh
 
 fi
 
@@ -508,15 +523,6 @@ if vxs_should_run_from letsencrypt; then
     if [ "$u_server" = "w" ] || [ "$u_server" = "m" ]; then
         source $u_path/lib/lib_letsencrypt.sh
     fi
-
-fi
-
-if vxs_should_run_from apps; then
-
-    ### q apps
-    ###
-    ###
-    source $u_path/lib/lib_apps_disable.sh
 
 fi
 

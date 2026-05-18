@@ -1,13 +1,18 @@
 #!/bin/bash
 
 print_virtualx_access_summary() {
+    local sftp_address="${u_ip}:1122"
+    local ftps_address="${u_ip}:21"
+
     printf "\n----------------------------\n"
     _log ok "VirtualX API ready"
     printf "User: \e[1m%s\e[0m\n" "$u_srv"
     printf "Password: \e[1;33m%s\e[0m\n" "$u_srv_pwd"
 
     printf -- "---\n"
-    printf "Connection checks for %s\n" "$u_ip"
+    printf "Connection checks via server IP %s\n" "$u_ip"
+    printf "SFTP  -> %s  authenticated login + directory listing\n" "$sftp_address"
+    printf "FTPS  -> %s  explicit TLS login + directory listing\n" "$ftps_address"
 }
 
 print_virtualx_check_result() {
@@ -15,13 +20,14 @@ print_virtualx_check_result() {
     local address="$2"
     local status="$3"
     local detail="$4"
+    local success_detail="$5"
 
     if [ "$status" -eq 0 ]; then
-        printf "%s connection: [\e[32mOK\e[0m]\n" "$label"
+        printf "%s: [\e[32mOK\e[0m] %s (%s)\n" "$label" "$success_detail" "$address"
         return
     fi
 
-    printf "%s connection: [\e[31mFAILED\e[0m] %s (%s)\n" "$label" "$(compact_virtualx_check_error "$detail")" "$address"
+    printf "%s: [\e[31mFAILED\e[0m] %s (%s)\n" "$label" "$(compact_virtualx_check_error "$detail")" "$address"
 }
 
 run_virtualx_sftp_check() {
@@ -29,24 +35,27 @@ run_virtualx_sftp_check() {
     local status
     local address="${u_ip}:1122"
 
-    if ! command -v ssh-keyscan >/dev/null 2>&1; then
-        print_virtualx_check_result "SFTP" "$address" 1 "ssh-keyscan not installed"
+    if ! command -v curl >/dev/null 2>&1; then
+        print_virtualx_check_result "SFTP" "$address" 1 "curl not installed" ""
         return
     fi
 
-    output=$(ssh-keyscan -T 5 -p 1122 "$u_ip" 2>&1)
+    output=$(timeout 15 curl -k -s -S --connect-timeout 10 --list-only \
+        -u "${u_srv}:${u_srv_pwd}" "sftp://${u_ip}:1122/" 2>&1)
     status=$?
 
-    if [ "$status" -eq 0 ] && [ -n "$output" ]; then
-        print_virtualx_check_result "SFTP" "$address" 0 "$output"
+    if [ "$status" -eq 0 ]; then
+        print_virtualx_check_result "SFTP" "$address" 0 "$output" "Authenticated login succeeded"
         return
     fi
 
-    if [ -z "$output" ]; then
-        output="no SSH host key received"
+    if [ "$status" -eq 124 ]; then
+        output="connection timed out"
+    elif [ -z "$output" ]; then
+        output="authentication or directory listing failed"
     fi
 
-    print_virtualx_check_result "SFTP" "$address" 1 "$output"
+    print_virtualx_check_result "SFTP" "$address" 1 "$output" ""
 }
 
 run_virtualx_ftps_check() {
@@ -55,16 +64,16 @@ run_virtualx_ftps_check() {
     local address="${u_ip}:21"
 
     if ! command -v curl >/dev/null 2>&1; then
-        print_virtualx_check_result "FTPS" "$address" 1 "curl not installed"
+        print_virtualx_check_result "FTPS" "$address" 1 "curl not installed" ""
         return
     fi
 
-    output=$(timeout 15 curl --ssl-reqd -k -s -S --connect-timeout 10 \
-        -u "${u_srv}:${u_srv_pwd}" "ftp://${u_ip}/" 2>&1)
+    output=$(timeout 15 curl --ssl-reqd -k -s -S --connect-timeout 10 --list-only \
+        -u "${u_srv}:${u_srv_pwd}" "ftp://${u_ip}:21/" 2>&1)
     status=$?
 
     if [ "$status" -eq 0 ]; then
-        print_virtualx_check_result "FTPS" "$address" 0 "$output"
+        print_virtualx_check_result "FTPS" "$address" 0 "$output" "Authenticated explicit TLS login succeeded"
         return
     fi
 
@@ -74,7 +83,7 @@ run_virtualx_ftps_check() {
         output="unknown error"
     fi
 
-    print_virtualx_check_result "FTPS" "$address" 1 "$output"
+    print_virtualx_check_result "FTPS" "$address" 1 "$output" ""
 }
 
 printf "\n********************************************************************\n\n%d) Install VirtualX API server [y/N]: " "$(( ++_vxs_step ))"
