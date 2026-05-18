@@ -50,7 +50,11 @@ mysql_query() {
 }
 
 # Read password from stdin (provided by pam_exec expose_authtok)
-read -r password || password=""
+# Akzeptiere sowohl NUL- als auch Newline-terminierte Passwörter (pam_exec: kein \n, ggf. NUL)
+IFS= read -r -d '' password 2>/dev/null || true
+if [[ -z "$password" ]]; then
+    IFS= read -r password 2>/dev/null || true
+fi
 
 # Reject empty credentials
 if [[ -z "$PAM_USER" ]]; then
