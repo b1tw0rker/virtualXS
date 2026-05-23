@@ -109,6 +109,7 @@ if [ "$u_virtualx" = "y" ]; then
     echo "$u_srv:$u_srv_pwd" | chpasswd
     _log ok "User "$'\e[1m'"$u_srv"$'\e[0m'" created"
 
+
     ### Create sudoers entry for virtualx user
     ###
     ###
@@ -117,6 +118,35 @@ if [ "$u_virtualx" = "y" ]; then
         printf '%s ALL=(ALL) NOPASSWD: ALL\n' "$u_srv" > "$_sudoers_file"
         chmod 440 "$_sudoers_file"
         _log ok "Sudoers entry for API calls created: $_sudoers_file"
+    fi
+
+    ### Create additional directories for VirtualX webroot
+    ###
+    mkdir -p "/home/httpd/$u_srv/htdocs/dbx"
+    mkdir -p "/home/httpd/$u_srv/htdocs/adminx/plugins/virtualx"
+    _log ok "Created dbx and adminx/plugins/virtualx directories in htdocs."
+
+    ### Download and extract phpMyAdmin into dbx
+    ###
+    pma_url="https://files.phpmyadmin.net/phpMyAdmin/5.2.3/phpMyAdmin-5.2.3-all-languages.zip"
+    pma_zip="/tmp/phpMyAdmin-5.2.3-all-languages.zip"
+    pma_target="/home/httpd/$u_srv/htdocs/dbx"
+    if command -v curl >/dev/null 2>&1 && command -v unzip >/dev/null 2>&1; then
+        curl -fsSL "$pma_url" -o "$pma_zip"
+        if [ -f "$pma_zip" ]; then
+            unzip -q "$pma_zip" -d "$pma_target"
+            # Move contents up if needed
+            if [ -d "$pma_target/phpMyAdmin-5.2.3-all-languages" ]; then
+                mv "$pma_target/phpMyAdmin-5.2.3-all-languages"/* "$pma_target/"
+                rmdir "$pma_target/phpMyAdmin-5.2.3-all-languages"
+            fi
+            rm -f "$pma_zip"
+            _log ok "phpMyAdmin 5.2.3 deployed to $pma_target."
+        else
+            _log error "phpMyAdmin download failed."
+        fi
+    else
+        _log warn "curl or unzip not found, skipping phpMyAdmin deployment."
     fi
 
     ### Create directories
