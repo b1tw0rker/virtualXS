@@ -1,0 +1,24 @@
+module virtualxs 1.0;
+
+require {
+    type fail2ban_t;
+    type home_root_t;
+    type httpd_sys_content_t;
+    type httpd_log_t;
+    type postfix_cleanup_t;
+    type mysqld_etc_t;
+    class dir { getattr open read search };
+    class file { getattr ioctl open read };
+}
+
+# fail2ban: Traversal through /home/ to /home/httpd
+allow fail2ban_t home_root_t:dir search;
+
+# fail2ban: Read webroot and log paths under /home/httpd/
+allow fail2ban_t httpd_sys_content_t:dir { getattr open read search };
+allow fail2ban_t httpd_log_t:dir { getattr open read search };
+allow fail2ban_t httpd_log_t:file { getattr ioctl open read };
+
+# postfix_cleanup: Read MySQL config under /etc/my.cnf and /etc/my.cnf.d/
+allow postfix_cleanup_t mysqld_etc_t:dir search;
+allow postfix_cleanup_t mysqld_etc_t:file { getattr open read };
