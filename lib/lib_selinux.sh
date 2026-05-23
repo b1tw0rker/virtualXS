@@ -54,15 +54,6 @@ if [ "$u_selinux" = "y" ]; then
             return 1
         fi
 
-        # Sicherstellen, dass SELinux-Tools vorhanden sind
-        #if ! command -v checkmodule &>/dev/null || ! command -v semodule &>/dev/null; then
-        #    _log info "Installiere SELinux-Tools..."
-        #    dnf -y install checkpolicy policycoreutils-python-utils policycoreutils >/dev/null 2>&1 || {
-        #        _log error "SELinux-Tools konnten nicht installiert werden"
-        #        return 1
-        #    }
-        #    _log ok "SELinux-Tools installiert"
-        #fi
 
         # Modul kompilieren, verpacken und laden
         checkmodule -M -m -o "$srcdir/$name.mod" "$srcdir/$name.te" && \
