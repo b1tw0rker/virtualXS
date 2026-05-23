@@ -67,6 +67,15 @@ if confirm "$(( ++_vxs_step ))) Install chk-service from GitHub" "$u_chk_service
 
     if [ -f "/opt/chk-service/bw-chk-service.sh" ]; then
         chmod 700 /opt/chk-service/bw-chk-service.sh
+
+        cat > /opt/chk-service/bw-chk-service.cfg <<'EOF'
+mysqld
+sshd
+httpd
+postfix
+EOF
+        chmod 644 /opt/chk-service/bw-chk-service.cfg
+
         _log ok "chk-service installed at /opt/chk-service"
     else
         _log error "bw-chk-service.sh not found after clone"
