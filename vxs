@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-### Version: 1.2.157
+### Version: 1.2.158
 ### Build date: 17.05.2026
 ### (C) 2021 - 2026 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -32,7 +32,7 @@ done
 ###
 ###
 infocolor=$(tput setaf 6) # DEV
-u_version=1.2.157
+u_version=1.2.158
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
 WEBHOSTER=host-x.de
@@ -85,7 +85,7 @@ DEV_START_AT=${1:-}
 ###
 source $u_path/lib/functions.sh
 
-_VXS_SECTIONS=(repo dnf folders helper_apps letsencrypt apps postfix httpd dovecot autoconfig vsftpd mysql backup quota powerdns logrotate cron tripwire php ssh fail2ban firewall kernel_modules start virtualx wordpress)
+_VXS_SECTIONS=(repo dnf selinux folders helper_apps letsencrypt apps postfix httpd dovecot autoconfig vsftpd mysql backup quota powerdns logrotate cron tripwire php ssh fail2ban firewall kernel_modules start virtualx wordpress)
 
 _vxs_section_index() {
     local section="$1" i
@@ -348,6 +348,7 @@ if vxs_should_run_from repo; then
         u_claude_json=y
         u_httpd=y
         u_httpd_selinux=y
+        u_selinux=y
         u_wp_cli=y
         u_dovecot=y
         u_letsencrypt=n
@@ -386,6 +387,7 @@ if vxs_should_run_from repo; then
         u_claude_json=y
         u_httpd=n
         u_httpd_selinux=n
+        u_selinux=y
         u_wp_cli=n
         u_dovecot=n
         u_letsencrypt=n
@@ -485,6 +487,16 @@ if vxs_should_run_from folders; then
     source $u_path/lib/lib_folders.sh
 
 fi
+
+if vxs_should_run_from selinux; then
+
+    ### q SELinux konfigurieren
+    ###
+    ###
+    source $u_path/lib/lib_selinux.sh
+
+fi
+
 
 if vxs_should_run_from helper_apps; then
 
