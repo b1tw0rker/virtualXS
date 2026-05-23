@@ -46,7 +46,7 @@ if [ "$u_selinux" = "y" ]; then
     ### --- SELinux Projektmodul bauen, laden und Altmodule entfernen ---
     ###
     _selinux_load_module() {
-        local srcdir="/opt/virtualXS/selinux"
+        local srcdir="/opt/virtualXS/files/selinux"
         local name="virtualxs"
 
         if [ ! -f "$srcdir/$name.te" ]; then
@@ -54,57 +54,34 @@ if [ "$u_selinux" = "y" ]; then
             return 1
         fi
 
-        if ! command -v checkmodule &>/dev/null; then
-            _log info "checkpolicy fehlt – wird nachinstalliert"
-            if ! dnf -y install checkpolicy >/dev/null 2>&1; then
-                _log error "checkpolicy konnte nicht installiert werden"
-                return 1
-            fi
-            _log ok "checkpolicy installiert"
-        fi
+        # Sicherstellen, dass SELinux-Tools vorhanden sind
+        #if ! command -v checkmodule &>/dev/null || ! command -v semodule &>/dev/null; then
+        #    _log info "Installiere SELinux-Tools..."
+        #    dnf -y install checkpolicy policycoreutils-python-utils policycoreutils >/dev/null 2>&1 || {
+        #        _log error "SELinux-Tools konnten nicht installiert werden"
+        #        return 1
+        #    }
+        #    _log ok "SELinux-Tools installiert"
+        #fi
 
-        if ! command -v semodule_package &>/dev/null; then
-            _log info "semodule_package fehlt – installiere policycoreutils-python-utils"
-            if ! dnf -y install policycoreutils-python-utils >/dev/null 2>&1; then
-                _log error "policycoreutils-python-utils konnte nicht installiert werden"
-                return 1
-            fi
-            _log ok "policycoreutils-python-utils installiert"
-        fi
-
-        if ! command -v semodule &>/dev/null; then
-            _log info "semodule fehlt – installiere policycoreutils"
-            if ! dnf -y install policycoreutils >/dev/null 2>&1; then
-                _log error "policycoreutils konnte nicht installiert werden"
-                return 1
-            fi
-            _log ok "policycoreutils installiert"
-        fi
-
-        if checkmodule -M -m -o "$srcdir/$name.mod" "$srcdir/$name.te" 2>/dev/null \
-            && semodule_package -o "$srcdir/$name.pp" -m "$srcdir/$name.mod" 2>/dev/null \
-            && semodule -i "$srcdir/$name.pp" 2>/dev/null; then
+        # Modul kompilieren, verpacken und laden
+        checkmodule -M -m -o "$srcdir/$name.mod" "$srcdir/$name.te" && \
+        semodule_package -o "$srcdir/$name.pp" -m "$srcdir/$name.mod" && \
+        semodule -i "$srcdir/$name.pp" && {
             _log ok "SELinux Modul '$name' geladen"
-        else
+        } || {
             _log error "SELinux Modul '$name' – Kompilierung oder Laden fehlgeschlagen"
             return 1
-        fi
+        }
 
-        if semodule -l 2>/dev/null | awk '{print $1}' | grep -qx "fail2ban_httpd"; then
-            if semodule -r fail2ban_httpd 2>/dev/null; then
-                _log ok "Altes SELinux Modul entfernt: fail2ban_httpd"
-            else
-                _log error "Konnte altes Modul fail2ban_httpd nicht entfernen"
+        # Alte Module entfernen
+        for _old_module in fail2ban_httpd postfix_mysql; do
+            if semodule -l 2>/dev/null | awk '{print $1}' | grep -qx "$_old_module"; then
+                semodule -r "$_old_module" 2>/dev/null && \
+                    _log ok "Altes SELinux Modul entfernt: $_old_module" || \
+                    _log error "Konnte altes Modul $_old_module nicht entfernen"
             fi
-        fi
-
-        if semodule -l 2>/dev/null | awk '{print $1}' | grep -qx "postfix_mysql"; then
-            if semodule -r postfix_mysql 2>/dev/null; then
-                _log ok "Altes SELinux Modul entfernt: postfix_mysql"
-            else
-                _log error "Konnte altes Modul postfix_mysql nicht entfernen"
-            fi
-        fi
+        done
     }
 
     ### --- Tools sicherstellen ----------------------------------
