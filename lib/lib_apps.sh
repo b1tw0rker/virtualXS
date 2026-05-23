@@ -11,7 +11,7 @@ fi
 services=(
     httpd
     php-fpm
-    mysqld
+    mariadb
     postfix
     vsftpd
     dovecot
