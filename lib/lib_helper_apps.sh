@@ -76,6 +76,8 @@ postfix
 vsftpd
 dovecot
 spamassassin
+fail2ban
+firewall
 EOF
         chmod 644 /opt/chk-service/bw-chk-service.cfg
 
