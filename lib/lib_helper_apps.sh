@@ -73,6 +73,9 @@ mysqld
 sshd
 httpd
 postfix
+vsftpd
+dovecot
+spamassassin
 EOF
         chmod 644 /opt/chk-service/bw-chk-service.cfg
 
