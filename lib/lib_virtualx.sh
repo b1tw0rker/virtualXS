@@ -113,6 +113,9 @@ if [ "$u_virtualx" = "y" ]; then
     ### Create sudoers entry for virtualx user
     ###
     ###
+    # Sudo ignoriert Dateien in /etc/sudoers.d/, die einen Punkt (.) im Dateinamen haben.
+    # Daher werden Punkte in $u_srv für den Sudoers-Dateinamen durch Unterstriche ersetzt.
+    # Beispiel: srv010.host-x.de → srv010_host-x_de
     _sudoers_safe_name="${u_srv//./_}"
     _sudoers_file="/etc/sudoers.d/${_sudoers_safe_name}"
     if [ ! -f "$_sudoers_file" ]; then
