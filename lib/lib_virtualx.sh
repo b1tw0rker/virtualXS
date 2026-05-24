@@ -176,6 +176,37 @@ if [ "$u_virtualx" = "y" ]; then
 
 
     chown -R "$u_srv:users" /home/httpd/$u_srv/htdocs /home/httpd/$u_srv/logs /home/httpd/$u_srv/tmp
+    ### Create .user.ini in htdocs
+    user_ini_path="/home/httpd/$u_srv/htdocs/.user.ini"
+    cat > "$user_ini_path" <<EOF
+[PHP]
+error_log = "/home/httpd/$u_srv/logs/error.log"
+error_reporting = E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_STRICT
+display_errors = off
+log_errors = on
+ignore_repeated_errors = on
+file_uploads = on
+upload_max_filesize = 8M
+post_max_size = 8M
+allow_url_fopen = on
+memory_limit = 128M
+magic_quotes_gpc = off
+magic_quotes_runtime = off
+magic_quotes_sybase = off
+
+[Session]
+session.save_path = "/home/httpd/$u_srv/tmp"
+session.use_cookies = 1
+session.name = PHPSESSID
+
+[soap]
+soap.wsdl_cache_enabled = 1
+soap.wsdl_cache_dir = "/home/httpd/$u_srv/tmp"
+
+[Date]
+date.timezone = 'Europe/Berlin'
+EOF
+    chown "$u_srv:users" "$user_ini_path"
 
     chmod 755 /home/httpd/$u_srv
     chmod 755 /home/httpd/$u_srv/htdocs
