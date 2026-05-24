@@ -16,6 +16,7 @@ services=(
     vsftpd
     dovecot
     spamassassin
+    firewall
 )
 
 if [ "$u_enable_apps" = "y" ]; then
