@@ -113,7 +113,8 @@ if [ "$u_virtualx" = "y" ]; then
     ### Create sudoers entry for virtualx user
     ###
     ###
-    _sudoers_file="/etc/sudoers.d/${u_srv}"
+    _sudoers_safe_name="${u_srv//./_}"
+    _sudoers_file="/etc/sudoers.d/${_sudoers_safe_name}"
     if [ ! -f "$_sudoers_file" ]; then
         printf '%s ALL=(ALL) NOPASSWD: ALL\n' "$u_srv" > "$_sudoers_file"
         chmod 440 "$_sudoers_file"
