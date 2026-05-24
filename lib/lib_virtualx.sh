@@ -149,6 +149,12 @@ if [ "$u_virtualx" = "y" ]; then
         _log warn "curl or unzip not found, skipping phpMyAdmin deployment."
     fi
 
+    chown -R "$u_srv:users" \
+        "/home/httpd/$u_srv/htdocs/dbx" \
+        "/home/httpd/$u_srv/htdocs/adminx" \
+        "/home/httpd/$u_srv/htdocs/adminx/plugins" \
+        "/home/httpd/$u_srv/htdocs/adminx/plugins/virtualx"
+
     ### Create directories
     ###
     ###
@@ -164,8 +170,8 @@ if [ "$u_virtualx" = "y" ]; then
         mkdir -p /home/httpd/$u_srv/tmp
     fi
 
-    u_srv_group=$(id -gn "$u_srv")
-    chown "$u_srv:$u_srv_group" /home/httpd/$u_srv/htdocs /home/httpd/$u_srv/logs /home/httpd/$u_srv/tmp
+
+    chown -R "$u_srv:users" /home/httpd/$u_srv/htdocs /home/httpd/$u_srv/logs /home/httpd/$u_srv/tmp
 
     chmod 755 /home/httpd/$u_srv
     chmod 750 /home/httpd/$u_srv/htdocs
