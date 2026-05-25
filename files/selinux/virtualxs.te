@@ -1,4 +1,4 @@
-module virtualxs 1.0;
+odule virtualxs 1.2;
 
 require {
     type fail2ban_t;
@@ -7,8 +7,18 @@ require {
     type httpd_log_t;
     type postfix_cleanup_t;
     type mysqld_etc_t;
-    class dir { getattr open read search };
-    class file { getattr ioctl open read };
+    type httpd_t;
+    type security_t;
+    type etc_t;
+    type httpd_config_t;
+    type passwd_file_t;
+    type shadow_t;
+    type var_log_t;
+    class dir { add_name create getattr open read remove_name search write };
+    class file { append create getattr ioctl link open read rename setattr unlink write };
+    class security compute_av;
+    class capability { audit_write fsetid };
+    class netlink_audit_socket nlmsg_relay;
 }
 
 # fail2ban: Traversal through /home/ to /home/httpd
@@ -22,3 +32,31 @@ allow fail2ban_t httpd_log_t:file { getattr ioctl open read };
 # postfix_cleanup: Read MySQL config under /etc/my.cnf and /etc/my.cnf.d/
 allow postfix_cleanup_t mysqld_etc_t:dir search;
 allow postfix_cleanup_t mysqld_etc_t:file { getattr open read };
+
+# httpd_t (PHP-FPM): VirtualX Serververwaltung via sudo
+# sudo benoetigt compute_av auf security_t (SELinux-interner Check)
+allow httpd_t security_t:security compute_av;
+
+# sudo benoetigt audit_write-Capability (Audit-System) und fsetid (useradd Dateiberechtigungen)
+# sowie netlink_audit_socket fuer Audit-Kommunikation
+allow httpd_t self:capability { audit_write fsetid };
+allow httpd_t self:netlink_audit_socket nlmsg_relay;
+
+# useradd/chpasswd: Schreiben in /etc/passwd und /etc/shadow
+allow httpd_t passwd_file_t:file { create rename setattr unlink write };
+allow httpd_t shadow_t:file { create getattr open read rename setattr unlink write };
+
+# VirtualHost-Konfiguration: Schreiben in /etc/httpd/
+allow httpd_t httpd_config_t:dir { add_name write };
+allow httpd_t httpd_config_t:file { append create setattr write };
+
+# FPM-Pool + vsftpd-Config: Schreiben in /etc/ (etc_t-Verzeichnisse und Dateien)
+allow httpd_t etc_t:dir { add_name remove_name write };
+allow httpd_t etc_t:file { create link rename setattr unlink write };
+
+# Log-Verzeichnis anlegen in /var/log/
+allow httpd_t var_log_t:dir create;
+
+# Log-Dateien schreiben in /home/httpd/*/logs/
+allow httpd_t httpd_log_t:file write;
+                                       
