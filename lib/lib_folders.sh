@@ -71,21 +71,4 @@ if [ "$u_folders_create" = "y" ]; then
     fi
   fi
 
-  ### Copy GoAccess generator script
-  ###
-  ###
-  if [ -f /opt/virtualXS/files/goaccess/goaccess-generator.sh ]; then
-    if [ -f /var/virtualx/goaccess/goaccess-generator.sh ]; then
-      _log info "/var/virtualx/goaccess/goaccess-generator.sh already exists"
-    else
-      cp /opt/virtualXS/files/goaccess/goaccess-generator.sh /var/virtualx/goaccess/goaccess-generator.sh
-      chmod 755 /var/virtualx/goaccess/goaccess-generator.sh
-      if [ -f /var/virtualx/goaccess/goaccess-generator.sh ]; then
-        _log ok "copy goaccess-generator.sh success"
-      else
-        _log error "could not copy goaccess-generator.sh"
-      fi
-    fi
-  fi
-
 fi
