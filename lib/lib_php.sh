@@ -3,6 +3,8 @@
 file_php_001=/etc/php.ini
 file_php_002=/etc/httpd/conf.d/php.conf
 file_php_003=/etc/php.d
+file_php_004=/etc/php-fpm.d/www.conf
+file_php_005=/etc/php-fpm.d/www.conf.disabled
 
 ### Mofify php.ini to yor needs here
 ###
@@ -37,6 +39,17 @@ if [ "$u_php" = "y" ]; then
         fi
     else
         _log info "PHP config dir not found – skipped"
+    fi
+
+    ###
+    ###
+    ###
+    if [ -f "$file_php_004" ]; then
+        if ! mv "$file_php_004" "$file_php_005"; then
+            _log error "renaming www.conf to www.conf.disabled failed"
+        else
+            _log ok "www.conf renamed to www.conf.disabled"
+        fi
     fi
 
 fi
