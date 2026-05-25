@@ -28,9 +28,12 @@ if [ "$u_folders_create" = "y" ]; then
     /var/log/rsync
     /var/virtualx
     /var/virtualx/goaccess
+    /var/virtualx/backups
     /var/virtualx/apps
     /var/virtualx/db
     /var/virtualx/log
+    /var/virtualx/skelmail
+    /var/virtualx/skel
     /etc/httpd/virtualx.d
   )
 
