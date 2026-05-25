@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.2
+-- version 5.2.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Erstellungszeit: 13. Mai 2026 um 14:29
--- Server-Version: 8.0.45
--- PHP-Version: 8.4.21
+-- Erstellungszeit: 25. Mai 2026 um 13:55
+-- Server-Version: 10.11.15-MariaDB
+-- PHP-Version: 8.3.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -27,15 +27,21 @@ CREATE DATABASE IF NOT EXISTS `virtualx`
 
 
 USE `virtualx`;
+
+
+--
+-- Datenbank: `virtualx`
+--
+
 -- --------------------------------------------------------
 
 --
 -- Tabellenstruktur für Tabelle `actions`
 --
 
-CREATE TABLE IF NOT EXISTS `actions` (
-  `id` int NOT NULL,
-  `web_id` int DEFAULT NULL,
+CREATE TABLE `actions` (
+  `id` int(11) NOT NULL,
+  `web_id` int(11) DEFAULT NULL,
   `virtualx_usr` varchar(255) DEFAULT NULL,
   `action` varchar(255) DEFAULT NULL,
   `zeit` varchar(255) DEFAULT NULL,
@@ -45,50 +51,28 @@ CREATE TABLE IF NOT EXISTS `actions` (
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `clients`
---
-
-CREATE TABLE IF NOT EXISTS `clients` (
-  `id` int NOT NULL,
-  `domain_id` int DEFAULT NULL,
-  `virtualx_usr` varchar(255) DEFAULT NULL,
-  `kdnr` varchar(255) DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `street` varchar(255) DEFAULT NULL,
-  `zip` varchar(255) DEFAULT NULL,
-  `city` varchar(255) DEFAULT NULL,
-  `tel` varchar(255) DEFAULT NULL,
-  `fax` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `regc` varchar(255) DEFAULT NULL,
-  `adminc` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Tabellenstruktur für Tabelle `domaininfos`
 --
 
-CREATE TABLE IF NOT EXISTS `domaininfos` (
-  `id` int NOT NULL,
-  `web_id` int DEFAULT NULL,
+CREATE TABLE `domaininfos` (
+  `id` int(11) NOT NULL,
+  `web_id` int(11) DEFAULT NULL,
   `virtualx_usr` varchar(255) DEFAULT NULL,
-  `apache` int DEFAULT NULL,
-  `lets_encrypt` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `apache` int(11) DEFAULT NULL,
+  `lets_encrypt` varchar(255) DEFAULT NULL,
   `mysql` varchar(255) DEFAULT NULL,
   `webalizer` varchar(255) DEFAULT NULL,
   `webmin` varchar(255) DEFAULT NULL,
   `quota` varchar(255) DEFAULT NULL,
   `mail` varchar(255) DEFAULT NULL,
   `subdomain` varchar(255) DEFAULT NULL,
-  `alias` blob,
+  `alias` blob DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
   `no_of_subdomains` varchar(255) DEFAULT NULL,
-  `virtuelle_ftp` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `virtuelle_ftp` varchar(255) DEFAULT NULL,
   `createdate` varchar(255) DEFAULT NULL,
-  `server` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `artikelnummer` int NOT NULL
+  `server` varchar(255) DEFAULT NULL,
+  `artikelnummer` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -97,8 +81,8 @@ CREATE TABLE IF NOT EXISTS `domaininfos` (
 -- Tabellenstruktur für Tabelle `domains`
 --
 
-CREATE TABLE IF NOT EXISTS `domains` (
-  `id` int NOT NULL,
+CREATE TABLE `domains` (
+  `id` int(11) NOT NULL,
   `domainname` varchar(255) DEFAULT NULL,
   `user` varchar(255) DEFAULT NULL,
   `real_dom` varchar(255) DEFAULT NULL
@@ -110,52 +94,14 @@ CREATE TABLE IF NOT EXISTS `domains` (
 -- Tabellenstruktur für Tabelle `dovecot`
 --
 
-CREATE TABLE IF NOT EXISTS `dovecot` (
-  `id` int NOT NULL,
+CREATE TABLE `dovecot` (
+  `id` int(11) NOT NULL,
   `userid` varchar(255) DEFAULT NULL,
   `domain` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `home` varchar(255) DEFAULT NULL,
-  `uid` int DEFAULT NULL,
-  `gid` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `mailtext`
---
-
-CREATE TABLE IF NOT EXISTS `mailtext` (
-  `id` int NOT NULL,
-  `virtualx_usr` varchar(255) DEFAULT NULL,
-  `mailheader` blob,
-  `mailfooter` blob,
-  `mailbody` blob
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Tabellenstruktur für Tabelle `packages`
---
-
-CREATE TABLE IF NOT EXISTS `packages` (
-  `id` int NOT NULL,
-  `packagename` varchar(255) DEFAULT NULL,
-  `apache` varchar(255) DEFAULT NULL,
-  `s_s_l` varchar(255) DEFAULT NULL,
-  `nameserver` varchar(255) DEFAULT NULL,
-  `webalizer` varchar(255) DEFAULT NULL,
-  `userpanel` varchar(255) DEFAULT NULL,
-  `mysql` varchar(255) DEFAULT NULL,
-  `quota` varchar(255) DEFAULT NULL,
-  `mails` varchar(255) DEFAULT NULL,
-  `subdomains` varchar(255) DEFAULT NULL,
-  `cgi` varchar(255) DEFAULT NULL,
-  `vftp` varchar(255) DEFAULT NULL,
-  `artikelnr` varchar(255) DEFAULT NULL,
-  `virtualx_usr` varchar(255) DEFAULT NULL
+  `uid` int(11) DEFAULT NULL,
+  `gid` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -164,9 +110,9 @@ CREATE TABLE IF NOT EXISTS `packages` (
 -- Tabellenstruktur für Tabelle `passwd`
 --
 
-CREATE TABLE IF NOT EXISTS `passwd` (
-  `id` int NOT NULL,
-  `dom_id` int DEFAULT NULL,
+CREATE TABLE `passwd` (
+  `id` int(11) NOT NULL,
+  `dom_id` int(11) DEFAULT NULL,
   `username` varchar(255) DEFAULT NULL,
   `passwd` varchar(255) DEFAULT NULL,
   `rootdir` varchar(255) DEFAULT NULL,
@@ -179,8 +125,8 @@ CREATE TABLE IF NOT EXISTS `passwd` (
 -- Tabellenstruktur für Tabelle `passwd_logs`
 --
 
-CREATE TABLE IF NOT EXISTS `passwd_logs` (
-  `id` int NOT NULL,
+CREATE TABLE `passwd_logs` (
+  `id` int(11) NOT NULL,
   `msg` varchar(255) DEFAULT NULL,
   `user` varchar(255) DEFAULT NULL,
   `pid` varchar(255) DEFAULT NULL,
@@ -192,26 +138,12 @@ CREATE TABLE IF NOT EXISTS `passwd_logs` (
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `reseller`
---
-
-CREATE TABLE IF NOT EXISTS `reseller` (
-  `id` int NOT NULL,
-  `usrname` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `state` varchar(255) NOT NULL,
-  `createdate` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Tabellenstruktur für Tabelle `serveraliase`
 --
 
-CREATE TABLE IF NOT EXISTS `serveraliase` (
-  `id` int NOT NULL,
-  `web_id` int DEFAULT NULL,
+CREATE TABLE `serveraliase` (
+  `id` int(11) NOT NULL,
+  `web_id` int(11) DEFAULT NULL,
   `virtualx_usr` varchar(255) DEFAULT NULL,
   `serveralias` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -222,14 +154,14 @@ CREATE TABLE IF NOT EXISTS `serveraliase` (
 -- Tabellenstruktur für Tabelle `virtualmails`
 --
 
-CREATE TABLE IF NOT EXISTS `virtualmails` (
-  `id` int NOT NULL,
+CREATE TABLE `virtualmails` (
+  `id` int(11) NOT NULL,
   `web_id` varchar(255) DEFAULT NULL,
   `virtualx_usr` varchar(255) DEFAULT NULL,
   `domainname` varchar(255) DEFAULT NULL,
   `mail_address` varchar(255) DEFAULT NULL,
-  `mailbox` text,
-  `ist_alias` int NOT NULL DEFAULT '0'
+  `mailbox` text DEFAULT NULL,
+  `ist_alias` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -238,13 +170,13 @@ CREATE TABLE IF NOT EXISTS `virtualmails` (
 -- Tabellenstruktur für Tabelle `vsftpd_logs`
 --
 
-CREATE TABLE IF NOT EXISTS `vsftpd_logs` (
-  `id` int NOT NULL,
-  `msg` text,
+CREATE TABLE `vsftpd_logs` (
+  `id` int(11) NOT NULL,
+  `msg` text DEFAULT NULL,
   `user` varchar(50) DEFAULT NULL,
-  `pid` int DEFAULT NULL,
+  `pid` int(11) DEFAULT NULL,
   `host` varchar(255) DEFAULT NULL,
-  `logtime` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `logtime` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -256,13 +188,6 @@ CREATE TABLE IF NOT EXISTS `vsftpd_logs` (
 --
 ALTER TABLE `actions`
   ADD PRIMARY KEY (`id`);
-
---
--- Indizes für die Tabelle `clients`
---
-ALTER TABLE `clients`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `domain_id` (`domain_id`);
 
 --
 -- Indizes für die Tabelle `domaininfos`
@@ -285,19 +210,6 @@ ALTER TABLE `dovecot`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indizes für die Tabelle `mailtext`
---
-ALTER TABLE `mailtext`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `virtualx_usr` (`virtualx_usr`);
-
---
--- Indizes für die Tabelle `packages`
---
-ALTER TABLE `packages`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indizes für die Tabelle `passwd`
 --
 ALTER TABLE `passwd`
@@ -309,13 +221,6 @@ ALTER TABLE `passwd`
 --
 ALTER TABLE `passwd_logs`
   ADD PRIMARY KEY (`id`);
-
---
--- Indizes für die Tabelle `reseller`
---
-ALTER TABLE `reseller`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `usrname` (`usrname`);
 
 --
 -- Indizes für die Tabelle `serveraliase`
@@ -344,79 +249,55 @@ ALTER TABLE `vsftpd_logs`
 -- AUTO_INCREMENT für Tabelle `actions`
 --
 ALTER TABLE `actions`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT für Tabelle `clients`
---
-ALTER TABLE `clients`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT für Tabelle `domaininfos`
 --
 ALTER TABLE `domaininfos`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT für Tabelle `domains`
 --
 ALTER TABLE `domains`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT für Tabelle `dovecot`
 --
 ALTER TABLE `dovecot`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT für Tabelle `mailtext`
---
-ALTER TABLE `mailtext`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT für Tabelle `packages`
---
-ALTER TABLE `packages`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT für Tabelle `passwd`
 --
 ALTER TABLE `passwd`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT für Tabelle `passwd_logs`
 --
 ALTER TABLE `passwd_logs`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT für Tabelle `reseller`
---
-ALTER TABLE `reseller`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT für Tabelle `serveraliase`
 --
 ALTER TABLE `serveraliase`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT für Tabelle `virtualmails`
 --
 ALTER TABLE `virtualmails`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT für Tabelle `vsftpd_logs`
 --
 ALTER TABLE `vsftpd_logs`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
