@@ -37,7 +37,7 @@ if [ "$u_ssh_sftp" = "y" ]; then
                 tmp_ssh_sftp=$(mktemp)
                 awk '
                 BEGIN { skip = 0 }
-                /^#?Match Group users LocalPort 1122$/ {
+                /^#? *(Match User [^ ]+ LocalPort 1122|Match Group users LocalPort 1122)$/ {
                         skip = 1
                         next
                 }
@@ -53,11 +53,18 @@ if [ "$u_ssh_sftp" = "y" ]; then
                 ' "$file_ssh001" >"$tmp_ssh_sftp"
                 mv "$tmp_ssh_sftp" "$file_ssh001"
 
-                cat <<'EOF' >>"$file_ssh001"
+                cat <<EOF >>"$file_ssh001"
+
+# Ausnahme für einen speziellen User
+Match User ${u_srv} LocalPort 1122
+    ChrootDirectory /home/httpd/%u
+    ForceCommand internal-sftp
+    AllowTcpForwarding no
+    X11Forwarding no
+    PasswordAuthentication yes
 
 Match Group users LocalPort 1122
-    #ChrootDirectory /home/httpd/www.%u
-    ChrootDirectory /home/httpd/%u
+    ChrootDirectory /home/httpd/www.%u
     ForceCommand internal-sftp
     AllowTcpForwarding no
     X11Forwarding no
