@@ -61,7 +61,8 @@ if [ "$u_postfix" = "y" ]; then
     postconf -c "$postfix_config_dir" -e 'mynetworks_style = class'
     postconf -c "$postfix_config_dir" -e "mynetworks = $u_ip/32"
     postconf -c "$postfix_config_dir" -e 'relay_domains = $mydestination'
-    postconf -c "$postfix_config_dir" -e 'mail_spool_directory = /var/spool/mail'
+    postconf -c "$postfix_config_dir" -e 'home_mailbox = Maildir/'
+    postconf -c "$postfix_config_dir" -e 'virtual_transport = lmtp:unix:private/dovecot-lmtp'
     postconf -c "$postfix_config_dir" -e 'smtp_address_preference = ipv4'
     postconf -c "$postfix_config_dir" -e 'inet_protocols = ipv4'
     # Security fix: https://cisofy.com/lynis/controls/MAIL-8818/

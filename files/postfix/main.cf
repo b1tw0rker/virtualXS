@@ -13,7 +13,6 @@ smtpd_tls_auth_only = yes
 broken_sasl_auth_clients = yes
 smtpd_sasl_security_options = noanonymous
 
-virtual_mailbox_base = /virtualmail/
 virtual_mailbox_domains = mysql:/etc/postfix/mysql-domains.cf
 virtual_maps = mysql:/etc/postfix/mysql-virtual.cf
 

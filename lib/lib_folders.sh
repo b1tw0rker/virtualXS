@@ -43,7 +43,7 @@ if [ "$u_folders_create" = "y" ]; then
       mkdir "$folder"
 
       if [ "$folder" = "/home/pop" ]; then
-        chmod 777 "$folder"
+        chmod 755 "$folder"
       fi
 
       if [ -d "$folder" ]; then
