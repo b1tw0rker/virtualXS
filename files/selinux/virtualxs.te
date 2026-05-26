@@ -110,7 +110,7 @@ allow httpd_t cert_t:file { create getattr open read rename unlink write };
 
 # useradd: mailbox file creation in /var/spool/mail/
 allow httpd_t mail_spool_t:dir { add_name getattr search write };
-allow httpd_t mail_spool_t:file { create getattr open read write };
+allow httpd_t mail_spool_t:file { create getattr open read setattr write };
 
 # certbot: getattr on system config files (read-only system checks)
 allow httpd_t adjtime_t:file getattr;
