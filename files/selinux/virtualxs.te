@@ -1,4 +1,4 @@
-module virtualxs 1.6;
+module virtualxs 1.7;
 
 require {
     type fail2ban_t;
@@ -37,6 +37,7 @@ require {
     type system_cron_spool_t;
     class dir { add_name create getattr open read remove_name rmdir search setattr write };
     class file { append create entrypoint getattr ioctl link open read rename setattr unlink write };
+    class lnk_file { create getattr read };
     class security compute_av;
     class capability { audit_write fowner fsetid sys_admin sys_resource };
     class blk_file { getattr ioctl open read };
@@ -82,6 +83,8 @@ allow httpd_t httpd_config_t:file { append create setattr unlink write };
 # mkdir/openssl in /etc/letsencrypt/live/ benoetigt create/search/getattr
 allow httpd_t etc_t:dir { add_name create getattr read remove_name search write };
 allow httpd_t etc_t:file { create getattr link open read rename setattr unlink write };
+# certbot: Symlinks in /etc/letsencrypt/live/ (live/chain.pem -> ../../archive/...)
+allow httpd_t etc_t:lnk_file { create getattr read };
 
 # Log-Verzeichnis anlegen und befuellen in /var/log/
 allow httpd_t var_log_t:dir { add_name create getattr search write };
