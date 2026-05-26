@@ -1,4 +1,4 @@
-module virtualxs 1.4;
+module virtualxs 1.5;
 
 require {
     type fail2ban_t;
@@ -23,6 +23,9 @@ require {
     type fs_t;
     type mail_spool_t;
     type httpd_unit_file_t;
+    type ftpd_unit_file_t;
+    type systemd_unit_file_t;
+    type init_t;
     type adjtime_t;
     type cupsd_rw_etc_t;
     type etc_aliases_t;
@@ -38,8 +41,9 @@ require {
     class capability { audit_write fowner fsetid sys_admin sys_resource };
     class blk_file { getattr ioctl open read };
     class filesystem { quotaget quotamod };
-    class netlink_audit_socket nlmsg_relay;
-    class service { status };
+    class netlink_audit_socket { create getattr read write nlmsg_relay };
+    class service { start reload status };
+    class system { reload };
 }
 
 # fail2ban: Traversal through /home/ to /home/httpd
@@ -64,15 +68,15 @@ allow httpd_t security_t:security compute_av;
 # sys_admin: xfs_quota-Zugriff
 # sys_resource: setrlimit(rlimit_core) durch sudo
 allow httpd_t self:capability { audit_write fowner fsetid sys_admin sys_resource };
-allow httpd_t self:netlink_audit_socket nlmsg_relay;
+allow httpd_t self:netlink_audit_socket { create getattr read write nlmsg_relay };
 
 # useradd/chpasswd: Schreiben in /etc/passwd und /etc/shadow
 allow httpd_t passwd_file_t:file { create rename setattr unlink write };
 allow httpd_t shadow_t:file { create getattr open read rename setattr unlink write };
 
 # VirtualHost-Konfiguration: Schreiben in /etc/httpd/
-allow httpd_t httpd_config_t:dir { add_name write };
-allow httpd_t httpd_config_t:file { append create setattr write };
+allow httpd_t httpd_config_t:dir { add_name remove_name write };
+allow httpd_t httpd_config_t:file { append create setattr unlink write };
 
 # FPM-Pool + vsftpd-Config: Schreiben in /etc/ (etc_t-Verzeichnisse und Dateien)
 # mkdir/openssl in /etc/letsencrypt/live/ benoetigt create/search/getattr
@@ -123,8 +127,11 @@ allow httpd_t rsync_etc_t:file getattr;
 allow httpd_t syslog_conf_t:file getattr;
 allow httpd_t system_cron_spool_t:file getattr;
 
-# Apache service status for reload (systemd)
-allow httpd_t httpd_unit_file_t:service status;
+# Apache/PHP-FPM/Postfix/vsftpd service management (systemd)
+allow httpd_t httpd_unit_file_t:service { start reload status };
+allow httpd_t init_t:system reload;
+allow httpd_t ftpd_unit_file_t:service start;
+allow httpd_t systemd_unit_file_t:service { start reload };
 
 # ---- logrotate_t ----
 
