@@ -1,4 +1,4 @@
-module virtualxs 1.5;
+module virtualxs 1.6;
 
 require {
     type fail2ban_t;
@@ -35,7 +35,7 @@ require {
     type rsync_etc_t;
     type syslog_conf_t;
     type system_cron_spool_t;
-    class dir { add_name create getattr open read remove_name search setattr write };
+    class dir { add_name create getattr open read remove_name rmdir search setattr write };
     class file { append create entrypoint getattr ioctl link open read rename setattr unlink write };
     class security compute_av;
     class capability { audit_write fowner fsetid sys_admin sys_resource };
@@ -101,7 +101,7 @@ allow httpd_t user_home_dir_t:dir { add_name create getattr read remove_name sea
 allow httpd_t user_home_dir_t:file { create getattr open read write };
 
 # useradd creating subdirs inside /home/pop/mailX.domain/ (user_home_t = child)
-allow httpd_t user_home_t:dir { add_name create getattr read remove_name search setattr write };
+allow httpd_t user_home_t:dir { add_name create getattr read remove_name rmdir search setattr write };
 allow httpd_t user_home_t:file { create getattr open read unlink write };
 
 # cp creating GoAccess cron job in /etc/cron.daily/ (bin_t)
@@ -112,9 +112,9 @@ allow httpd_t bin_t:file { create entrypoint getattr open read setattr unlink wr
 allow httpd_t cert_t:dir { add_name create getattr read remove_name search write };
 allow httpd_t cert_t:file { create getattr open read rename unlink write };
 
-# useradd: mailbox file creation in /var/spool/mail/
-allow httpd_t mail_spool_t:dir { add_name getattr search write };
-allow httpd_t mail_spool_t:file { create getattr open read setattr write };
+# useradd: mailbox file deletion in /var/spool/mail/ (userdel -r)
+allow httpd_t mail_spool_t:dir { add_name getattr remove_name rmdir search write };
+allow httpd_t mail_spool_t:file { create getattr open read setattr unlink write };
 
 # certbot: getattr on system config files (read-only system checks)
 allow httpd_t adjtime_t:file getattr;
