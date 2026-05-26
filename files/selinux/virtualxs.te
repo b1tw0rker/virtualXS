@@ -1,4 +1,4 @@
-module virtualxs 1.7;
+module virtualxs 1.8;
 
 require {
     type fail2ban_t;
@@ -82,7 +82,7 @@ allow httpd_t httpd_config_t:file { append create setattr unlink write };
 # FPM-Pool + vsftpd-Config: Schreiben in /etc/ (etc_t-Verzeichnisse und Dateien)
 # mkdir/openssl in /etc/letsencrypt/live/ benoetigt create/search/getattr
 allow httpd_t etc_t:dir { add_name create getattr read remove_name search write };
-allow httpd_t etc_t:file { create getattr link open read rename setattr unlink write };
+allow httpd_t etc_t:file { append create getattr link open read rename setattr unlink write };
 # certbot: Symlinks in /etc/letsencrypt/live/ (live/chain.pem -> ../../archive/...)
 allow httpd_t etc_t:lnk_file { create getattr read };
 
