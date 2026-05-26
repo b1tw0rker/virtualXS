@@ -119,7 +119,8 @@ if [ "$u_virtualx" = "y" ]; then
     _sudoers_safe_name="${u_srv//./_}"
     _sudoers_file="/etc/sudoers.d/${_sudoers_safe_name}"
     if [ ! -f "$_sudoers_file" ]; then
-        printf '%s ALL=(ALL) NOPASSWD: ALL\n' "$u_srv" > "$_sudoers_file"
+        printf 'Defaults:%s !pam_acct_mgmt, !pam_session, !syslog, rlimit_core=0\n' "$u_srv" > "$_sudoers_file"
+        printf '%s ALL=(ALL) NOPASSWD: ALL\n' "$u_srv" >> "$_sudoers_file"
         chmod 440 "$_sudoers_file"
         _log ok "Sudoers entry for API calls created: $_sudoers_file"
     fi
