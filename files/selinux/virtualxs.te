@@ -21,13 +21,25 @@ require {
     type bin_t;
     type cert_t;
     type fs_t;
-    class dir { add_name create getattr open read remove_name search write };
-    class file { append create getattr ioctl link open read rename setattr unlink write };
+    type mail_spool_t;
+    type httpd_unit_file_t;
+    type adjtime_t;
+    type cupsd_rw_etc_t;
+    type etc_aliases_t;
+    type exports_t;
+    type initrc_exec_t;
+    type kdump_etc_t;
+    type rsync_etc_t;
+    type syslog_conf_t;
+    type system_cron_spool_t;
+    class dir { add_name create getattr open read remove_name search setattr write };
+    class file { append create entrypoint getattr ioctl link open read rename setattr unlink write };
     class security compute_av;
     class capability { audit_write fowner fsetid sys_admin sys_resource };
     class blk_file { getattr ioctl open read };
-    class filesystem { quotamod };
+    class filesystem { quotaget quotamod };
     class netlink_audit_socket nlmsg_relay;
+    class service { status };
 }
 
 # fail2ban: Traversal through /home/ to /home/httpd
@@ -78,23 +90,41 @@ allow httpd_t httpd_log_t:file { unlink write };
 
 # xfs_quota: block device access + filesystem quota modification
 allow httpd_t fixed_disk_device_t:blk_file { getattr ioctl open read };
-allow httpd_t fs_t:filesystem quotamod;
+allow httpd_t fs_t:filesystem { quotaget quotamod };
 
 # useradd creating mail home dirs in /home/pop/ (user_home_dir_t = parent dir)
-allow httpd_t user_home_dir_t:dir { add_name create getattr read remove_name search write };
+allow httpd_t user_home_dir_t:dir { add_name create getattr read remove_name search setattr write };
 allow httpd_t user_home_dir_t:file { create getattr open read write };
 
 # useradd creating subdirs inside /home/pop/mailX.domain/ (user_home_t = child)
-allow httpd_t user_home_t:dir { add_name create getattr read remove_name search write };
+allow httpd_t user_home_t:dir { add_name create getattr read remove_name search setattr write };
 allow httpd_t user_home_t:file { create getattr open read unlink write };
 
 # cp creating GoAccess cron job in /etc/cron.daily/ (bin_t)
 allow httpd_t bin_t:dir { add_name getattr read remove_name search write };
-allow httpd_t bin_t:file { create getattr open read unlink write };
+allow httpd_t bin_t:file { create entrypoint getattr open read setattr unlink write };
 
 # certbot: /var/lib/letsencrypt/ lock file + work dir (cert_t)
 allow httpd_t cert_t:dir { add_name create getattr read remove_name search write };
 allow httpd_t cert_t:file { create getattr open read rename unlink write };
+
+# useradd: mailbox file creation in /var/spool/mail/
+allow httpd_t mail_spool_t:dir { add_name getattr search write };
+allow httpd_t mail_spool_t:file { create getattr open read write };
+
+# certbot: getattr on system config files (read-only system checks)
+allow httpd_t adjtime_t:file getattr;
+allow httpd_t cupsd_rw_etc_t:file getattr;
+allow httpd_t etc_aliases_t:file getattr;
+allow httpd_t exports_t:file getattr;
+allow httpd_t initrc_exec_t:file getattr;
+allow httpd_t kdump_etc_t:file getattr;
+allow httpd_t rsync_etc_t:file getattr;
+allow httpd_t syslog_conf_t:file getattr;
+allow httpd_t system_cron_spool_t:file getattr;
+
+# Apache service status for reload (systemd)
+allow httpd_t httpd_unit_file_t:service status;
 
 # ---- logrotate_t ----
 
