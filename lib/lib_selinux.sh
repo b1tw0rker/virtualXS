@@ -108,12 +108,16 @@ if [ "$u_selinux" = "y" ]; then
     _selinux_set_bool httpd_read_user_content
 
     ### --- Booleans – FTP (vsftpd) -----------------------------
-    ###   ftpd_connect_db      – vsftpd verbindet sich mit Datenbank (PAM/MySQL)
+    ###   ftpd_connect_db       – vsftpd verbindet sich mit Datenbank (PAM/MySQL)
     ###   ftpd_use_passive_mode – passiver FTP-Modus erlaubt
+    ###   ftpd_full_access      – vsftpd darf Apache-Webroots unter /home/httpd
+    ###                           lesen und schreiben (benoetigt fuer FTPS-Zugriff
+    ###                           auf Domain-Verzeichnisse mit httpd_sys_content_t)
     ###
     printf "\n--- SELinux Booleans: VSFTPD ---\n"
     _selinux_set_bool ftpd_connect_db
     _selinux_set_bool ftpd_use_passive_mode
+    _selinux_set_bool ftpd_full_access
 
     ### --- Booleans – MySQL / MariaDB --------------------------
     ###   mysql_connect_any – MySQL verbindet sich auf beliebige Ports/Sockets
