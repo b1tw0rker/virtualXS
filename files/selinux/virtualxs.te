@@ -1,4 +1,4 @@
-module virtualxs 1.8;
+module virtualxs 1.9;
 
 require {
     type fail2ban_t;
@@ -39,6 +39,7 @@ require {
     class file { append create entrypoint getattr ioctl link open read rename setattr unlink write };
     class lnk_file { create getattr read };
     class security compute_av;
+    class passwd passwd;
     class capability { audit_write fowner fsetid sys_admin sys_resource };
     class blk_file { getattr ioctl open read };
     class filesystem { quotaget quotamod };
@@ -62,6 +63,9 @@ allow postfix_cleanup_t mysqld_etc_t:file { getattr open read };
 # httpd_t (PHP-FPM): VirtualX Serververwaltung via sudo
 # sudo benoetigt compute_av auf security_t (SELinux-interner Check)
 allow httpd_t security_t:security compute_av;
+
+# chpasswd: PAM passwd-Klasse fuer Passwortaenderung via httpd_t (sudo-Kontext erbt httpd_t)
+allow httpd_t self:passwd passwd;
 
 # sudo benoetigt audit_write-Capability (Audit-System) und fsetid (useradd Dateiberechtigungen)
 # sowie netlink_audit_socket fuer Audit-Kommunikation
