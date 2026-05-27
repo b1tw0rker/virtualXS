@@ -17,6 +17,15 @@ if [ ! -d "$dir001" ]; then
     mkdir $dir001
 fi
 
+### prework for virtualx
+###
+###
+dir001a=/tmp/.virtualx
+if [ ! -d "$dir001a" ]; then
+    mkdir $dir001a
+fi
+
+
 ### get osversion
 ###
 ###
