@@ -1,4 +1,4 @@
-module virtualxs 1.9;
+module virtualxs 1.10;
 
 require {
     type fail2ban_t;
@@ -37,7 +37,7 @@ require {
     type system_cron_spool_t;
     class dir { add_name create getattr open read remove_name rmdir search setattr write };
     class file { append create entrypoint getattr ioctl link open read rename setattr unlink write };
-    class lnk_file { create getattr read };
+    class lnk_file { create getattr read unlink };
     class security compute_av;
     class passwd passwd;
     class capability { audit_write fowner fsetid sys_admin sys_resource };
@@ -85,10 +85,11 @@ allow httpd_t httpd_config_t:file { append create setattr unlink write };
 
 # FPM-Pool + vsftpd-Config: Schreiben in /etc/ (etc_t-Verzeichnisse und Dateien)
 # mkdir/openssl in /etc/letsencrypt/live/ benoetigt create/search/getattr
-allow httpd_t etc_t:dir { add_name create getattr read remove_name search write };
+allow httpd_t etc_t:dir { add_name create getattr read remove_name rmdir search write };
 allow httpd_t etc_t:file { append create getattr link open read rename setattr unlink write };
 # certbot: Symlinks in /etc/letsencrypt/live/ (live/chain.pem -> ../../archive/...)
-allow httpd_t etc_t:lnk_file { create getattr read };
+# unlink: certbot delete entfernt die Symlinks cert.pem/privkey.pem/chain.pem/fullchain.pem
+allow httpd_t etc_t:lnk_file { create getattr read unlink };
 
 # Log-Verzeichnis anlegen und befuellen in /var/log/
 allow httpd_t var_log_t:dir { add_name create getattr search write };
@@ -104,8 +105,10 @@ allow httpd_t fixed_disk_device_t:blk_file { getattr ioctl open read };
 allow httpd_t fs_t:filesystem { quotaget quotamod };
 
 # useradd creating mail home dirs in /home/pop/ (user_home_dir_t = parent dir)
-allow httpd_t user_home_dir_t:dir { add_name create getattr read remove_name search setattr write };
-allow httpd_t user_home_dir_t:file { create getattr open read write };
+# rmdir: needed by rm -rf to delete mail subdirs (cur/new/tmp inside Maildir)
+# unlink: needed by rm -rf to delete files inside mail directories
+allow httpd_t user_home_dir_t:dir { add_name create getattr read remove_name rmdir search setattr write };
+allow httpd_t user_home_dir_t:file { create getattr open read unlink write };
 
 # useradd creating subdirs inside /home/pop/mailX.domain/ (user_home_t = child)
 allow httpd_t user_home_t:dir { add_name create getattr read remove_name rmdir search setattr write };
@@ -140,6 +143,17 @@ allow httpd_t init_t:system reload;
 allow httpd_t ftpd_unit_file_t:service start;
 allow httpd_t systemd_unit_file_t:service { start reload };
 
+# ---- Required SELinux Booleans (setsebool -P) ----
+# These are system-level booleans, not custom allow rules.
+# Must be set on EVERY server running VirtualX with vsftpd + Apache-typed webroots.
+#
+# ftpd_full_access on
+#   Allows vsftpd (ftpd_t) to chdir/read/write into httpd_sys_content_t and
+#   httpd_sys_rw_content_t directories (e.g. /home/httpd/www.domain.de).
+#   Without this, vsftpd connects and authenticates successfully but immediately
+#   aborts with GnuTLS error -15 / ECONNABORTED because chdir() is denied.
+#   Command: setsebool -P ftpd_full_access on
+#
 # ---- logrotate_t ----
 
 # logrotate reading httpd_sys_content_t directories
