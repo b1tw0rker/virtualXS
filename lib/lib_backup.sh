@@ -2,7 +2,7 @@
 
 printf "\n********************************************************************\n\n%d) GIT Clone RSYNC backup script to: /etc/bitworker [y/N]: " "$(( ++_vxs_step ))"
 if [ "$u_backup" = "" ]; then
-    read u_backup
+    read -r u_backup
 fi
 
 if [ "$u_backup" = "y" ]; then
@@ -12,11 +12,12 @@ if [ "$u_backup" = "y" ]; then
     else
         chmod 700 /etc/bitworker/rsync/copyjob.sh
 
-        backup_host_ip="$u_ip"
-        if [[ "$u_ip" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
-            last_octet="${u_ip##*.}"
+        source_ip="${u_ip:-}"
+        backup_host_ip="$source_ip"
+        if [[ "$source_ip" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
+            last_octet="${source_ip##*.}"
             if (( last_octet < 255 )); then
-                backup_host_ip="${u_ip%.*}.$((last_octet + 1))"
+                backup_host_ip="${source_ip%.*}.$((last_octet + 1))"
             else
                 _log warn "backup host IP fallback in use, last octet of u_ip is already 255"
             fi
@@ -30,7 +31,7 @@ if [ "$u_backup" = "y" ]; then
         ### create cronjob in cron.daily
         ###
         ###
-        if ! cp $u_path/files/backup/copyjobcron /etc/cron.daily/copyjob; then
+        if ! cp "${u_path:-}"/files/backup/copyjobcron /etc/cron.daily/copyjob; then
             _log error "cp copyjobcron failed"
         else
             chmod 700 /etc/cron.daily/copyjob
