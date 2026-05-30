@@ -12,8 +12,20 @@ if [ "$u_backup" = "y" ]; then
     else
         chmod 700 /etc/bitworker/rsync/copyjob.sh
 
-        sed -i 's/^target="XXX"/host="srv011.bit-worker.com"/' /etc/bitworker/rsync/copyjob.sh
-        sed -i 's/^active="false"/active="true"/' /etc/bitworker/rsync/copyjob.sh
+        backup_host_ip="$u_ip"
+        if [[ "$u_ip" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
+            last_octet="${u_ip##*.}"
+            if (( last_octet < 255 )); then
+                backup_host_ip="${u_ip%.*}.$((last_octet + 1))"
+            else
+                _log warn "backup host IP fallback in use, last octet of u_ip is already 255"
+            fi
+        else
+            _log warn "backup host IP fallback in use, u_ip is not a plain IPv4 address"
+        fi
+
+        sed -i "s/^target=\"XXX\"/host=\"${backup_host_ip}\"/" /etc/bitworker/rsync/config.sh
+        sed -i 's/^active="false"/active="true"/' /etc/bitworker/rsync/config.sh
 
         ### create cronjob in cron.daily
         ###
