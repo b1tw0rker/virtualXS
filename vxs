@@ -433,7 +433,7 @@ if vxs_should_run_from repo; then
         fi
         
         if [ "$u_virtx_repo" = "y" ]; then
-            dnf config-manager --add-repo https://repo.virt-x.de/virtx.repo
+            dnf config-manager --add-repo https://www.virt-x.de/repo/virtx.repo
         fi
         
     fi

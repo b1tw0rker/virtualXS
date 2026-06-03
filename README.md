@@ -30,13 +30,13 @@ virtualXS will be distributed by dnf. To install the programm on your RHEL8 or C
 -1- Import the RPM-GPG Key to your system:
 
 ```bash
-rpm --import https://repo.virt-x.de/RPM-GPG-KEY-BitWorker
+rpm --import https://www.virt-x.de/repo/RPM-GPG-KEY-BitWorker
 ```
 
 -2- Install the Virt-X Repository by adding the repo to your server:
 
 ```bash
-dnf config-manager --add-repo https://repo.virt-x.de/virtx.repo
+dnf config-manager --add-repo https://www.virt-x.de/repo/virtx.repo
 ```
 
 If the shell aborts with an error: No such command: config-manager. Install the core plugins:
