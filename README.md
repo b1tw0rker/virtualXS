@@ -72,6 +72,27 @@ That's it folks!
 
 ## Changelog
 
+06/03/26 - **Maintenance & Repository Migration**
+- Repository-URL migriert von `repo.virt-x.de` auf `www.virt-x.de/repo/`
+- Deploy-Host gewechselt von `srv003.host-x.de` auf `srv010.host-x.de`
+- Veraltete Systemunterstützung für RHEL9 und Rocky Linux 9.x entfernt
+- Nicht mehr benötigte Skripte entfernt: `bw-garbage-collector.sh`, `bw-git-init.sh`, `bw-multichange.sh`
+
+05/30/26 - **Release 1.2.182 – Backup & DNF Improvements**
+- Backup-Skript: dynamische IP-Adresszuweisung, sicherere Leseoptionen, verbesserte Lesbarkeit
+- `lib_dnf.sh`: Installationsreihenfolge überarbeitet
+
+05/27/26 - **Releases 1.2.179–1.2.181 – SELinux & SFTP**
+- SELinux-Modul auf Version 1.9/1.10 aktualisiert: Berechtigungen für vsftpd/Apache-Webroots und Passwortänderungen
+- Neue SELinux-Boolesche Werte für vsftpd ergänzt
+- SFTP-Konfiguration verbessert: spezifische Benutzeranpassungen, optimierte Match-Anweisungen
+- `allow_url_fopen` in PHP-Sicherheitskonfiguration auskommentiert
+
+05/26/26 - **Releases 1.2.173–1.2.178 – SELinux, Dovecot, Postfix**
+- SELinux-Module v1.5–v1.8: Berechtigungen für httpd, mail_spool_t, Symlinks in `/etc/letsencrypt/live/`, Systemkonfigurationsdateien
+- Dovecot/Postfix: unnötige Abfragen entfernt, vmail-Benutzer hinzugefügt, LMTP-Transport konfiguriert
+- Sudoers-Datei für API-Aufrufe mit NOPASSWD-Einträgen angepasst
+
 05/09/26 - **Security & Hardening Improvements**
 - `certbotcron` umbenannt in `certbot-renew` (klarere Benennung)
 - Kernel-Hardening: `99-bw-custom.conf` umbenannt in `99-bw-kernel-hardening.conf`
