@@ -9,10 +9,7 @@ virtualXS is a smart swiss knife utility script to create a Virtual-Hosting-Serv
 The following systems are supported:
 
 - RHEL10 (Minimal is recommended)
-- RHEL9 (Minimal is recommended)
 - Rocky Linux 10.x (Minimal is recommended)
-- Rocky Linux 9.x (Minimal is recommended)
-- AWS and Azure machines.
 
 ## WARNING - DISCLAIMER
 
