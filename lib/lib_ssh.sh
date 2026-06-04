@@ -51,6 +51,7 @@ if [ "$u_ssh" = "y" ]; then
         ###
         if [ -f "$file_ssh001" ] && [ "$u_bitworker" != "### by BitWorker" ]; then
                 cat $u_path/files/ssh/sshd_config >>$file_ssh001
+                sed -i 's/^Match User XXX LocalPort 22/Match User '"$u_srv"' LocalPort 22/' $file_ssh001
                 _log ok "sshd_config updated"
                 #sed -i 's/^Match User root Address XXX/Match User root Address '"$u_client_ip"'/' $file_ssh001
         else
