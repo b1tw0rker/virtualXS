@@ -327,7 +327,7 @@ script_body() {
     $IPTABLES -A INPUT -p tcp -m tcp -m multiport --dports 80,443 -m state --state NEW -m connlimit --connlimit-above 80 --connlimit-mask 32 -j LOG --log-level warning --log-prefix "HTTP/S CONNLIMIT -- DROP "
     $IPTABLES -A INPUT -p tcp -m tcp -m multiport --dports 80,443 -m state --state NEW -m connlimit --connlimit-above 80 --connlimit-mask 32 -j DROP
     $IPTABLES -A INPUT -p tcp -m tcp -m multiport --dports 80,443 -m state --state NEW -j ACCEPT
-    # FTP/Submission/IMAPS/POP3S -> AUTH_RULE, SFTP(1122) -> SSH_RULE (Chains weiter unten definiert)
+    # FTP/Submission/IMAPS/POP3S -> AUTH_RULE (Chains weiter unten definiert)
 
 
     #
@@ -372,7 +372,7 @@ script_body() {
     $IPTABLES -A SSH_RULE -j LOG --log-level info --log-prefix "SSH -- DENY "
     $IPTABLES -A SSH_RULE -j DROP
     # Route all new SSH connections through the SSH_RULE chain
-    $IPTABLES -A INPUT -p tcp -m tcp -m multiport --dports 22,1122 -m state --state NEW -j SSH_RULE
+    $IPTABLES -A INPUT -p tcp -m tcp --dport 22 -m state --state NEW -j SSH_RULE
     #
     # ALLOW INPUT: Auth-Ports (FTP, IMAPS, POP3S, Submission) mit Rate-Limiting (AUTH_RULE chain)
     #
