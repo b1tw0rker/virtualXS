@@ -678,7 +678,8 @@ if vxs_should_run_from ssh; then
     ###
     if [ "$u_aws" = "n" ]; then
         source $u_path/lib/lib_ssh.sh
-        source $u_path/lib/lib_ssh_sftp.sh
+        # Legacy SFTP setup for port 1122. Keep available, but disabled.
+        # source $u_path/lib/lib_ssh_sftp.sh
     fi
 
 fi
