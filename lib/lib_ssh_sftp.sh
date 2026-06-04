@@ -1,5 +1,12 @@
 #!/bin/bash
 
+
+
+### Zur zeit nicht aktiv, da wir EIer zeigen und  nur noch Standard Port 22 nutzen, damit die User nicht verwirrt werden. SFTP kann ja auch über Port 22 laufen
+###
+###
+
+
 ### /etc/ssh/sshd_config SFTP
 ###
 ###
