@@ -20,11 +20,26 @@ if [ "$u_ssh" = "y" ]; then
     printf "\n"
 
         file_ssh001=/etc/ssh/sshd_config
+        file_ssh002=/etc/ssh/sshd_config.d/01-permitrootlogin.conf
 
         sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication no/' $file_ssh001
         sed -i 's/^PasswordAuthentication yes/PasswordAuthentication no/' $file_ssh001
         #sed -i 's/^#MaxAuthTries 6/MaxAuthTries 2/' $file_ssh001
         sed -i 's/^#UseDNS no/UseDNS no/' $file_ssh001
+
+        if [ -f "$file_ssh002" ]; then
+                if grep -Eq '^[[:space:]]*#?[[:space:]]*PermitRootLogin[[:space:]]+' "$file_ssh002"; then
+                        sed -i -E 's|^[[:space:]]*#?[[:space:]]*PermitRootLogin[[:space:]]+.*$|PermitRootLogin no|' "$file_ssh002"
+                else
+                        printf '\nPermitRootLogin no\n' >>"$file_ssh002"
+                fi
+                _log ok "sshd permitrootlogin drop-in updated"
+        else
+                install -d -m 0755 /etc/ssh/sshd_config.d
+                printf 'PermitRootLogin no\n' >"$file_ssh002"
+                chmod 0644 "$file_ssh002"
+                _log ok "sshd permitrootlogin drop-in created"
+        fi
 
         ### grep BitWorker
         ###
