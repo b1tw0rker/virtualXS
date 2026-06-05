@@ -5,7 +5,8 @@ After=network-online.target
 
 [Service]
 Type=oneshot
-ExecStart=/etc/bitworker/borg/pulljob.sh backup
+Environment=CONFIG_FILE=/etc/bitworker/borg/192.168.0.10.conf
+ExecStart=/etc/bitworker/borg/bw-pulljob.sh backup
 Nice=10
 IOSchedulingClass=best-effort
 IOSchedulingPriority=7

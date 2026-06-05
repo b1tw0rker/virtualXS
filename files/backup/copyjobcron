@@ -8,4 +8,13 @@ if [ -f "/etc/bitworker/rsync/copyjob.sh" ]; then
     /etc/bitworker/rsync/copyjob.sh
 fi
 
+### VXS borg pull backup start
+if [ -x "/etc/bitworker/borg/bw-pulljob.sh" ]; then
+    for borg_config in /etc/bitworker/borg/*.conf; do
+        [ -f "$borg_config" ] || continue
+        CONFIG_FILE="$borg_config" /etc/bitworker/borg/bw-pulljob.sh backup >> /dev/null 2>&1
+    done
+fi
+### VXS borg pull backup end
+
 exit 0

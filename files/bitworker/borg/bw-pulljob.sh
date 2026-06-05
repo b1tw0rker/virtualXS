@@ -24,7 +24,7 @@ find_config_file() {
       return
    fi
 
-   printf "%s\n" "/etc/borg/192.168.0.10.conf"
+   printf "%s\n" "/etc/bitworker/borg/192.168.0.10.conf"
 }
 
 CONFIG_FILE=$(find_config_file)
