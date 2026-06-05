@@ -425,15 +425,15 @@ fi
 ###
 if vxs_should_run_from repo; then
 
-    if [ ! -f "/etc/yum.repos.d/virtx.repo" ]; then
+    if [ ! -f "/etc/yum.repos.d/virtualx.repo" ]; then
         
-        printf "\n********************************************************************\n\n%d) Add Virt-X Repo? [y/N]: " "$(( ++_vxs_step ))"
-        if [ "$u_virtx_repo" = "" ]; then
-            read u_virtx_repo
+        printf "\n********************************************************************\n\n%d) Add Virtual-X Repo? [y/N]: " "$(( ++_vxs_step ))"
+        if [ "$u_virtualx_repo" = "" ]; then
+            read u_virtualx_repo
         fi
         
-        if [ "$u_virtx_repo" = "y" ]; then
-            dnf config-manager --add-repo https://www.virt-x.de/repo/virtx.repo
+        if [ "$u_virtualx_repo" = "y" ]; then
+            dnf config-manager --add-repo https://www.virt-x.de/repo/virtualx.repo
         fi
         
     fi
