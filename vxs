@@ -266,16 +266,9 @@ if vxs_should_run_from repo; then
         # Leeres Passwort: nur erlaubt wenn .my.cnf bereits existiert (=> unveraendert lassen)
         if [ -z "$u_mysql_pwd" ]; then
             if $_mycnf_exists; then
-                read -s -p "6/6 • Confirm (Enter = keep current): " u_mysql_pwd_confirm
-                echo
-                if [ -z "$u_mysql_pwd_confirm" ]; then
-                    _log info "MySQL password unchanged."
-                    unset u_mysql_pwd u_mysql_pwd_confirm _mycnf_exists
-                    break
-                else
-                    _log warn "Confirmation was not empty. Please try again."
-                    continue
-                fi
+                _log info "MySQL password unchanged."
+                unset u_mysql_pwd u_mysql_pwd_confirm _mycnf_exists
+                break
             else
                 _log warn "Password must not be empty. Please enter a password."
                 continue
