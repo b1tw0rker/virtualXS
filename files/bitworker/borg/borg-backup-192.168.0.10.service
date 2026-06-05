@@ -1,0 +1,11 @@
+[Unit]
+Description=Borg Backup fuer 192.168.0.10
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/etc/bitworker/borg/pulljob.sh backup
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7

@@ -48,6 +48,32 @@ if [ "$u_helper_apps" = "y" ]; then
             fi
         done
         _log ok "helper scripts linked"
+
+        if [ -d "$u_path/files/bitworker/borg" ]; then
+            if ! cp -a "$u_path/files/bitworker/borg" "$file004/"; then
+                _log error "cp failed: $u_path/files/bitworker/borg -> $file004/"
+            else
+                for helper_file in "$file004"/borg/*.sh; do
+                    if [ -f "$helper_file" ]; then
+                        chmod 700 "$helper_file"
+                    fi
+                done
+                _log ok "borg helper scripts copied"
+            fi
+        fi
+
+        printf "\n********************************************************************\n\n%d) borg konfigurieren? [y/N]: " "$(( ++_vxs_step ))"
+        if [ "$u_borg_configure" = "" ]; then
+            read -r u_borg_configure
+        else
+            printf "%s\n" "$u_borg_configure"
+        fi
+
+        case "${u_borg_configure,,}" in
+            y|yes|j|ja)
+                read -p "IP von der gepullt werden soll: " -ei "$u_borg_pull_ip" u_borg_pull_ip
+                ;;
+        esac
     fi
 fi
 

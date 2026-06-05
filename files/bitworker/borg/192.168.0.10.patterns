@@ -1,0 +1,9 @@
+# Borg pattern file. Archived paths do not start with a leading slash.
+P sh
+
+# Keep /root/.ssh although other hidden /root directories are excluded.
++ root/.ssh/**
+
+- **/Vertrag.txt
+- **/authorized_keys
+- root/.*/**
