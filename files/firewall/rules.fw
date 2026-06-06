@@ -92,18 +92,26 @@ apply_rules() {
 :DEFAULT_DENY - [0:0]
 
 # Emergency SSH access. This must never depend on conntrack/rate-limit chains.
--A INPUT -p tcp -m tcp -s 192.168.0.1/32 --dport 22 -j ACCEPT
--A OUTPUT -p tcp -m tcp -d 192.168.0.1/32 --sport 22 -j ACCEPT
--A OUTPUT -p tcp -m tcp -d 192.168.0.1/32 --dport 22 -j ACCEPT
--A INPUT -p tcp -m tcp -s 192.168.0.1/32 --sport 22 -j ACCEPT
--A INPUT -p tcp -m tcp -s 192.168.0.10/32 --dport 22 -j ACCEPT
--A OUTPUT -p tcp -m tcp -d 192.168.0.10/32 --sport 22 -j ACCEPT
--A OUTPUT -p tcp -m tcp -d 192.168.0.10/32 --dport 22 -j ACCEPT
--A INPUT -p tcp -m tcp -s 192.168.0.10/32 --sport 22 -j ACCEPT
--A INPUT -p tcp -m tcp -s 192.168.0.11/32 --dport 22 -j ACCEPT
--A OUTPUT -p tcp -m tcp -d 192.168.0.11/32 --sport 22 -j ACCEPT
--A OUTPUT -p tcp -m tcp -d 192.168.0.11/32 --dport 22 -j ACCEPT
--A INPUT -p tcp -m tcp -s 192.168.0.11/32 --sport 22 -j ACCEPT
+#-A INPUT -p tcp -m tcp -s 192.168.0.1/32 --dport 22 -j ACCEPT
+#-A OUTPUT -p tcp -m tcp -d 192.168.0.1/32 --sport 22 -j ACCEPT
+#-A OUTPUT -p tcp -m tcp -d 192.168.0.1/32 --dport 22 -j ACCEPT
+#-A INPUT -p tcp -m tcp -s 192.168.0.1/32 --sport 22 -j ACCEPT
+#-A INPUT -p tcp -m tcp -s 192.168.0.10/32 --dport 22 -j ACCEPT
+#-A OUTPUT -p tcp -m tcp -d 192.168.0.10/32 --sport 22 -j ACCEPT
+#-A OUTPUT -p tcp -m tcp -d 192.168.0.10/32 --dport 22 -j ACCEPT
+#-A INPUT -p tcp -m tcp -s 192.168.0.10/32 --sport 22 -j ACCEPT
+#-A INPUT -p tcp -m tcp -s 192.168.0.11/32 --dport 22 -j ACCEPT
+#-A OUTPUT -p tcp -m tcp -d 192.168.0.11/32 --sport 22 -j ACCEPT
+#-A OUTPUT -p tcp -m tcp -d 192.168.0.11/32 --dport 22 -j ACCEPT
+#-A INPUT -p tcp -m tcp -s 192.168.0.11/32 --sport 22 -j ACCEPT
+
+# SSH auf diesen Server erlauben aus dem LAN
+-A INPUT  -p tcp -s 192.168.0.0/24 --dport 22 -j ACCEPT
+-A OUTPUT -p tcp -d 192.168.0.0/24 --sport 22 -j ACCEPT
+
+# SSH von diesem Server ins LAN erlauben
+-A OUTPUT -p tcp -d 192.168.0.0/24 --dport 22 -j ACCEPT
+-A INPUT  -p tcp -s 192.168.0.0/24 --sport 22 -j ACCEPT
 
 # Basic hygiene.
 -A INPUT -m conntrack --ctstate INVALID -j DROP
