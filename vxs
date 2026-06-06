@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-### Version: 1.2.184
+### Version: 1.2.185
 ### Build date: 17.05.2026
 ### (C) 2021 - 2026 by Dipl. Wirt.-Ing. Nick Herrmann
 ### This program is WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -41,7 +41,7 @@ done
 ###
 ###
 infocolor=$(tput setaf 6) # DEV
-u_version=1.2.184
+u_version=1.2.185
 u_ip4=$(hostname --all-ip-addresses | cut -d' ' -f 1)
 u_hostname=$(hostname)
 WEBHOSTER=host-x.de
@@ -84,6 +84,7 @@ u_aws=n
 ### - kernel_modules: Springt zum Abschnitt, in dem Kernel-Module konfiguriert werden
 ### - start: Springt zum Abschnitt, in dem alle Dienste gestartet werden (Smoke-Start)
 ### - virtualx: Springt zum Abschnitt, in dem die erste virtuelle Hostkonfiguration für VirtualX erstellt wird
+### - chattr: Springt zum Abschnitt, in dem wichtige Konfigurationsdateien immutable gesetzt werden
 ###
 ### Can also be passed as the first argument: vxs <section>
 ### Example: vxs virtualx
@@ -94,7 +95,7 @@ DEV_START_AT=${1:-}
 ###
 source $u_path/lib/functions.sh
 
-_VXS_SECTIONS=(repo dnf selinux folders helper_apps letsencrypt apps postfix httpd dovecot autoconfig vsftpd mysql backup quota powerdns logrotate cron tripwire php ssh fail2ban firewall kernel_modules start virtualx wordpress)
+_VXS_SECTIONS=(repo dnf selinux folders helper_apps letsencrypt apps postfix httpd dovecot autoconfig vsftpd mysql backup quota powerdns logrotate cron tripwire php ssh fail2ban firewall kernel_modules start virtualx wordpress chattr)
 
 _vxs_section_index() {
     local section="$1" i
@@ -314,9 +315,9 @@ if vxs_should_run_from repo; then
     ###
     ###
     printf "\n********************************************************************\n\n"
-    printf "  w = Web Server  (automated, all steps preset)\n"
-    printf "  d = DNS Server  (automated, all steps preset)\n"
-    printf "  m = Manual      (web server steps, each question asked individually)\n\n"
+    printf "  w = Web Server\n"
+    printf "  d = DNS Server\n"
+    printf "  m = Manual      (web server steps)\n\n"
     while true; do
         read -p "Create Web or DNS Server [w/d/M]: " u_server
         u_server=${u_server:-m}
@@ -328,82 +329,90 @@ if vxs_should_run_from repo; then
         esac
     done
 
-    ### Web Server presettings.
-    ### All with 'y' marked options will be executed automatically.
-    ### All with 'n' marked options will NOT be executed.
-    if [ "$u_server" = "w" ]; then
-        u_epel_repo=y
-        u_dnf=y
-        u_php=y
-        u_disable_apps=y
-        u_enable_apps=y
-        u_start_server=y
-        u_folders_create=y
-        u_postfix=y
-        u_ssh=y
-        u_ssh_sftp=y
-        u_fail2ban=y
-        u_tripwire=y
-        u_helper_apps=y
-        u_chk_service=y
-        u_bashrc_root=y
-        u_claude_json=y
-        u_httpd=y
-        u_httpd_selinux=y
-        u_selinux=y
-        u_wp_cli=y
-        u_dovecot=y
-        u_letsencrypt=n
-        u_letsencrypt_dovecot=n
-        u_autoconfig=y
-        u_vsftpd=y
-        u_ssl=y
-        u_backup=y
-        u_quota=y
-        u_firewall=y
-        u_activate_firewall=y
-        u_hardening=y
-        u_module_blacklist=y
-        u_virtualx=y
-    fi
+    ### Presettings are currently disabled so every question is answered manually.
+    ### Set u_apply_presets=y to reactivate the automated Web/DNS presets below.
+    u_apply_presets=n
 
-    ### DNS Server presettings.
-    ### All with 'y' marked options will be executed automatticly.
-    ### All with 'n' marked options will NOT executed.
-    if [ "$u_server" = "d" ]; then
-        u_epel_repo=y
-        u_dnf=n
-        u_php=n
-        u_disable_apps=y
-        u_enable_apps=n
-        u_start_server=n
-        u_folders_create=y
-        u_postfix=n
-        u_ssh=y
-        u_ssh_sftp=n
-        u_fail2ban=y
-        u_tripwire=y
-        u_helper_apps=y
-        u_chk_service=y
-        u_bashrc_root=y
-        u_claude_json=y
-        u_httpd=n
-        u_httpd_selinux=n
-        u_selinux=y
-        u_wp_cli=n
-        u_dovecot=n
-        u_letsencrypt=n
-        u_letsencrypt_dovecot=n
-        u_autoconfig=n
-        u_vsftpd=n
-        u_ssl=n
-        u_backup=n
-        u_quota=n
-        u_firewall=y
-        u_activate_firewall=y
-        u_hardening=y
-        u_module_blacklist=y
-        u_virtualx=n
+    if [ "$u_apply_presets" = "y" ]; then
+        ### Web Server presettings.
+        ### All with 'y' marked options will be executed automatically.
+        ### All with 'n' marked options will NOT be executed.
+        if [ "$u_server" = "w" ]; then
+            u_epel_repo=y
+            u_dnf=y
+            u_php=y
+            u_disable_apps=y
+            u_enable_apps=y
+            u_start_server=y
+            u_folders_create=y
+            u_postfix=y
+            u_ssh=y
+            u_ssh_sftp=y
+            u_fail2ban=y
+            u_tripwire=y
+            u_helper_apps=y
+            u_chk_service=y
+            u_bashrc_root=y
+            u_claude_json=y
+            u_httpd=y
+            u_httpd_selinux=y
+            u_selinux=y
+            u_wp_cli=y
+            u_dovecot=y
+            u_letsencrypt=n
+            u_letsencrypt_dovecot=n
+            u_autoconfig=y
+            u_vsftpd=y
+            u_ssl=y
+            u_backup=y
+            u_quota=y
+            u_firewall=y
+            u_activate_firewall=y
+            u_hardening=y
+            u_module_blacklist=y
+            u_virtualx=y
+            u_chattr=n
+        fi
+
+        ### DNS Server presettings.
+        ### All with 'y' marked options will be executed automatticly.
+        ### All with 'n' marked options will NOT executed.
+        if [ "$u_server" = "d" ]; then
+            u_epel_repo=y
+            u_dnf=n
+            u_php=n
+            u_disable_apps=y
+            u_enable_apps=n
+            u_start_server=n
+            u_folders_create=y
+            u_postfix=n
+            u_ssh=y
+            u_ssh_sftp=n
+            u_fail2ban=y
+            u_tripwire=y
+            u_helper_apps=y
+            u_chk_service=y
+            u_bashrc_root=y
+            u_claude_json=y
+            u_httpd=n
+            u_httpd_selinux=n
+            u_selinux=y
+            u_wp_cli=n
+            u_dovecot=n
+            u_letsencrypt=n
+            u_letsencrypt_dovecot=n
+            u_autoconfig=n
+            u_vsftpd=n
+            u_ssl=n
+            u_backup=n
+            u_quota=n
+            u_firewall=y
+            u_activate_firewall=y
+            u_hardening=y
+            u_module_blacklist=y
+            u_virtualx=n
+            u_chattr=n
+        fi
     fi
 
     ### set hostname
@@ -796,6 +805,15 @@ if vxs_should_run_from wordpress; then
     ###
     ###
     source $u_path/lib/lib_wordpress.sh
+
+fi
+
+if vxs_should_run_from chattr; then
+
+    ### q immutable config files
+    ###
+    ###
+    source $u_path/lib/lib_chattr.sh
 
 fi
 
