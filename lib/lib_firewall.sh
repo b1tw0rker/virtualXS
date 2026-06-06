@@ -32,9 +32,10 @@ if [ "$u_firewall" = "y" ]; then
         ### place client ip in firewall script
         ### $u_client_ip is defined install.sh on top
         ###
-        iptables001="-A INPUT -p tcp -m tcp -s $u_client_ip\/32 --dport 22 -m conntrack --ctstate NEW -j ACCEPT #by BitWorker"
+        iptables001="-A INPUT -p tcp -m tcp -s $u_client_ip\/32 --dport 22 -j ACCEPT #by BitWorker"
+        iptables002="-A OUTPUT -p tcp -m tcp -d $u_client_ip\/32 --sport 22 -j ACCEPT #by BitWorker"
         
-        sed -i 's/# Emergency SSH access. Installer may add another fixed source here.$/# Emergency SSH access. Installer may add another fixed source here.\n'"$iptables001"'/' $file004/rules.fw
+        sed -i 's/# Installer may add another fixed emergency SSH source here.$/# Installer may add another fixed emergency SSH source here.\n'"$iptables001"'\n'"$iptables002"'/' $file004/rules.fw
         
         ### DNS Server Special Settings
         ###
