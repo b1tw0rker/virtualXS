@@ -2,6 +2,8 @@
 #
 # virtualXS IPv4 firewall rules for Rocky Linux 10 / iptables-nft.
 # Keep firewalld disabled or at least do not let it manage the same ruleset.
+# Version 1.0.1
+# last-modified: 06.06.2026
 
 FWBDEBUG=""
 

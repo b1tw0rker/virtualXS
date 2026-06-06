@@ -3,7 +3,6 @@
 # version 1.0
 # last modified: 05.09.2024
 
-# Erstellt von und mit ChatGPT
 # Erstelle Backups von VMs basierend auf einer Konfigurationsdatei
 
 # Log-Datei für Fehlermeldungen festlegen
