@@ -43,6 +43,9 @@ if [ "$u_folders_create" = "y" ]; then
       mkdir "$folder"
 
       if [ "$folder" = "/home/pop" ]; then
+        getent group vmail  >/dev/null 2>&1 || groupadd -g 5000 vmail
+        getent passwd vmail >/dev/null 2>&1 || useradd -u 5000 -g 5000 -d /home/pop -s /sbin/nologin -M vmail
+        chown vmail:vmail "$folder"
         chmod 755 "$folder"
       fi
 
