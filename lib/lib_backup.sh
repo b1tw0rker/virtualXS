@@ -25,8 +25,8 @@ if [ "$u_backup" = "y" ]; then
             _log warn "backup host IP fallback in use, u_ip is not a plain IPv4 address"
         fi
 
-        sed -i "s/^target=\"XXX\"/host=\"${backup_host_ip}\"/" /etc/bitworker/rsync/config.sh
-        sed -i 's/^active="false"/active="true"/' /etc/bitworker/rsync/config.sh
+        sed -i "s/^target=\"XXX\"/host=\"${backup_host_ip}\"/" /etc/bitworker/rsync/config.cf
+        sed -i 's/^active="false"/active="true"/' /etc/bitworker/rsync/config.cf
 
         ### create cronjob in cron.daily
         ###
