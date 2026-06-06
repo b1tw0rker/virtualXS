@@ -20,8 +20,7 @@ if [ "$u_firewall" = "y" ]; then
         chmod 700 $file004/stop.sh
         chmod 700 $file004/rules.fw
         
-        sed -i 's/-s 195.90.209.193 -j SPOOF_CHECK/-s '"$u_ip"' -j SPOOF_CHECK #by BitWorker/' $file004/rules.fw
-        sed -i 's/-d 195.90.209.193 -j SPOOF_DENY/-d '"$u_ip"' -j SPOOF_DENY #by BitWorker/' $file004/rules.fw
+        sed -i 's|-s 195.90.209.193/32 -j SPOOF_DENY|-s '"$u_ip"'/32 -j SPOOF_DENY #by BitWorker|' $file004/rules.fw
         
         ### muss nach der rule kommen, die noch nach venet0:0 sucht! (see 3 lines above)
         ###
@@ -31,17 +30,17 @@ if [ "$u_firewall" = "y" ]; then
         ### place client ip in firewall script
         ### $u_client_ip is defined install.sh on top
         ###
-        iptables001="    \$IPTABLES -A INPUT  -p tcp -m tcp -s $u_client_ip\/32 --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT"
-        iptables002="    \$IPTABLES -A OUTPUT -p tcp -m tcp -d $u_client_ip\/32 --sport 22 -m state --state ESTABLISHED,RELATED -j ACCEPT"
+        iptables001="-A INPUT -p tcp -m tcp -s $u_client_ip\/32 --dport 22 -m conntrack --ctstate NEW -j ACCEPT #by BitWorker"
         
-        sed -i 's/# backup ssh access$/# backup ssh access\n'"$iptables001"'\n'"$iptables002"'/' $file004/rules.fw
+        sed -i 's/# Emergency SSH access. Installer may add another fixed source here.$/# Emergency SSH access. Installer may add another fixed source here.\n'"$iptables001"'/' $file004/rules.fw
         
         ### DNS Server Special Settings
         ###
         ###
         if [ "$u_server" = "d" ]; then
-            sed -i 's/$IPTABLES -A INPUT -p tcp -m tcp  --dport 10000:10255  -m state --state NEW  -j ACCEPT/$IPTABLES -A INPUT -p udp -m udp  --dport 53  -m state --state NEW  -j ACCEPT #by BitWorker/' $file004/rules.fw
-            sed -i 's/$IPTABLES -A INPUT -p tcp -m tcp  -m multiport  --dports 21,25,80,443,993,995,587  -m state --state NEW  -j ACCEPT/$IPTABLES -A INPUT -p tcp -m tcp  --dport 53  -m state --state NEW  -j ACCEPT #by BitWorker/' $file004/rules.fw
+            dns001="-A INPUT -p udp -m udp --dport 53 -m conntrack --ctstate NEW -j ACCEPT #by BitWorker"
+            dns002="-A INPUT -p tcp -m tcp --dport 53 -m conntrack --ctstate NEW -j ACCEPT #by BitWorker"
+            sed -i 's/# Public input services.$/# Public input services.\n'"$dns001"'\n'"$dns002"'/' $file004/rules.fw
         fi
         
     fi

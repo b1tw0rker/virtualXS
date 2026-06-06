@@ -1,0 +1,525 @@
+#!/bin/sh
+#
+#
+#  Firewall Builder  fwb_ipt v5.1.0.3599
+#
+#  Generated 08.06.2025
+#
+# files: * rules.fw stop.sh start.sh
+#
+# Compiled for iptables 1.4.4
+#
+# This template is intended for a simple server with one interface. "Assume firewall is part of any"
+# option is off, IP forwarding is off.
+
+FWBDEBUG=""
+
+PATH="/sbin:/usr/sbin:/bin:/usr/bin:${PATH}"
+export PATH
+
+LSMOD="lsmod"
+MODPROBE="modprobe"
+IPTABLES="iptables"
+IPTABLES_RESTORE="iptables-restore"
+IP="ip"
+IFCONFIG="ifconfig"
+VCONFIG="vconfig"
+BRCTL="brctl"
+IFENSLAVE="ifenslave"
+IPSET="ipset"
+LOGGER="logger"
+
+log() {
+    echo "$1"
+    which "$LOGGER" >/dev/null 2>&1 && $LOGGER -p info "$1"
+}
+
+getInterfaceVarName() {
+    echo $1 | sed 's/\./_/'
+}
+
+getaddr_internal() {
+    dev=$1
+    name=$2
+    af=$3
+    L=$($IP $af addr show dev $dev | sed -n '/inet /{s!.*inet !!;s!/.*!!p}' | sed 's/peer.*//')
+    test -z "$L" && {
+        eval "$name=''"
+        return
+    }
+    eval "${name}_list=\"$L\""
+}
+
+getnet_internal() {
+    dev=$1
+    name=$2
+    af=$3
+    L=$($IP route list proto kernel | grep $dev | grep -v default | sed 's! .*$!!')
+    test -z "$L" && {
+        eval "$name=''"
+        return
+    }
+    eval "${name}_list=\"$L\""
+}
+
+getaddr() {
+    getaddr_internal $1 $2 "-4"
+}
+
+getnet() {
+    getnet_internal $1 $2 "-4"
+}
+
+# function getinterfaces is used to process wildcard interfaces
+getinterfaces() {
+    NAME=$1
+    $IP link show | grep ": $NAME" | while read L; do
+        OIFS=$IFS
+        IFS=" :"
+        set $L
+        IFS=$OIFS
+        echo $2
+    done
+}
+
+diff_intf() {
+    func=$1
+    list1=$2
+    list2=$3
+    cmd=$4
+    for intf in $list1; do
+        echo $list2 | grep -q $intf || {
+            # $vlan is absent in list 2
+            $func $intf $cmd
+        }
+    done
+}
+
+find_program() {
+    PGM=$1
+    which $PGM >/dev/null 2>&1 || {
+        echo "\"$PGM\" not found"
+        exit 1
+    }
+}
+check_tools() {
+    find_program which
+    find_program $IPTABLES
+    find_program $MODPROBE
+    find_program $IP
+}
+reset_iptables_v4() {
+    $IPTABLES -P OUTPUT DROP
+    $IPTABLES -P INPUT DROP
+    $IPTABLES -P FORWARD DROP
+
+    for table in raw mangle nat filter security; do
+        $IPTABLES -t "$table" -F 2>/dev/null || true
+        $IPTABLES -t "$table" -X 2>/dev/null || true
+    done
+}
+
+P2P_INTERFACE_WARNING=""
+
+missing_address() {
+    address=$1
+    cmd=$2
+    
+    oldIFS=$IFS
+    IFS="@"
+    set $address
+    addr=$1
+    interface=$2
+    IFS=$oldIFS
+    
+    $IP addr show dev $interface | grep -q POINTOPOINT && {
+        test -z "$P2P_INTERFACE_WARNING" && echo "Warning: Can not update address of interface $interface. fwbuilder can not manage addresses of point-to-point interfaces yet"
+        P2P_INTERFACE_WARNING="yes"
+        return
+    }
+    
+    test "$cmd" = "add" && {
+        echo "# Adding ip address: $interface $addr"
+        echo $addr | grep -q ':' && {
+            $FWBDEBUG $IP addr $cmd $addr dev $interface
+            } || {
+            $FWBDEBUG $IP addr $cmd $addr broadcast + dev $interface
+        }
+    }
+    
+    test "$cmd" = "del" && {
+        echo "# Removing ip address: $interface $addr"
+        $FWBDEBUG $IP addr $cmd $addr dev $interface || exit 1
+    }
+    
+    $FWBDEBUG $IP link set $interface up
+}
+
+list_addresses_by_scope() {
+    interface=$1
+    scope=$2
+    ignore_list=$3
+    $IP addr ls dev $interface |
+    awk -v IGNORED="$ignore_list" -v SCOPE="$scope" \
+    'BEGIN {
+           split(IGNORED,ignored_arr);
+           for (a in ignored_arr) {ignored_dict[ignored_arr[a]]=1;}
+         }
+    (/inet / && $0 ~ SCOPE && !($2 in ignored_dict)) {print $2;}' |
+    while read addr; do
+        echo "${addr}@$interface"
+    done | sort
+}
+
+update_addresses_of_interface() {
+    ignore_list=$2
+    set $1
+    interface=$1
+    shift
+    
+    FWB_ADDRS=$(
+        for addr in $*; do
+            echo "${addr}@$interface"
+        done | sort
+    )
+    
+    CURRENT_ADDRS_ALL_SCOPES=""
+    CURRENT_ADDRS_GLOBAL_SCOPE=""
+    
+    $IP link show dev $interface >/dev/null 2>&1 && {
+        CURRENT_ADDRS_ALL_SCOPES=$(list_addresses_by_scope $interface 'scope .*' "$ignore_list")
+        CURRENT_ADDRS_GLOBAL_SCOPE=$(list_addresses_by_scope $interface 'scope global' "$ignore_list")
+        } || {
+        echo "# Interface $interface does not exist"
+        # Stop the script if we are not in test mode
+        test -z "$FWBDEBUG" && exit 1
+    }
+    
+    diff_intf missing_address "$FWB_ADDRS" "$CURRENT_ADDRS_ALL_SCOPES" add
+    diff_intf missing_address "$CURRENT_ADDRS_GLOBAL_SCOPE" "$FWB_ADDRS" del
+}
+
+clear_addresses_except_known_interfaces() {
+    $IP link show | sed 's/://g' | awk -v IGNORED="$*" \
+    'BEGIN {
+           split(IGNORED,ignored_arr);
+           for (a in ignored_arr) {ignored_dict[ignored_arr[a]]=1;}
+         }
+    (/state/ && !($2 in ignored_dict)) {print $2;}' |
+    while read intf; do
+        echo "# Removing addresses not configured in fwbuilder from interface $intf"
+        $FWBDEBUG $IP addr flush dev $intf scope global
+        $FWBDEBUG $IP link set $intf down
+    done
+}
+
+check_file() {
+    test -r "$2" || {
+        echo "Can not find file $2 referenced by address table object $1"
+        exit 1
+    }
+}
+
+check_run_time_address_table_files() {
+    :
+    
+}
+
+load_modules() {
+    :
+    OPTS=$1
+    MODULES_DIR="/lib/modules/$(uname -r)/kernel/net/"
+    MODULES=$(find $MODULES_DIR -name '*conntrack*' \! -name '*ipv6*' | sed -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/')
+    echo $OPTS | grep -q nat && {
+        MODULES="$MODULES $(find $MODULES_DIR -name '*nat*' | sed -e 's/^.*\///' -e 's/\([^\.]\)\..*/\1/')"
+    }
+    for module in $MODULES; do
+        if $LSMOD | grep ${module} >/dev/null; then continue; fi
+        $MODPROBE ${module} || exit 1
+    done
+}
+
+verify_interfaces() {
+    :
+    
+}
+
+prolog_commands() {
+    echo "Running prolog script"
+    
+}
+
+epilog_commands() {
+    echo "Running epilog script"
+    
+}
+
+run_epilog_and_exit() {
+    epilog_commands
+    exit $1
+}
+
+configure_interfaces() {
+    :
+    # Configure interfaces
+}
+
+script_body() {
+    # ================ IPv4
+    
+    # ================ Table 'filter', automatic rules
+    # Drop INVALID packets early – covers Nmap stealth scans, broken fragments, sequence exploits
+    $IPTABLES -A INPUT -m state --state INVALID -j DROP
+    # Drop TCP packets claiming NEW but without SYN flag – Nmap/spoofed packets
+    $IPTABLES -A INPUT -p tcp ! --syn -m state --state NEW -j DROP
+    # SYN-Flood protection: max 20 new TCP connections/s per source IP, burst 30
+    # ESTABLISHED/RELATED traffic is unaffected (matched earlier) – no impact on HTTP/S performance
+    $IPTABLES -A INPUT -p tcp --syn -m hashlimit --hashlimit-above 20/s --hashlimit-burst 30 --hashlimit-mode srcip --hashlimit-name SYN_FLOOD -j DROP
+    # accept established sessions
+    $IPTABLES -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+    $IPTABLES -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+    $IPTABLES -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+    # backup ssh access
+    # Emergency remote access – hardcoded 192.168.0.1 always active; installer injects $u_client_ip below
+    $IPTABLES -A INPUT  -p tcp -m tcp -s 192.168.0.1/32 --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
+    $IPTABLES -A OUTPUT -p tcp -m tcp -d 192.168.0.1/32 --sport 22 -m state --state ESTABLISHED,RELATED -j ACCEPT
+    
+    # ================ Table 'filter', rule set Policy
+    #
+    # BLOCK: spoofed traffic on venet0:0 (own IPs as source)
+    #
+    echo "BLOCK: spoofed own IPs on venet0:0"
+    #
+    $IPTABLES -N SPOOF_CHECK
+    $IPTABLES -A INPUT -i venet0:0 -s 127.0.0.1 -j SPOOF_CHECK
+    $IPTABLES -A INPUT -i venet0:0 -s 195.90.209.193 -j SPOOF_CHECK
+    $IPTABLES -N SPOOF_DENY
+    $IPTABLES -A SPOOF_CHECK -d 127.0.0.1 -j SPOOF_DENY
+    $IPTABLES -A SPOOF_CHECK -d 195.90.209.193 -j SPOOF_DENY
+    $IPTABLES -A SPOOF_DENY -j LOG --log-level info --log-prefix "SPOOF -- DENY "
+    $IPTABLES -A SPOOF_DENY -j DROP
+    #
+    # ALLOW: loopback
+    #
+    echo "ALLOW: loopback"
+    #
+    $IPTABLES -A INPUT -i lo -j ACCEPT
+    $IPTABLES -A OUTPUT -o lo -j ACCEPT
+    #
+    # ALLOW INPUT: igmp, icmp-ping, passive ftp, public services (ftp,smtp,http,https,imap,pop3,submission)
+    #
+    echo "ALLOW INPUT: igmp, icmp, passive ftp, public services"
+    #
+    $IPTABLES -A INPUT -p igmp -d 224.0.0.1 -j ACCEPT
+    # OLD: kein Rate-Limit – anfällig für Ping-Flood
+    #$IPTABLES -A INPUT -p icmp -m icmp --icmp-type 8/0 -m state --state NEW -j ACCEPT
+    # NEW: max. 10 Pings/s, Burst 20 – danach silent drop
+    $IPTABLES -A INPUT -p icmp -m icmp --icmp-type 8/0 -m limit --limit 10/s --limit-burst 20 -j ACCEPT
+    $IPTABLES -A INPUT -p tcp -m tcp --dport 10000:10128 -m state --state NEW -j ACCEPT
+    # Port 25 (SMTP MX): plain accept – Fail2ban übernimmt Missbrauch-Handling
+    $IPTABLES -A INPUT -p tcp -m tcp --dport 25 -m state --state NEW -j ACCEPT
+    # HTTP/HTTPS: connlimit – max. 80 gleichzeitige Verbindungen pro Quell-IP
+    $MODPROBE xt_connlimit 2>/dev/null || true
+    $IPTABLES -A INPUT -p tcp -m tcp -m multiport --dports 80,443 -m state --state NEW -m connlimit --connlimit-above 80 --connlimit-mask 32 -j LOG --log-level warning --log-prefix "HTTP/S CONNLIMIT -- DROP "
+    $IPTABLES -A INPUT -p tcp -m tcp -m multiport --dports 80,443 -m state --state NEW -m connlimit --connlimit-above 80 --connlimit-mask 32 -j DROP
+    $IPTABLES -A INPUT -p tcp -m tcp -m multiport --dports 80,443 -m state --state NEW -j ACCEPT
+    # FTP/Submission/IMAPS/POP3S -> AUTH_RULE (Chains weiter unten definiert)
+
+
+    #
+    # ALLOW OUTPUT: dns (resolver)
+    #
+    echo "ALLOW OUTPUT: dns"
+    #
+    # server needs DNS to back-resolve clients IPs.
+    # Even if it does not log host names during its
+    # normal operations, statistics scripts such as
+    # webalizer need it for reporting.
+    $IPTABLES -A OUTPUT -p tcp -m tcp --dport 53 -m state --state NEW -j ACCEPT
+    $IPTABLES -A OUTPUT -p udp -m udp --dport 53 -m state --state NEW -j ACCEPT
+    #
+    # ALLOW OUTPUT: http/s, smtp, ntp, dns-api
+    #
+    echo "ALLOW OUTPUT: http/s, smtp, ntp, dns-api"
+    #
+    # this rule allows the server to send
+    # statistics and reports via email. Disable
+    # this rule if you do not need it.
+    $IPTABLES -A OUTPUT -p tcp -m tcp -m multiport --dports 80,443,25,43 -m state --state NEW -j ACCEPT
+    # Allow connect to ns001.host-x.de DNS API
+    $IPTABLES -A OUTPUT -p tcp -m tcp -d 95.217.220.42 --dport 8081 -m state --state NEW -j ACCEPT
+    $IPTABLES -A OUTPUT -p udp -m udp --dport 123 -m state --state NEW -j ACCEPT
+    #
+    # ALLOW INPUT: ssh with rate limiting (SSH_RULE chain)
+    #
+    echo "ALLOW INPUT: ssh via SSH_RULE chain"
+    #
+    # Ensure xt_recent module is available for rate limiting
+    $MODPROBE xt_recent 2>/dev/null || true
+    #
+    $IPTABLES -N SSH_RULE
+    # Allow management subnet without rate limiting
+    $IPTABLES -A SSH_RULE -s 192.168.0.0/24 -m state --state NEW -j ACCEPT
+    # Rate limit: max 4 new connections per 60 s per source IP
+    $IPTABLES -A SSH_RULE -m state --state NEW -m recent --set --name SSH_RATELIMIT
+    $IPTABLES -A SSH_RULE -m state --state NEW -m recent --update --seconds 60 --hitcount 4 --rttl --name SSH_RATELIMIT -j LOG --log-level warning --log-prefix "SSH RATE-LIMIT -- DROP "
+    $IPTABLES -A SSH_RULE -m state --state NEW -m recent --update --seconds 60 --hitcount 4 --rttl --name SSH_RATELIMIT -j DROP
+    # Log and drop all other SSH attempts
+    $IPTABLES -A SSH_RULE -j LOG --log-level info --log-prefix "SSH -- DENY "
+    $IPTABLES -A SSH_RULE -j DROP
+    # Route all new SSH connections through the SSH_RULE chain
+    $IPTABLES -A INPUT -p tcp -m tcp --dport 22 -m state --state NEW -j SSH_RULE
+    #
+    # ALLOW INPUT: Auth-Ports (FTP, IMAPS, POP3S, Submission) mit Rate-Limiting (AUTH_RULE chain)
+    #
+    echo "ALLOW INPUT: auth ports via AUTH_RULE chain"
+    #
+    $IPTABLES -N AUTH_RULE
+    # Management-Subnet ohne Rate-Limiting
+    $IPTABLES -A AUTH_RULE -s 192.168.0.0/24 -m state --state NEW -j ACCEPT
+    # Rate-Limit: max. 20 neue Verbindungen pro 60 s pro Quell-IP
+    $IPTABLES -A AUTH_RULE -m state --state NEW -m recent --set --name AUTH_RATELIMIT
+    $IPTABLES -A AUTH_RULE -m state --state NEW -m recent --update --seconds 60 --hitcount 20 --rttl --name AUTH_RATELIMIT -j LOG --log-level warning --log-prefix "AUTH RATE-LIMIT -- DROP "
+    $IPTABLES -A AUTH_RULE -m state --state NEW -m recent --update --seconds 60 --hitcount 20 --rttl --name AUTH_RATELIMIT -j DROP
+    $IPTABLES -A AUTH_RULE -m state --state NEW -j ACCEPT
+    # FTP, Submission, IMAPS, POP3S durch AUTH_RULE routen
+    $IPTABLES -A INPUT -p tcp -m tcp -m multiport --dports 21,587,993,995 -m state --state NEW -j AUTH_RULE
+    #
+    # BLOCK INPUT: known bad IPs
+    #
+    echo "BLOCK INPUT: known bad IPs"
+    #
+    $IPTABLES -A INPUT -s 218.92.0.199 -j DROP
+    #
+    # REJECT INPUT: ident, smb, netbios, dhcp, local udp broadcasts
+    #
+    echo "REJECT INPUT: ident, smb, netbios, dhcp, local udp broadcasts"
+    #
+    # Reject ident (auth) queries that remote mail relays may send,
+    # and SMB/NetBIOS/DHCP to avoid spamming the default-deny log.
+    $IPTABLES -A INPUT -p tcp -m tcp --dport 113 -j REJECT
+    $IPTABLES -A INPUT -p tcp -m tcp --dport 445 -j REJECT
+    $IPTABLES -A INPUT -p udp -m udp --dport 137 -j REJECT
+    $IPTABLES -A INPUT -p udp -m udp --dport 138 -j REJECT
+    $IPTABLES -A INPUT -p udp -m udp --dport 67 -j REJECT
+    # Lokalen UDP-LAN-Verkehr verwerfen, damit Broadcasts und Scans nicht DEFAULT_DENY-Log zuspammen.
+    $IPTABLES -A INPUT -p udp -s 192.168.0.0/24 -j DROP
+    #
+    # DEFAULT DENY: log and drop everything else
+    #
+    echo "DEFAULT DENY: log and drop all remaining input"
+    #
+    $IPTABLES -N DEFAULT_DENY
+    $IPTABLES -A INPUT -j DEFAULT_DENY
+    # OLD: kein Rate-Limit – flutet bei Portscan den Syslog
+    #$IPTABLES -A DEFAULT_DENY -j LOG --log-level info --log-prefix "DEFAULT DENY -- DROP "
+    # NEW: hashlimit – max. 3 Log-Einträge/min pro Quell-IP, Burst 5
+    $IPTABLES -A DEFAULT_DENY -m hashlimit --hashlimit-above 3/min --hashlimit-burst 5 --hashlimit-mode srcip --hashlimit-name DEFAULT_DENY -j LOG --log-level info --log-prefix "DEFAULT DENY -- DROP "
+    $IPTABLES -A DEFAULT_DENY -j DROP
+}
+
+ip_forward() {
+    :
+    echo 0 >/proc/sys/net/ipv4/ip_forward
+}
+
+reset_all() {
+    :
+    reset_iptables_v4
+}
+
+block_action() {
+    reset_all
+}
+
+stop_action() {
+    reset_all
+    $IPTABLES -P OUTPUT ACCEPT
+    $IPTABLES -P INPUT ACCEPT
+    $IPTABLES -P FORWARD ACCEPT
+}
+
+check_iptables() {
+    $IPTABLES -S >/dev/null 2>&1 || return 151
+    $IPTABLES -L -n 2>/dev/null | grep -q '^Chain' || return 152
+    return 0
+}
+status_action() {
+    check_iptables
+    ret_ipv4=$?
+    [ $ret_ipv4 -eq 0 ] && return 0
+    [ $ret_ipv4 -eq 151 ] && {
+        echo "iptables modules are not loaded"
+    }
+    [ $ret_ipv4 -eq 152 ] && {
+        echo "Firewall is not configured"
+    }
+    exit 3
+}
+
+# See how we were called.
+# For backwards compatibility missing argument is equivalent to 'start'
+
+cmd=$1
+test -z "$cmd" && {
+    cmd="start"
+}
+
+case "$cmd" in
+    start)
+        log "Activating firewall script generated Sun Apr 04 13:40:08 2021 by Nick"
+        check_tools
+        prolog_commands
+        check_run_time_address_table_files
+        
+        #load_modules " "  # kernel auto-loads netfilter modules; xt_recent loaded inline in SSH_RULE
+        configure_interfaces
+        verify_interfaces
+        
+        reset_all
+        
+        script_body
+        ip_forward
+        epilog_commands
+        RETVAL=$?
+    ;;
+    
+    stop)
+        stop_action
+        RETVAL=$?
+    ;;
+    
+    status)
+        status_action
+        RETVAL=$?
+    ;;
+    
+    block)
+        block_action
+        RETVAL=$?
+    ;;
+    
+    reload)
+        $0 stop
+        $0 start
+        RETVAL=$?
+    ;;
+    
+    interfaces)
+        configure_interfaces
+        RETVAL=$?
+    ;;
+    
+    test_interfaces)
+        FWBDEBUG="echo"
+        configure_interfaces
+        RETVAL=$?
+    ;;
+    
+    *)
+        echo "Usage $0 [start|stop|status|block|reload|interfaces|test_interfaces]"
+    ;;
+    
+esac
+
+exit $RETVAL
