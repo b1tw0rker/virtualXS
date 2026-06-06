@@ -22,10 +22,12 @@ if [ "$u_firewall" = "y" ]; then
         
         sed -i 's|-s 195.90.209.193/32 -j SPOOF_DENY|-s '"$u_ip"'/32 -j SPOOF_DENY #by BitWorker|' $file004/rules.fw
         
-        ### muss nach der rule kommen, die noch nach venet0:0 sucht! (see 3 lines above)
+        ### Default interface in rules.fw is enp0s3. Rewrite only for systems using another interface.
         ###
         ###
-        sed -i 's/venet0:0/'"$u_iface"'/g' $file004/rules.fw
+        if [ -n "$u_iface" ] && [ "$u_iface" != "enp0s3" ]; then
+            sed -i 's/enp0s3/'"$u_iface"'/g' $file004/rules.fw
+        fi
         
         ### place client ip in firewall script
         ### $u_client_ip is defined install.sh on top

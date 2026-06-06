@@ -91,8 +91,8 @@ apply_rules() {
 
 # Never accept known bad or spoofed sources before service rules.
 -A INPUT -s 218.92.0.199/32 -j DROP
--A INPUT -i venet0:0 -s 127.0.0.1/32 -j SPOOF_DENY
--A INPUT -i venet0:0 -s 195.90.209.193/32 -j SPOOF_DENY
+-A INPUT -i enp0s3 -s 127.0.0.1/32 -j SPOOF_DENY
+-A INPUT -i enp0s3 -s 195.90.209.193/32 -j SPOOF_DENY
 -A SPOOF_DENY -m limit --limit 3/minute --limit-burst 5 -j LOG --log-level info --log-prefix "SPOOF -- DROP "
 -A SPOOF_DENY -j DROP
 
