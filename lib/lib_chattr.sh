@@ -43,7 +43,6 @@ if [ "$u_chattr" = "y" ]; then
         /etc/crontab
         /etc/chrony.conf
         /etc/audit/auditd.conf
-        /etc/httpd/conf/httpd.conf
         /etc/my.cnf
         /etc/my.cnf.d/99-bw-performance.cnf
         /etc/postfix/main.cf
