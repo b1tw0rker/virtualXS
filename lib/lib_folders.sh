@@ -28,6 +28,9 @@ if [ "$u_folders_create" = "y" ]; then
     /var/log/rsync
     /var/virtualx
     /var/virtualx/backups
+    /var/virtualx/backups/httpd
+    /var/virtualx/backups/webs
+    /var/virtualx/backups/postfix
     /var/virtualx/apps
     /var/virtualx/db
     /var/virtualx/log
