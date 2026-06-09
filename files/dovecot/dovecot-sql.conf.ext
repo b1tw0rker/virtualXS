@@ -1,5 +1,6 @@
-driver = mysql
-connect = host=localhost dbname=virtualx user=root password=XXX
-default_pass_scheme = SHA512-CRYPT
-user_query = SELECT home FROM dovecot WHERE userid = '%u'
-password_query = SELECT password FROM dovecot WHERE userid = '%u'
+
+  driver = mysql
+  connect = host=localhost dbname=virtualx user=root password=XXX
+  default_pass_scheme = SHA512-CRYPT
+  password_query = SELECT password_hash AS password FROM mail_accounts WHERE email = '%u' AND status = 'active'
+  user_query = SELECT home_path AS home, uid, gid FROM mail_accounts WHERE email = '%u' AND status = 'active'
