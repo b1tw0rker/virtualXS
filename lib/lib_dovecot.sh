@@ -35,7 +35,8 @@ if [ "$u_dovecot" = "y" ]; then
     mysql_pwd=$(grep '^password=' /root/.my.cnf | cut -d'=' -f2-)
     sed -i 's/password=XXX/password='"$mysql_pwd"'/' $file_dovecot001
     unset mysql_pwd
-    sed -i 's/^#protocols = imap pop3 lmtp submission/protocols = imap lmtp/' $file_dovecot002
+    sed -i 's/^#protocols = .*/protocols = imap lmtp/' $file_dovecot002
+    sed -i '/^protocols = /{ /lmtp/! s/protocols = .*/protocols = imap lmtp/ }' $file_dovecot002
 
     # old - 09.06.2026
     #sed -i 's/^#mail_location =/mail_location = maildir:\/home\/pop\/%u\/Maildir/' /etc/dovecot/conf.d/10-mail.conf
@@ -69,6 +70,21 @@ if [ "$u_dovecot" = "y" ]; then
     sed -i '/unix_listener \/var\/spool\/postfix\/private\/dovecot-lmtp/,+3 d' /etc/dovecot/conf.d/10-master.conf
     sed -i 's|#\?unix_listener lmtp {|unix_listener /var/spool/postfix/private/dovecot-lmtp {\n    mode = 0600\n    user = postfix\n    group = postfix|' /etc/dovecot/conf.d/10-master.conf
     _log ok "Dovecot LMTP socket configured for Postfix"
+
+    ### mail_plugins: quota (global), imap_quota (IMAP), sieve (LMTP)
+    ###
+    sed -i 's/^#mail_plugins = .*$/mail_plugins = quota/' /etc/dovecot/conf.d/10-mail.conf
+    sed -i 's/^  #mail_plugins = \$mail_plugins$/  mail_plugins = $mail_plugins imap_quota/' /etc/dovecot/conf.d/20-imap.conf
+    sed -i 's/^  #mail_plugins = \$mail_plugins$/  mail_plugins = $mail_plugins sieve/' /etc/dovecot/conf.d/20-lmtp.conf
+    _log ok "Dovecot mail_plugins configured (quota, imap_quota, sieve)"
+
+    ### 90-quota.conf: Dovecot Maildir++ quota – 1G per user, Trash +100M, 10%% grace
+    ###
+    sed -i 's/^  #quota = maildir:User quota$/  quota = maildir:User quota/' /etc/dovecot/conf.d/90-quota.conf
+    sed -i 's/^  #quota_rule = \*:storage=1G$/  quota_rule = *:storage=1G/' /etc/dovecot/conf.d/90-quota.conf
+    sed -i 's/^  #quota_rule2 = Trash:storage=+100M$/  quota_rule2 = Trash:storage=+100M/' /etc/dovecot/conf.d/90-quota.conf
+    sed -i 's/^  #quota_grace = 10%%$/  quota_grace = 10%%/' /etc/dovecot/conf.d/90-quota.conf
+    _log ok "Dovecot quota configured (maildir++, 1G, Trash+100M, 10%% grace)"
 
     ###
     ###
