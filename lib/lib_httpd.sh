@@ -84,6 +84,7 @@ DROPIN
     if [ "$u_server" = "w" ] && [ -d "$file008" ]; then
         cp $u_path/files/httpd/http2.conf $file008/
         cp $u_path/files/httpd/security.conf $file008/
+        cp $u_path/files/httpd/virtualx-performance.conf $file008/
     fi
 
     ### Check Apache State
