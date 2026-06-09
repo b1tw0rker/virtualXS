@@ -37,13 +37,20 @@ if [ "$u_dovecot" = "y" ]; then
     unset mysql_pwd
     sed -i 's/^#protocols = imap pop3 lmtp submission/protocols = imap lmtp/' $file_dovecot002
 
-    sed -i 's/^#mail_location =/mail_location = maildir:\/home\/pop\/%u\/Maildir/' /etc/dovecot/conf.d/10-mail.conf
+    # old - 09.06.2026
+    #sed -i 's/^#mail_location =/mail_location = maildir:\/home\/pop\/%u\/Maildir/' /etc/dovecot/conf.d/10-mail.conf
+    sed -i 's/^#mail_location =/mail_location = maildir:%h/\/Maildir/' /etc/dovecot/conf.d/10-mail.conf
+
+
+
     sed -i 's/^#mail_uid =/mail_uid = vmail/' /etc/dovecot/conf.d/10-mail.conf
     sed -i 's/^#mail_gid =/mail_gid = vmail/' /etc/dovecot/conf.d/10-mail.conf
     sed -i 's/^first_valid_uid = .*/first_valid_uid = 5000/' /etc/dovecot/conf.d/10-mail.conf
     sed -i 's/#port = 143/port = 0\n    #port=143/' /etc/dovecot/conf.d/10-master.conf
     sed -i 's/#port = 110/port = 0\n    #port=110/' /etc/dovecot/conf.d/10-master.conf
-    sed -i 's/^#auth_username_translation =/auth_username_translation = \"\@.\"/' /etc/dovecot/conf.d/10-auth.conf
+    
+    # old - 09.06.2026
+    #sed -i 's/^#auth_username_translation =/auth_username_translation = \"\@.\"/' /etc/dovecot/conf.d/10-auth.conf
 
     ### 10-logging.conf
     ###
