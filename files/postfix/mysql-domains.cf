@@ -1,7 +1,5 @@
 user = root
 password = XXX
 dbname = virtualx
-table = virtualmails
-select_field = domainname
-where_field = domainname
 hosts = localhost
+query = SELECT DISTINCT SUBSTRING_INDEX(email,'@',-1) FROM mail_accounts WHERE SUBSTRING_INDEX(email,'@',-1) = '%s' AND status = 'active' LIMIT 1

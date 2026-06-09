@@ -1,7 +1,5 @@
 user = root
 password = XXX
 dbname = virtualx
-table = virtualmails
-select_field = mailbox
-where_field = mail_address
 hosts = localhost
+query = SELECT CONCAT(email, '/Maildir/') FROM mail_accounts WHERE email = '%s' AND status = 'active'
