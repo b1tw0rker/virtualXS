@@ -24,8 +24,8 @@ smtpd_relay_restrictions =
 
 
 smtpd_recipient_restrictions =
-        check_recipient_access hash:/etc/postfix/access,
-        check_sender_access hash:/etc/postfix/access,
+        check_recipient_access lmdb:/etc/postfix/access,
+        check_sender_access lmdb:/etc/postfix/access,
         permit_sasl_authenticated,
         permit_mynetworks,
         reject_non_fqdn_recipient,
