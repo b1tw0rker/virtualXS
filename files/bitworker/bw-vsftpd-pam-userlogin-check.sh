@@ -8,7 +8,7 @@
 #
 # Deployed to: /etc/bitworker/bw-vsftpd-pam-userlogin-check.sh (chmod 700, root:root)
 # MySQL client credentials are read from /etc/vsftpd/.my.cnf
-# Password hash in DB: SHA2(password, 256) - 64 hex chars
+# Password hash in DB: SHA-512-crypt ($6$salt$hash) - verified via openssl passwd -6
 #
 # Test on terminal:
 # echo 'PASSWORD' | PAM_USER=srv016.host-x.de /etc/bitworker/bw-vsftpd-pam-userlogin-check.sh --debug; echo "Exit code: $?"
@@ -16,6 +16,7 @@
 # Debug mode prints the failure reason to stderr and is intended for manual tests only.
 
 MYSQL_DB="virtualx"
+MYSQL_TABLE="ftp_accounts"
 MYSQL_DEFAULTS_FILE="/etc/vsftpd/.my.cnf"
 debug_enabled=0
 
@@ -75,46 +76,40 @@ if [[ ! "$PAM_USER" =~ ^[a-zA-Z0-9._-]+$ ]]; then
     fail "PAM_USER contains unsupported characters"
 fi
 
-# Hash the password with SHA-256
-hash=$(printf '%s' "$password" | sha256sum | awk '{print $1}')
-
-# Guard: ensure hash is exactly 64 lowercase hex characters
-if [[ ! "$hash" =~ ^[0-9a-f]{64}$ ]]; then
-    fail "Password hashing did not produce a valid SHA-256 hex digest"
-fi
-
-# Query MySQL - PAM_USER is regex-validated, hash is hex-only: no injection possible
-result=$(mysql_query "SELECT COUNT(*) FROM passwd WHERE username='${PAM_USER}' AND passwd='${hash}' AND status='A';")
+# Fetch stored hash for active user - PAM_USER is regex-validated: no injection possible
+stored_hash=$(mysql_query "SELECT password_hash FROM ${MYSQL_TABLE} WHERE username='${PAM_USER}' AND status='active' LIMIT 1;")
 mysql_status=$?
 
 if [[ "$mysql_status" -ne 0 ]]; then
     fail "MySQL query failed"
 fi
 
-if [[ ! "$result" =~ ^[0-9]+$ ]]; then
-    fail "Unexpected MySQL result: ${result:-<empty>}"
+if [[ -z "$stored_hash" ]]; then
+    if [[ "$debug_enabled" -eq 1 ]]; then
+        user_status=$(mysql_query "SELECT status FROM ${MYSQL_TABLE} WHERE username='${PAM_USER}' LIMIT 1;")
+        if [[ -z "$user_status" ]]; then
+            fail "User '${PAM_USER}' was not found in ${MYSQL_DB}.${MYSQL_TABLE}"
+        else
+            fail "User '${PAM_USER}' exists but status is '${user_status}', not 'active'"
+        fi
+    fi
+    fail "Authentication failed"
 fi
 
-if [[ "$result" == "1" ]]; then
+# Guard: stored hash must be SHA-512-crypt format
+if [[ ! "$stored_hash" =~ ^\$6\$ ]]; then
+    fail "Stored hash is not in expected SHA-512-crypt format (\$6\$)"
+fi
+
+# Verify password against stored hash - password passed via stdin, never in process args
+salt=$(printf '%s' "$stored_hash" | cut -d'$' -f3)
+computed=$(printf '%s' "$password" | openssl passwd -6 -salt "$salt" -stdin 2>/dev/null)
+
+if [[ "$computed" == "$stored_hash" ]]; then
     success "Authentication succeeded"
 fi
 
 if [[ "$debug_enabled" -eq 1 ]]; then
-    user_status=$(mysql_query "SELECT status FROM passwd WHERE username='${PAM_USER}' LIMIT 1;")
-    mysql_status=$?
-
-    if [[ "$mysql_status" -ne 0 ]]; then
-        fail "MySQL status lookup failed"
-    fi
-
-    if [[ -z "$user_status" ]]; then
-        fail "User '${PAM_USER}' was not found in virtualx.passwd"
-    fi
-
-    if [[ "$user_status" != "A" ]]; then
-        fail "User '${PAM_USER}' exists but status is '${user_status}', not 'A'"
-    fi
-
     fail "User '${PAM_USER}' exists and is active, but the password does not match"
 fi
 
