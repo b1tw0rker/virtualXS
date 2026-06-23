@@ -4,10 +4,10 @@ require {
     type fail2ban_t;
     type home_root_t;
     type httpd_sys_content_t;
-    type httpd_sys_rw_content_t;
     type httpd_log_t;
     type postfix_cleanup_t;
     type mysqld_etc_t;
+    type mysqld_db_t;
     type httpd_t;
     type security_t;
     type etc_t;
@@ -54,8 +54,6 @@ allow fail2ban_t home_root_t:dir search;
 
 # fail2ban: Read webroot and log paths under /home/httpd/
 allow fail2ban_t httpd_sys_content_t:dir { getattr open read search };
-# fail2ban: Traversal durch httpd_sys_rw_content_t-Verzeichnisse zu /home/httpd/*/logs
-allow fail2ban_t httpd_sys_rw_content_t:dir search;
 allow fail2ban_t httpd_log_t:dir { getattr open read search };
 allow fail2ban_t httpd_log_t:file { getattr ioctl open read };
 
@@ -145,6 +143,10 @@ allow httpd_t httpd_unit_file_t:service { start reload status };
 allow httpd_t init_t:system reload;
 allow httpd_t ftpd_unit_file_t:service start;
 allow httpd_t systemd_unit_file_t:service { start reload };
+
+# httpd_t (PHP-FPM): du auf MySQL-Datenverzeichnisse fuer /users/mysql/size API
+allow httpd_t mysqld_db_t:dir { open read getattr };
+allow httpd_t mysqld_db_t:file { getattr };
 
 # ---- Required SELinux Booleans (setsebool -P) ----
 # These are system-level booleans, not custom allow rules.
