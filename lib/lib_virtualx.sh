@@ -154,8 +154,20 @@ if [ "$u_virtualx" = "y" ]; then
         _log warn "curl or unzip not found, skipping phpMyAdmin deployment."
     fi
 
+    ### Deploy welcome page into htdocs/welcome
+    ###
+    local welcome_src="/opt/virtualXS/files/virtualx/welcome"
+    local welcome_target="/home/httpd/$u_srv/htdocs/welcome"
+    if [ -d "$welcome_src" ]; then
+        cp -r "$welcome_src" "$welcome_target"
+        _log ok "Welcome page deployed to $welcome_target."
+    else
+        _log warn "Welcome template not found at $welcome_src, skipping."
+    fi
+
     chown -R "$u_srv:users" \
         "/home/httpd/$u_srv/htdocs/dbx" \
+        "/home/httpd/$u_srv/htdocs/welcome" \
         "/home/httpd/$u_srv/htdocs/adminx" \
         "/home/httpd/$u_srv/htdocs/adminx/plugins" \
         "/home/httpd/$u_srv/htdocs/adminx/plugins/virtualx"
