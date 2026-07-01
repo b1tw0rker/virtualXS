@@ -7,7 +7,7 @@
 # PAM_USER is set as environment variable by PAM.
 #
 # Deployed to: /etc/bitworker/bw-vsftpd-pam-userlogin-check.sh (chmod 700, root:root)
-# MySQL client credentials are read from /etc/vsftpd/.my.cnf
+# MySQL client credentials are read from /root/.my.cnf
 # Password hash in DB: SHA-512-crypt ($6$salt$hash) - verified via openssl passwd -6
 #
 # Test on terminal:
@@ -17,7 +17,7 @@
 
 MYSQL_DB="virtualx"
 MYSQL_TABLE="ftp_accounts"
-MYSQL_DEFAULTS_FILE="/etc/vsftpd/.my.cnf"
+MYSQL_DEFAULTS_FILE="/root/.my.cnf"
 debug_enabled=0
 
 if [[ "${BW_VSFTPD_DEBUG:-0}" == "1" || "${1:-}" == "--debug" ]]; then

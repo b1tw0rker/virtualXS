@@ -286,10 +286,6 @@ if vxs_should_run_from repo; then
             _log ok "Passwords match"
             printf '[client]\npassword=%s\n' "$u_mysql_pwd" > /root/.my.cnf
             chmod 600 /root/.my.cnf
-            mkdir -p /etc/vsftpd
-            printf '[client]\npassword=%s\n' "$u_mysql_pwd" > /etc/vsftpd/.my.cnf
-            chmod 600 /etc/vsftpd/.my.cnf
-            chown root:root /etc/vsftpd/.my.cnf
 
             _log info "Starting MySQL"
             systemctl start mysqld >/dev/null 2>&1
