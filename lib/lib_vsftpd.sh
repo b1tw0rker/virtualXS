@@ -59,6 +59,8 @@ if [ "$u_vsftpd" = "y" ]; then
     ###
     ###
     if [ -f "$file_vsftpd003" ]; then
+        cp "$file_vsftpd003" "$file_vsftpd003.bak"
+        _log ok "PAM backup created: $file_vsftpd003.bak"
         cat "$u_path/files/vsftpd/pam_vsftpd" >"$file_vsftpd003"
     fi
 
