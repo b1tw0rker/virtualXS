@@ -254,6 +254,7 @@ if vxs_should_run_from repo; then
     ###
     ###
     _mycnf_exists=false
+    u_mysql_pwd_change_requested=n
     [ -f /root/.my.cnf ] && _mycnf_exists=true
 
     while true; do
@@ -286,19 +287,7 @@ if vxs_should_run_from repo; then
             _log ok "Passwords match"
             printf '[client]\npassword=%s\n' "$u_mysql_pwd" > /root/.my.cnf
             chmod 600 /root/.my.cnf
-
-            _log info "Starting MySQL"
-            systemctl start mysqld >/dev/null 2>&1
-
-            _log ok "MySQL Server started"
-
-            if mysqladmin -u root password "$u_mysql_pwd" >/dev/null 2>&1; then
-                _log ok "Changed MySQL root password successfully"
-            else
-                _log error "Could not change MySQL root password"
-            fi
-
-
+            u_mysql_pwd_change_requested=y
 
             unset u_mysql_pwd u_mysql_pwd_confirm _mycnf_exists
             break # Schleife verlassen
@@ -605,15 +594,22 @@ if vxs_should_run_from vsftpd; then
 
 fi
 
-if vxs_should_run_from mysql && [ "$u_vsftpd" = "y" ]; then
+if vxs_should_run_from mysql; then
 
-    ### SELinux: MySQL Boolean + Dateikontext
-    ###   mysql_connect_any – MySQL verbindet sich auf beliebige Ports/Sockets
+    ### q config mysql / mariadb
     ###
-    printf "\n--- SELinux: MySQL ---\n"
-    _selinux_ensure_tools
-    _selinux_set_bool mysql_connect_any
-    _selinux_restorecon /home/mysql
+    ###
+    source $u_path/lib/lib_mysql.sh
+
+    if [ "$u_vsftpd" = "y" ]; then
+        ### SELinux: MySQL Boolean + Dateikontext
+        ###   mysql_connect_any – MySQL verbindet sich auf beliebige Ports/Sockets
+        ###
+        printf "\n--- SELinux: MySQL ---\n"
+        _selinux_ensure_tools
+        _selinux_set_bool mysql_connect_any
+        _selinux_restorecon /home/mysql
+    fi
 
 fi
 

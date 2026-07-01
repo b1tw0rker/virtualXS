@@ -1,0 +1,11 @@
+[mysqld]
+innodb_buffer_pool_size = 4G
+innodb_log_file_size = 256M
+innodb_flush_method = O_DIRECT
+innodb_flush_log_at_trx_commit = 1
+max_connections = 320
+table_open_cache = 2048
+thread_cache_size = 100
+tmp_table_size = 64M
+max_heap_table_size = 64M
+expire_logs_days=7
