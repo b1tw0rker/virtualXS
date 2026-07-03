@@ -46,6 +46,17 @@ if [ ! -d "$OUTPUT_DIR" ]; then
     mkdir -p "$OUTPUT_DIR"
 fi
 
+# Domain-specific IP/CIDR excludes, one per line (managed via VirtualX API,
+# see GoAccessLib::writeExcludeIps). Blank lines and "#" comments are ignored.
+# These are appended to the baseline excludes above, not a replacement for them.
+EXCLUDE_FILE="$OUTPUT_DIR/.exclude_ips"
+if [ -f "$EXCLUDE_FILE" ]; then
+    DOMAIN_EXCLUDE_IPS=$(grep -v -e '^[[:space:]]*$' -e '^[[:space:]]*#' "$EXCLUDE_FILE" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' | paste -sd ',' -)
+    if [ -n "$DOMAIN_EXCLUDE_IPS" ]; then
+        EXCLUDE_IPS="${EXCLUDE_IPS},${DOMAIN_EXCLUDE_IPS}"
+    fi
+fi
+
 # Find all access.log files and sort chronologically
 # First the archived files (oldest first), then the current access.log
 ARCHIVED_FILES=($(find "$LOG_DIR" -name "access.log-*" -type f | sort))
