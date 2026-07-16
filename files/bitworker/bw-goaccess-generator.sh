@@ -19,8 +19,17 @@ OUTPUT_FILE="$OUTPUT_DIR/index.html"
 # GeoIP database (for country statistics)
 GEOIP_DB="/usr/share/GeoIP/GeoLite2-Country.mmdb"
 
-# IP addresses and ranges to be excluded
-EXCLUDE_IPS="127.0.0.1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,87.128.6.6"
+# IP addresses and ranges to be excluded.
+# NOTE: goaccess accepts only a single IP or a "start-end" range per
+# --exclude-ip flag (no CIDR notation, no comma-separated lists) -
+# each entry below gets turned into its own --exclude-ip flag.
+EXCLUDE_IPS=(
+    "127.0.0.1"
+    "10.0.0.0-10.255.255.255"
+    "172.16.0.0-172.31.255.255"
+    "192.168.0.0-192.168.255.255"
+    "87.128.6.6"
+)
 
 # Check if domain parameter looks valid
 if [[ ! "$DOMAINNAME" =~ ^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
@@ -46,15 +55,19 @@ if [ ! -d "$OUTPUT_DIR" ]; then
     mkdir -p "$OUTPUT_DIR"
 fi
 
-# Domain-specific IP/CIDR excludes, one per line (managed via VirtualX API,
-# see GoAccessLib::writeExcludeIps). Blank lines and "#" comments are ignored.
-# These are appended to the baseline excludes above, not a replacement for them.
+# Domain-specific IP excludes, one per line (managed via VirtualX API, see
+# GoAccessLib::writeExcludeIps - already validated there as single plain IPs,
+# no CIDR/ranges, via FILTER_VALIDATE_IP). Blank lines and "#" comments are
+# ignored. Appended as additional --exclude-ip flags to the baseline excludes
+# above (see NOTE above - a single comma-joined flag does not work).
 EXCLUDE_FILE="$OUTPUT_DIR/.exclude_ips"
 if [ -f "$EXCLUDE_FILE" ]; then
-    DOMAIN_EXCLUDE_IPS=$(grep -v -e '^[[:space:]]*$' -e '^[[:space:]]*#' "$EXCLUDE_FILE" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' | paste -sd ',' -)
-    if [ -n "$DOMAIN_EXCLUDE_IPS" ]; then
-        EXCLUDE_IPS="${EXCLUDE_IPS},${DOMAIN_EXCLUDE_IPS}"
-    fi
+    while IFS= read -r line; do
+        line="$(echo "$line" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+        [ -z "$line" ] && continue
+        [[ "$line" == \#* ]] && continue
+        EXCLUDE_IPS+=("$line")
+    done < "$EXCLUDE_FILE"
 fi
 
 # Find all access.log files and sort chronologically
@@ -93,8 +106,12 @@ GOACCESS_PARAMS=(
     "$TEMP_LOG"
     "-o" "$OUTPUT_FILE"
     "--log-format=COMBINED"
-    "--exclude-ip=$EXCLUDE_IPS"
 )
+
+# One --exclude-ip flag per entry (goaccess does not parse comma lists)
+for ip in "${EXCLUDE_IPS[@]}"; do
+    GOACCESS_PARAMS+=("--exclude-ip=$ip")
+done
 
 # Add GeoIP parameters if available
 if [ "$GEOIP_AVAILABLE" = true ]; then
