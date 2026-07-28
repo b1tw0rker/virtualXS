@@ -23,13 +23,6 @@ if [ "$u_php" = "y" ]; then
 
     fi
 
-    ### Modify php-fpm handler
-    ### https://medium.com/@jacksonpauls/moving-from-mod-php-to-php-fpm-914125a7f336
-    ###
-    ###
-    #if [ -f "$file_php_002" ]; then
-    #    cp $u_path/files/php-fpm/php.conf /etc/httpd/conf.d/
-    #fi
 
     if [ -d "$file_php_003" ]; then
         if ! cp $u_path/files/php/90-bw-security.ini $file_php_003; then
