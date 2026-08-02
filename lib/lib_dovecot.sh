@@ -78,6 +78,46 @@ if [ "$u_dovecot" = "y" ]; then
     sed -i 's/^  #mail_plugins = \$mail_plugins$/  mail_plugins = $mail_plugins sieve/' /etc/dovecot/conf.d/20-lmtp.conf
     _log ok "Dovecot mail_plugins configured (quota, imap_quota, sieve)"
 
+    ### 15-mailboxes.conf: ensure standard mailboxes subscribe automatically
+    ###
+    if [ -f /etc/dovecot/conf.d/15-mailboxes.conf ]; then
+        sed -i '/^  mailbox Drafts {$/{
+N
+/\n    auto = subscribe$/! s/\n/\n    auto = subscribe\n/
+}' /etc/dovecot/conf.d/15-mailboxes.conf
+        sed -i '/^  mailbox Junk {$/{
+N
+/\n    auto = subscribe$/! s/\n/\n    auto = subscribe\n/
+}' /etc/dovecot/conf.d/15-mailboxes.conf
+        sed -i '/^  mailbox Trash {$/{
+N
+/\n    auto = subscribe$/! s/\n/\n    auto = subscribe\n/
+}' /etc/dovecot/conf.d/15-mailboxes.conf
+        sed -i '/^  mailbox Sent {$/{
+N
+/\n    auto = subscribe$/! s/\n/\n    auto = subscribe\n/
+}' /etc/dovecot/conf.d/15-mailboxes.conf
+        if grep -q '^  mailbox "Sent Messages" {' /etc/dovecot/conf.d/15-mailboxes.conf; then
+            if ! awk '
+                /^  mailbox "Sent Messages" {$/,/^  }$/ {
+                    if ($0 ~ /^[[:space:]]*auto = /) {
+                        found = 1
+                    }
+                }
+                END {
+                    exit found ? 0 : 1
+                }
+            ' /etc/dovecot/conf.d/15-mailboxes.conf; then
+                sed -i '/^  mailbox "Sent Messages" {$/,/^  }$/ { /special_use = \\Sent$/ i\
+    auto = no
+}' /etc/dovecot/conf.d/15-mailboxes.conf
+            fi
+        fi
+        _log ok "Dovecot mailbox auto-subscribe entries ensured"
+    else
+        _log warn "Dovecot mailbox file not found, skipped auto-subscribe patch"
+    fi
+
     ### 90-quota.conf: Dovecot Maildir++ quota – 1G per user, Trash +100M, 10%% grace
     ###
     sed -i 's/^  #quota = maildir:User quota$/  quota = maildir:User quota/' /etc/dovecot/conf.d/90-quota.conf
