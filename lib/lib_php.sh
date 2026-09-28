@@ -19,6 +19,7 @@ if [ "$u_php" = "y" ]; then
     if [ -f "$file_php_001" ]; then
 
         sed -i 's/^upload_max_filesize = 2M/upload_max_filesize = 20M/' $file_php_001
+        sed -i 's/^post_max_size = 8M/post_max_size = 20M/' $file_php_001
         sed -i 's/^expose_php = On/expose_php = Off/' $file_php_001
 
     fi
