@@ -1,0 +1,8 @@
+[powerdns-rec-54]
+name=PowerDNS repository for PowerDNS Recursor - version 5.4.X
+baseurl=https://repo.powerdns.com/el/$basearch/$releasever/rec-54
+gpgkey=https://repo.powerdns.com/FD380FBB-pub.asc
+gpgcheck=1
+enabled=1
+priority=90
+includepkg=pdns-recursor*

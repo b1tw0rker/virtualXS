@@ -1,0 +1,16 @@
+# PowerDNS Recursor 5.x - Vorlage von virtualXS (lib_powerdns.sh)
+# 5.x liest nur noch YAML; recursor.conf aus 4.x wird ignoriert.
+# Listen/Port: der Auth-Server (pdns) bindet die oeffentliche IP auf Port 53,
+# der Recursor bleibt auf localhost.
+dnssec:
+  validation: validate
+incoming:
+  allow_from:
+  - 127.0.0.0/8
+  listen:
+  - 127.0.0.1
+  port: 53
+recursor:
+  security_poll_suffix: ''
+  setgid: pdns-recursor
+  setuid: pdns-recursor

@@ -14,6 +14,46 @@
 ###
 dns_apps="net-tools which bind-utils whois rsyslog iptraf-ng dnf-automatic rsync tar wget ncftp unzip git pdns pdns-backend-mysql pdns-recursor pdns-tools mysql mysql-server jq"
 file_powerdns001=/etc/pdns/pdns.conf
+file_powerdns_repo=/etc/yum.repos.d/powerdns-rec-54.repo
+
+### Recursor 5.x: recursor.yml aus Vorlage anlegen (nur wenn noch keine existiert)
+### recursor.yml-dist liefert nur 5.x mit; 4.x liest recursor.conf und bleibt unberuehrt.
+###
+_powerdns_recursor_yml() {
+    local file_yml=/etc/pdns-recursor/recursor.yml
+    if [ -f "$file_yml" ]; then
+        _log ok "recursor.yml exists (skipping)"
+    elif [ -f /etc/pdns-recursor/recursor.yml-dist ]; then
+        cp "$u_path/files/powerdns/recursor.yml" "$file_yml"
+        chmod 644 "$file_yml"
+        _log ok "recursor.yml created"
+    fi
+}
+
+### q PowerDNS-Repo zufuegen
+### Die Recursor-Pakete aus EPEL sind veraltet (4.8.x kennt den Root-KSK-2026 nicht,
+### SERVFAIL ab 11.10.2026). Das PowerDNS-Repo liefert den aktuellen 5.4-Zweig.
+### Hinweis: 5.x liest nur noch /etc/pdns-recursor/recursor.yml (kein recursor.conf).
+###
+(( _vxs_step++ ))
+if [ -f "$file_powerdns_repo" ]; then
+    printf "\n********************************************************************\n\n%d) PowerDNS-Repo zufügen für PowerDNS Update (empfohlen) [Y/n]:\n" "$_vxs_step"
+    _log ok "(already active - skipping)"
+    u_powerdns_repo=n
+else
+    printf "\n********************************************************************\n\n%d) PowerDNS-Repo zufügen für PowerDNS Update (empfohlen) [Y/n]: " "$_vxs_step"
+    if [ "$u_powerdns_repo" = "" ]; then
+        read u_powerdns_repo
+        [ "$u_powerdns_repo" = "" ] && u_powerdns_repo="y"
+    fi
+fi
+
+if [ "$u_powerdns_repo" = "y" ]; then
+    printf "\n"
+    cp "$u_path/files/powerdns/powerdns-rec-54.repo" "$file_powerdns_repo"
+    chmod 644 "$file_powerdns_repo"
+    _log ok "PowerDNS repo added"
+fi
 
 ### q Install Master PowerDNS
 ###
@@ -28,6 +68,7 @@ if [ "$u_powerdns_master" = "y" ]; then
     u_powerdns_slave=n
 
     dnf -y install $dns_apps
+    _powerdns_recursor_yml
 
     ### start mysql
     ###
@@ -39,7 +80,7 @@ if [ "$u_powerdns_master" = "y" ]; then
     ###
     mysql_pwd=$(grep '^password=' /root/.my.cnf | cut -d'=' -f2-)
     if mysqladmin -u root password "$mysql_pwd" >>/dev/null 2>&1; then
-        printf "[OK] Changed MySql root pass success\n"
+        _log ok "Changed MySql root pass success"
     fi
 
     ### install powerdns mysql scheme
@@ -91,6 +132,7 @@ if [ "$u_powerdns_slave" = "y" ]; then
     read -p "Slave Server FQDN (example: ns1.$u_domain): " -ei $u_reverse u_slave_server_fqdn
 
     dnf -y install $dns_apps
+    _powerdns_recursor_yml
 
     ### start mysql
     ###
